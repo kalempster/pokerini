@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+    background: black;
+
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: black;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(194 65 12);
+    border-radius: 100vh;
+}

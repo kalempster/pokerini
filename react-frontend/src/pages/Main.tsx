@@ -1,5 +1,6 @@
 import Card from "../components/Card";
 import Section from "../components/Section";
+import Coin from "../images/coin.svg";
 
 export default function Main() {
     return (
@@ -12,20 +13,34 @@ export default function Main() {
                                 Pokerinee
                             </div>
                             <div className="font-dancing text-3xl text-gray-300 ">
-                                The ultimate <span className="text-orange-600">poker</span>{" "}
+                                The ultimate{" "}
+                                <span className="text-orange-600 font-dancing">poker</span>{" "}
                                 experience for the new generation
                             </div>
                         </div>
                     </div>
                 </div>
             </Section>
-            <Section className="bg-black text-white flex justify-center items-center flex-col w-full">
+            <Section className="bg-black text-white flex justify-center items-center flex-col gap-5">
                 <div className="text-6xl">What do we offer?</div>
-                <div className="w-full flex justify-center items-center">
+                <div className="w-1/2 flex justify-center items-center gap-10">
                     <Card
                         title="Free of charge"
-                        text="Our service is provided to you free of charge, forever."
-                        icon={"x"}
+                        text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friend without having to pay a cent for it."
+                        icon={Coin}
+                        className="fill-orange-700"
+                    />
+                    <Card
+                        title="Free of charge"
+                        text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friend without having to pay a cent for it."
+                        icon={Coin}
+                        className="fill-orange-700"
+                    />
+                    <Card
+                        title="Free of charge"
+                        text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friend without having to pay a cent for it."
+                        icon={Coin}
+                        className="fill-orange-700"
                     />
                 </div>
             </Section>

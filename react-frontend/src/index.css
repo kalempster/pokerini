@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+    font-family: 'Noto Serif Malayalam', serif;;
+}
+
 ::-webkit-scrollbar {
     width: 20px;
     height: 20px;

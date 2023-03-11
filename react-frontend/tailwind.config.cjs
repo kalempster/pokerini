@@ -11,8 +11,9 @@ module.exports = {
             },
             fontFamily: {
                 "noto-serif": "'Noto Serif Malayalam', serif;",
-                "dancing": "'Cinzel Decorative', cursive",
-                
+                "siemano": "'Cinzel Decorative', cursive",
+                "dancing":"'Dancing Script', cursive;",
+                "gotyk":"'Didact Gothic', sans-serif;"
             },
             
         },

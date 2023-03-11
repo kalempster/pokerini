@@ -7,7 +7,7 @@
 *{
     font-family: 'Noto Serif Malayalam', serif;;
 }
-
+/* 
 ::-webkit-scrollbar {
     width: 20px;
     height: 20px;
@@ -23,4 +23,4 @@
 ::-webkit-scrollbar-thumb {
     background: rgb(194 65 12);
     border-radius: 100vh;
-}
+} */

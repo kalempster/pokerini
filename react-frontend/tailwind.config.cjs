@@ -15,7 +15,9 @@ module.exports = {
                 "dancing":"'Dancing Script', cursive;",
                 "gotyk":"'Didact Gothic', sans-serif;"
             },
-            
+            boxShadow: {
+                "innerSh": "inset 0 0 20rem black;"
+            }
         },
     },
     plugins: [],

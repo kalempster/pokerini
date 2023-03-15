@@ -1,12 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Epilogue&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 *{
-    font-family: 'Noto Serif Malayalam', serif;;
+    font-family: 'Epilogue', sans-serif;
 }
+
 /* 
 ::-webkit-scrollbar {
     width: 20px;

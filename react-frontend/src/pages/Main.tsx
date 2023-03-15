@@ -3,21 +3,22 @@ import Section from "../components/Section";
 import Coin from "../images/coin.svg";
 import PlayingCards from "../images/playing-cards.svg";
 import Star from "../images/star.svg";
-
+import Header from "../components/Header/Header";
 export default function Main() {
     return (
         <>
-            <Section className="text-white flex justify-center items-center w-full h-full p-10 bg-poker bg-center bg-cover bg-black bg-no-repeat shadow-innerSh">
-                <div className="flex flex-col items-center text-center gap-2">
-                    <div className="font-noto-serif text-6xl lg:text-8xl leading-[0.6] text-orange-700 ">
-                        Pokerinee
-                    </div>
-                    <div className="font-dancing text-2xl lg:text-3xl text-gray-300 ">
-                        The ultimate <span className="text-orange-600 font-dancing">poker</span>{" "}
-                        experience for the new generation
-                    </div>
+            <Section className="bg-[#181B30] w-full h-full">
+               <Header/>
+                <div className="">
+                    <div></div>
+                    <div></div>
                 </div>
+
             </Section>
+            
+            
+            
+            
             <Section className="bg-black text-white flex justify-center items-center flex-col gap-5 p-10 w-full">
                 <div className="text-5xl lg:text-6xl text-center">What do we offer?</div>
                 <div className="w-full md:w-8/12 flex-col xl:flex-row flex justify-center gap-10 items-start">

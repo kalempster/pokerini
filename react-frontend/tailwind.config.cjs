@@ -13,7 +13,8 @@ module.exports = {
                 "noto-serif": "'Noto Serif Malayalam', serif;",
                 "siemano": "'Cinzel Decorative', cursive",
                 "dancing":"'Dancing Script', cursive;",
-                "gotyk":"'Didact Gothic', sans-serif;"
+                "gotyk":"'Didact Gothic', sans-serif;",
+                "epilog":"'Epilogue', sans-serif;"
             },
             boxShadow: {
                 "innerSh": "inset 0 0 20rem black;"

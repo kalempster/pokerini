@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 export default function Header() {
     return (
-        <div className="min-h-16 bg-[#181B30] items-center flex w-full p-16 flex-row justify-between ">
+        <div className=" bg-[#181B30] items-center flex w-full px-32 py-16 flex-row justify-between ">
             <Link to="/" className="text-5xl font-semibold">
                 <span className="text-[#EF2A4F]">Poker</span>
                 <span className="text-[#FFCD01] ">inee</span>

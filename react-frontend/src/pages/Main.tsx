@@ -4,21 +4,29 @@ import Coin from "../images/coin.svg";
 import PlayingCards from "../images/playing-cards.svg";
 import Star from "../images/star.svg";
 import Header from "../components/Header/Header";
+import Karty from "../images/karty.svg";
+import { ReactSVG } from "react-svg";
 export default function Main() {
     return (
         <>
             <Section className="bg-[#181B30] w-full h-full">
-               <Header/>
-                <div className="">
-                    <div></div>
-                    <div></div>
+                <Header />
+                <div className="flex w-full px-48 justify-between">
+                    <div className="flex flex-col w-1/3 text-[#FFCD01] justify-between">
+                        <div className="text-6xl font-bold ">
+                            Piotrusiu fdfdsfsdfsd ccccccccccc:
+                        </div>
+                        <div className="text-3xl font-light">
+                            fair playxDD
+                        </div>
+                        <button className="font-semibold w-full py-6 bg-[#EF2A4F] text-[#FFCD01] text-3xl ">
+                            Get started
+                        </button>
+                    </div>
+                    <ReactSVG src={Karty} className="w-1/2 flex justify-center items-center" />
                 </div>
-
             </Section>
-            
-            
-            
-            
+
             <Section className="bg-black text-white flex justify-center items-center flex-col gap-5 p-10 w-full">
                 <div className="text-5xl lg:text-6xl text-center">What do we offer?</div>
                 <div className="w-full md:w-8/12 flex-col xl:flex-row flex justify-center gap-10 items-start">

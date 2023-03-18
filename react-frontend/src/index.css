@@ -6,6 +6,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.blur{
+    --tw-backdrop-blur: blur(16px);
+}
+.blur1{
+    --tw-backdrop-blur: blur(0px);
+}
 *{
     font-family: 'Epilogue', sans-serif;
 }
@@ -27,6 +33,22 @@
     white-space: nowrap;
 }
 
+.menu-primary-enter {
+    backdrop-filter: 0;
+    position: fixed;
+    transform: translateY(-110%);
+}
+.menu-primary-enter-active {
+    transform: translateY(0%);
+    transition: all 500 ease;
+}
+.menu-primary-exit {
+    position: absolute;
+}
+.menu-primary-exit-active {
+    transform: translateY(-110%);
+    transition: all 500 ease;
+}
 /* 
 ::-webkit-scrollbar {
     width: 20px;

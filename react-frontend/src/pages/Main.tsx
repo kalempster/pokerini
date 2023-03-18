@@ -11,19 +11,19 @@ export default function Main() {
         <>
             <Section className="bg-[#181B30] w-full h-full">
                 <Header />
-                <div className="flex w-full px-48 justify-between">
-                    <div className="flex flex-col w-1/3 text-[#FFCD01] justify-between">
-                        <div className="text-6xl font-bold ">
+                <div className="py-24 flex w-full px-6 sm:px-10 xl:px-48 justify-center lg:justify-between">
+                    <div className=" flex flex-col lg:w-1/3 sm:w-1/2 text-[#FFCD01] lg:justify-between ">
+                        <div className=" text-5xl md:text-6xl font-bold ">
                             Piotrusiu fdfdsfsdfsd ccccccccccc:
                         </div>
                         <div className="text-3xl font-light">
                             fair playxDD
                         </div>
                         <button className="font-semibold w-full py-6 bg-[#EF2A4F] text-[#FFCD01] text-3xl ">
-                            Get started
+                            Countinue
                         </button>
                     </div>
-                    <ReactSVG src={Karty} className="w-1/2 flex justify-center items-center" />
+                    <ReactSVG src={Karty} className="w-1/2 hidden justify-center items-center lg:flex" />
                 </div>
             </Section>
 

@@ -10,6 +10,23 @@
     font-family: 'Epilogue', sans-serif;
 }
 
+.HeaderMenu-toggle-bar:nth-of-type(1) {
+    transform-origin: bottom right;
+}
+.HeaderMenu-toggle-bar {
+    width: 22px;
+    height: 2px;
+    background-color: #FFCD01;
+  
+}
+.HeaderMenu-toggle-bar:nth-of-type(3) {
+    transform-origin: top right;
+}
+.Button-label {
+    grid-area: text;
+    white-space: nowrap;
+}
+
 /* 
 ::-webkit-scrollbar {
     width: 20px;

@@ -13,8 +13,8 @@ export default function Main() {
 
             <Section className="bg-[#181B30] w-full flex items-center" isStarting>
                 <div className="flex w-full px-4 md:px-28 2xl:px-72 justify-center lg:justify-between">
-                    <div className="text-center lg:text-left flex flex-col w-full lg:w-5/12 text-[#FFCD01] justify-between">
-                        <div className=" text-5xl md:text-6xl font-bold ">
+                    <div className="text-left gap-14 lg:text-left flex flex-col w-full lg:w-5/12 text-[#FFCD01] justify-between">
+                        <div className=" text-5xl md:text-6xl font-bold flex flex-col gap-7">
                             Generations worth of work Poker experience
                             <div className="text-xl font-light text-[#FFCD01DA]">
                                 Immerse yourself into the game of Poker and feel the game like

@@ -22,10 +22,10 @@ type Props = {
 };
 
 const Card: FC<Props> = ({ text, title }) => {
-    return <div className="sm:w-1/3 w-full aspect-[185/266] card text-white">
+    return <div className="sm:w-1/3 z-10 w-full aspect-[185/266] card text-white">
         {/* zapytacie pewnie skad mam te procenty */}
         {/* z piatnicy no bo skad */}
-        <div className="absolute top-[12%] left-[16%] w-[68%] h-[66%] p-4 overflow-hidden">
+        <div className="absolute  top-[12%] left-[16%] w-[68%] h-[66%] p-4 overflow-hidden">
             <div className="text-xl md:text-2xl lg:text-3xl text-center font-normal">{title}</div>
             <div className="sm:text-xs md:text-sm lg:text-base text-center font-extralight ">{text}</div>
             

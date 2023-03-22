@@ -15,7 +15,7 @@ export default function Header() {
                         ? "-translate-y-full" + " fixed w-screen h-screen duration-500 ease-in-out"
                         : "translate-y-0" + " fixed w-screen h-screen duration-500 ease-in-out"
                 }>
-                <div className=" bg-[#181B30] menu h-full  w-full fixed flex text-5xl flex-col  text-[#FFCD01] overflow-hidden">
+                <div className=" bg-[#181B30] menu h-full  w-full z-20 fixed flex text-5xl flex-col  text-[#FFCD01] overflow-hidden">
                     <div className="absolute top-0 right-0 p-7">
                         <button className="flex" onClick={() => setActiveMenu(!activeMenu)}>
                             <ReactSVG src={close} className="w-10 aspect-square fill-[#FFCD01]" />

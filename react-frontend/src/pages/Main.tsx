@@ -37,10 +37,10 @@ export default function Main() {
                 <div className="text-5xl lg:text-6xl text-[#FFCD01] text-center">
                     What do we offer?
                 </div>
-                <div className="w-full md:w-8/12 flex-col sm:flex-row flex justify-center gap-10 items-start">
-                    <Card title="Free forever" text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friends without having to pay a cent for it. Just create an acount and start playing!" />
-                    <Card text="With our game you will feel like you're really sitting right there, at the table playing poker. Smoking a cigar and drinking cold whiskey while enjoying the game." />
-                    <Card text="Our priority is provide you seamless gameplay and razor sharp visuals. The game allows for very low delay gameplay so you can make unbottlenecked decisions." />
+                <div className="w-full md:w-11/12 flex-col sm:flex-row flex justify-center gap-10 items-start">
+                    <Card title="Free forever" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. A, quo. Delectus sequi eos, laborum doloribus voluptatibus incidunt expedita tempora sunt." />
+                    <Card title="siema" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. A, quo. Delectus sequi eos, laborum doloribus voluptatibus incidunt expedita tempora sunt." />
+                    <Card title="elo" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. A, quo. Delectus sequi eos, laborum doloribus voluptatibus incidunt expedita tempora sunt." />
                 </div>
             </Section>
         </>

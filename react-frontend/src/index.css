@@ -1,27 +1,41 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Epilogue&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Epilogue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-*{
-    font-family: 'Epilogue', sans-serif;
+:root {
+    --header-height: 10rem;
 }
 
+@layer components {
+    .card {
+        position: relative;
+    }
+    .card::after {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: url("./images/karta.svg");
+    }
+}
+
+* {
+    font-family: "Epilogue", sans-serif;
+}
 
 ::-webkit-scrollbar {
     width: 20px;
     height: 20px;
-    background: #181B30;
-
+    background: transparent;
 }
 
 ::-webkit-scrollbar-track {
     border-radius: 100vh;
-    background: #181B30;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {

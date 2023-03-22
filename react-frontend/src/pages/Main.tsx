@@ -9,29 +9,36 @@ import { ReactSVG } from "react-svg";
 export default function Main() {
     return (
         <>
-            <Section className="bg-[#181B30] w-full h-full">
-                <Header />
-                <div className="py-24 flex w-full px-6 sm:px-10 xl:px-48 justify-center lg:justify-between">
-                    <div className=" flex flex-col lg:w-1/3 sm:w-1/2 text-[#FFCD01] lg:justify-between ">
+            <Header />
+
+            <Section className="bg-[#181B30] w-full flex items-center" isStarting>
+                <div className="flex w-full px-4 md:px-28 2xl:px-72 justify-center lg:justify-between">
+                    <div className="text-center lg:text-left flex flex-col w-full lg:w-5/12 text-[#FFCD01] justify-between">
                         <div className=" text-5xl md:text-6xl font-bold ">
-                            Piotrusiu fdfdsfsdfsd ccccccccccc:
+                            Generations worth of work Poker experience
+                            <div className="text-xl font-light text-[#FFCD01DA]">
+                                Immerse yourself into the game of Poker and feel the game like
+                                you've never have felt before.
+                            </div>
                         </div>
-                        <div className="text-3xl font-light">fair playxDD</div>
-                        <button className="font-semibold w-full py-6 bg-[#EF2A4F] text-[#FFCD01] text-3xl ">
+
+                        <a className=" flex justify-center items-center rounded-[20px] font-semibold w-full py-6 bg-[#EF2A4F] text-[#FFCD01] text-3xl ">
                             Countinue
-                        </button>
+                        </a>
                     </div>
-                    <ReactSVG
-                        src={Karty}
-                        className="w-1/2 hidden justify-center items-center lg:flex"
-                    />
+                    <div className="w-1/2 hidden items-center lg:flex">
+                    <ReactSVG src={Karty} className="w-full" />
+
+                    </div>
                 </div>
             </Section>
 
             <Section className="bg-[#181B30] flex justify-center items-center flex-col gap-5 p-10 w-full">
-                <div className="text-5xl lg:text-6xl text-[#FFCD01] text-center">What do we offer?</div>
+                <div className="text-5xl lg:text-6xl text-[#FFCD01] text-center">
+                    What do we offer?
+                </div>
                 <div className="w-full md:w-8/12 flex-col sm:flex-row flex justify-center gap-10 items-start">
-                    <Card text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friends without having to pay a cent for it. Just create an acount and start playing!" />
+                    <Card title="Free forever" text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friends without having to pay a cent for it. Just create an acount and start playing!" />
                     <Card text="With our game you will feel like you're really sitting right there, at the table playing poker. Smoking a cigar and drinking cold whiskey while enjoying the game." />
                     <Card text="Our priority is provide you seamless gameplay and razor sharp visuals. The game allows for very low delay gameplay so you can make unbottlenecked decisions." />
                 </div>

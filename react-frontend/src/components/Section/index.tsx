@@ -9,22 +9,11 @@ type Props = {
      * ```
      */
     className?: string;
-    /**
-     * If the section is the first one in the page (is under header)
-     * @default false
-     */
-    isStarting?: boolean;
 };
 
-const Section: FC<Props> = ({children, className, isStarting = false}) => {
+const Section: FC<Props> = ({ children, className }) => {
     return (
-        <div
-            className={
-                (isStarting ? "min-h-[calc(100vh-var(--header-height))] " : "min-h-screen ") +
-                (className ?? "")
-            }>
-            {children}
-        </div>
+        <div className={"min-h-screen " + (className ?? "")}>{children}</div>
     );
 };
 

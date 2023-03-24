@@ -24,6 +24,9 @@ module.exports = {
                 primary: "#FFCD01",
                 secondary: "#EF2A4F",
                 background: "#181B30"
+            },
+            transitionProperty: {
+                "opacity-transform": "opacity, transform"
             }
         }
     },

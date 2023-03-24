@@ -4,8 +4,14 @@ import Feeter from "../components/Feeter/Feeter";
 import Main from "../pages/Main";
 import LogIn from "../pages/LogIn";
 import Register from "../pages/Register";
+import { useEffect } from "react";
+import AOS from "aos";
+
 const headerRootRoute = new RootRoute({
     component: () => {
+        useEffect(() => {
+            AOS.init({ once: true, easing: "ease-out-quad", duration: 1000 });
+        }, []);
         return (
             <>
                 <Header />

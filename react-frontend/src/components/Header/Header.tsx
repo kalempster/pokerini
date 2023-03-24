@@ -35,16 +35,27 @@ export default function Header() {
                 </div>
             </div>
             <div className=" absolute z-0 flex h-[var(--header-height)] w-full flex-row items-center justify-between bg-background px-4  md:px-32">
-                <Link to="/" className="text-5xl font-semibold">
+                <Link
+                    to="/"
+                    className="text-5xl font-semibold"
+                    data-aos="fade-down">
                     <span className="text-secondary">Poker</span>
                     <span className="text-primary ">inee</span>
                 </Link>
                 <div className="hidden flex-row gap-16 text-primary md:text-2xl  lg:flex">
-                    <Link to="">dfsdfsdfsie</Link>
-                    <Link to="">cos ta fdsfs</Link>
-                    <Link to="/login">login</Link>
+                    <Link data-aos="fade-down" data-aos-delay="200" to="">
+                        dfsdfsdfsie
+                    </Link>
+                    <Link data-aos="fade-down" data-aos-delay="400" to="">
+                        cos ta fdsfs
+                    </Link>
+                    <Link data-aos="fade-down" data-aos-delay="600" to="/login">
+                        login
+                    </Link>
                 </div>
                 <button
+                    data-aos="fade-down"
+                    data-aos-delay="200"
                     className="flex border-none lg:hidden "
                     onClick={() => setActiveMenu(!activeMenu)}>
                     <ReactSVG

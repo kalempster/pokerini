@@ -38,9 +38,17 @@ type Props = {
     className?: string;
 };
 
-const Card: FC<Props> = ({ text, title, icon, className = "fill-white" }) => {
+const Card: FC<Props> = ({
+    text,
+    title,
+    icon,
+    className = "fill-white",
+    ...rest
+}) => {
     return (
-        <div className="flex w-full flex-col gap-2 rounded-xl bg-secondary p-6 text-white shadow-2xl shadow-black transition-transform hover:-translate-y-3 lg:w-1/3 ">
+        <div
+            {...rest}
+            className="flex w-full flex-col gap-2 rounded-xl bg-secondary p-6 text-white shadow-2xl shadow-black lg:w-1/3 ">
             <div className="flex flex-col items-center justify-center gap-2">
                 <ReactSVG
                     src={icon}

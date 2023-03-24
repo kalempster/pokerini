@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { ReactSVG } from "react-svg";
 import burger from "../../images/burger.svg";
 import close from "../../images/close.svg";
@@ -7,55 +7,53 @@ export default function Header() {
     const [activeMenu, setActiveMenu] = useState(false);
 
     return (
-        <div>
+        <>
             <div
                 className={
                     !activeMenu
-                        ? "-translate-y-full" +
-                          " fixed w-screen h-screen duration-500 ease-in-out"
-                        : "translate-y-0" +
-                          " fixed w-screen h-screen duration-500 ease-in-out"
+                        ? "fixed z-10 h-screen w-screen -translate-y-full duration-500 ease-in-out"
+                        : "fixed z-10 h-screen w-screen translate-y-0 duration-500 ease-in-out"
                 }>
-                <div className=" bg-[#181B30] menu h-full  w-full z-20 fixed flex text-5xl flex-col  text-[#FFCD01] overflow-hidden">
+                <div className="absolute z-20 flex h-full w-full flex-col overflow-hidden bg-background  text-5xl text-primary">
                     <div className="absolute top-0 right-0 p-7">
                         <button
                             className="flex"
                             onClick={() => setActiveMenu(!activeMenu)}>
                             <ReactSVG
                                 src={close}
-                                className="w-10 aspect-square fill-[#FFCD01]"
+                                className="aspect-square w-10 fill-primary"
                             />
                         </button>
                     </div>
                     <div
                         onClick={() => setActiveMenu(!activeMenu)}
-                        className=" h-full justify-between flex flex-col text-2xl items-center px-24 py-24">
+                        className=" flex h-full flex-col items-center justify-between px-24 py-24 text-2xl">
                         <Link to="">dfsdfsdfsie</Link>
                         <Link to="">cos ta fdsfs</Link>
                         <Link to="/login">login</Link>
                     </div>
                 </div>
             </div>
-            <div className=" bg-[#181B30] items-center flex w-full px-4 md:px-32 h-[var(--header-height)] flex-row justify-between  absolute">
+            <div className=" absolute z-0 flex h-[var(--header-height)] w-full flex-row items-center justify-between bg-background px-4  md:px-32">
                 <Link to="/" className="text-5xl font-semibold">
-                    <span className="text-[#EF2A4F]">Poker</span>
-                    <span className="text-[#FFCD01] ">inee</span>
+                    <span className="text-secondary">Poker</span>
+                    <span className="text-primary ">inee</span>
                 </Link>
-                <div className="hidden flex-row text-[#FFCD01] gap-16 md:text-2xl  lg:flex">
+                <div className="hidden flex-row gap-16 text-primary md:text-2xl  lg:flex">
                     <Link to="">dfsdfsdfsie</Link>
                     <Link to="">cos ta fdsfs</Link>
                     <Link to="/login">login</Link>
                 </div>
                 <button
-                    className="flex lg:hidden border-none "
+                    className="flex border-none lg:hidden "
                     onClick={() => setActiveMenu(!activeMenu)}>
                     <ReactSVG
                         src={burger}
-                        className="w-10 aspect-square stroke-[#FFCD01]"
+                        className="aspect-square w-10 stroke-primary"
                     />
                 </button>
                 {/* TODO profile handling and login/logout */}
             </div>
-        </div>
+        </>
     );
 }

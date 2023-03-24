@@ -1,7 +1,9 @@
 {
-  "tabWidth": 4,
-  "useTabs": false,
-  "bracketSameLine": true,
-  "trailingComma": "none",
-  "semi": true
+    "tabWidth": 4,
+    "useTabs": false,
+    "bracketSameLine": true,
+    "trailingComma": "none",
+    "semi": true,
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "quoteProps": "as-needed"
 }

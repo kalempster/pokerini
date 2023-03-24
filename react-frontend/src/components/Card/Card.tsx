@@ -35,22 +35,23 @@ type Props = {
      * <Card className="fill-orange-700" />
      * ```
      */
-    className: string;
+    className?: string;
 };
 
-const Card: FC<Props> = ({ text, title, icon, className }) => {
+const Card: FC<Props> = ({ text, title, icon, className = "fill-white" }) => {
     return (
-        <div className="sm:w-1/3 w-full text-white bg-[#EF2A4F] p-6 rounded-xl shadow-2xl shadow-black flex flex-col gap-2 hover:-translate-y-3 transition-transform relative">
-            <div className="absolute left-0 top-0 p-2">
+        <div className="flex w-full flex-col gap-2 rounded-xl bg-secondary p-6 text-white shadow-2xl shadow-black transition-transform hover:-translate-y-3 lg:w-1/3 ">
+            <div className="flex flex-col items-center justify-center gap-2">
                 <ReactSVG
                     src={icon}
-                    className={`w-8 aspect-square ${className}`}
+                    className={`aspect-square w-12 ${className}`}
                 />
+                <div className="text-center text-3xl font-semibold lg:text-4xl">
+                    {title}
+                </div>
             </div>
-            <div className="text-3xl lg:text-4xl text-center font-semibold">
-                {title}
-            </div>
-            <div className="text-lg text-justify [text-align-last:center] ">
+
+            <div className="text-justify text-lg [text-align-last:center] ">
                 {text}
             </div>
         </div>

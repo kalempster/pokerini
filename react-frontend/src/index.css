@@ -2,13 +2,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Epilogue&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Epilogue:wght@200&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Epilogue:wght@200&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
     --header-height: 10rem;
+    --big-footer-height: 8rem;
+    --small-footer-height: 6rem;
 }
 
 @layer components {
@@ -29,8 +31,7 @@
 }
 
 ::-webkit-scrollbar {
-    width: 20px;
-    height: 20px;
+    width: 10px;
     background: transparent;
 }
 

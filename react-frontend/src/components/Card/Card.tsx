@@ -48,7 +48,7 @@ const Card: FC<Props> = ({
     return (
         <div
             {...rest}
-            className="flex w-full flex-col gap-2 rounded-xl bg-secondary p-6 text-white shadow-2xl shadow-black lg:w-1/3 ">
+            className="flex w-full flex-col gap-2 rounded-xl bg-secondary p-6 text-white shadow-2xl shadow-black selection:bg-primary selection:text-white lg:w-1/3">
             <div className="flex flex-col items-center justify-center gap-2">
                 <ReactSVG
                     src={icon}

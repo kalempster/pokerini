@@ -4,14 +4,69 @@ import Feeter from "../components/Feeter/Feeter";
 import Main from "../pages/Main";
 import LogIn from "../pages/LogIn";
 import Register from "../pages/Register";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
+import Dialog from "../components/Dialog/Dialog";
 
-const headerRootRoute = new RootRoute({
+const rootRoute = new RootRoute({
     component: () => {
+        const [isAdultDialogVisible, setIsAdultDialogVisible] = useState(false);
+
         useEffect(() => {
             AOS.init({ once: true, easing: "ease-out-quad", duration: 1000 });
+            (() => {
+                const adult = localStorage.getItem("isAdult");
+
+                if (!adult) {
+                    localStorage.setItem("isAdult", "0");
+                    setIsAdultDialogVisible(true);
+                    return;
+                }
+
+                if (isNaN(parseInt(adult))) {
+                    localStorage.setItem("isAdult", "0");
+                    setIsAdultDialogVisible(true);
+                    return;
+                }
+
+                if (!parseInt(adult)) {
+                    setIsAdultDialogVisible(true);
+                    return;
+                }
+            })();
         }, []);
+
+        return (
+            <>
+                <Dialog visible={isAdultDialogVisible}>
+                    <Dialog.Title>Are you at least 18 years old?</Dialog.Title>
+                    <Dialog.Actions className="gap-5">
+                        <button
+                            onClick={() => {
+                                window.location.href = "https://google.com";
+                            }}>
+                            No
+                        </button>
+                        <button
+                            onClick={() => {
+                                setIsAdultDialogVisible(false);
+                                localStorage.setItem("isAdult", "1");
+                            }}>
+                            Yes
+                        </button>
+                    </Dialog.Actions>
+                </Dialog>
+                <Outlet />
+            </>
+        );
+    }
+});
+
+const headerRootRoute = new Route({
+    id: "header",
+    path: "/",
+    getParentRoute: () => rootRoute,
+    component: () => {
         return (
             <>
                 <Header />
@@ -38,10 +93,8 @@ const registerRoute = new Route({
     component: Register
 });
 
-const routeTree = headerRootRoute.addChildren([
-    indexRoute,
-    loginRoute,
-    registerRoute
+const routeTree = rootRoute.addChildren([
+    headerRootRoute.addChildren([indexRoute, loginRoute, registerRoute])
 ]);
 
 export const router = new Router({ routeTree });

@@ -24,8 +24,8 @@ export default function Main() {
                             </div>
                         </div>
 
-                        <a className=" flex w-full items-center justify-center rounded-[20px] bg-secondary py-6 text-3xl font-semibold text-primary ">
-                            Countinue
+                        <a className=" flex w-full cursor-pointer items-center justify-center rounded-[20px] bg-secondary py-6 text-3xl font-semibold text-primary ">
+                            Join now
                         </a>
                     </div>
                     <div

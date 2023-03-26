@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 // Bugging out in Dialog component, known issue
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
+import { ScrollLocker } from "../../utils/ScrollLocker";
 
 const dialogRoot = document.getElementById("dialog-root");
 
@@ -54,18 +55,13 @@ type DialogType = FC<Props> & {
  * </Dialog>
  * ```
  */
+
 const Dialog: DialogType = ({ children, onDismiss, visible = false }) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!visible) {
-            document.querySelector("body")?.classList.remove("noscroll");
-            modalRef.current?.classList.remove("pr-[10px]", "mobile:pr-0"); //If we're on a mobile (tablet, smartphone) don't add padding since the scroll bar is not visible anyway
-            return;
-        }
-        // Adding padding so the modal doesn't skip (messy shit, don't touch)
-        document.querySelector("body")?.classList.add("noscroll");
-        modalRef.current?.classList.add("pr-[10px]", "mobile:pr-0"); //If we're on a mobile (tablet, smartphone) don't add padding since the scroll bar is not visible anyway
+        if (visible) ScrollLocker.lock();
+        else ScrollLocker.unlock();
     }, [visible]);
 
     if (!dialogRoot) throw new Error("Unable to find dialog root");

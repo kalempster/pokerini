@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 // Bugging out in Dialog component, known issue
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ReactDOM from "react-dom";
+
+const dialogRoot = document.getElementById("dialog-root");
 
 type Props = {
     children?: React.ReactNode;
@@ -35,43 +38,68 @@ type DialogType = FC<Props> & {
     Actions: typeof Actions;
 };
 
+/**
+ * A dialog that will be displayed on the page with a black backdrop with 0.5 opacity
+ *
+ * @example
+ * ```tsx
+ * <Dialog>
+ *    <Dialog.Title>Hey!</Dialog.Title>
+ *    <Dialog.Content>
+ *        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+ *    </Dialog.Content>
+ *    <Dialog.Actions>
+ *        <button>Ok</button>
+ *    </Dialog.Actions>
+ * </Dialog>
+ * ```
+ */
 const Dialog: DialogType = ({ children, onDismiss, visible = false }) => {
+    const modalRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-        visible
-            ? document.querySelector("html")?.classList.add("noscroll")
-            : document.querySelector("html")?.classList.remove("noscroll");
+        if (!visible) {
+            document.querySelector("body")?.classList.remove("noscroll");
+            modalRef.current?.classList.remove("pr-[10px]", "mobile:pr-0"); //If we're on a mobile (tablet, smartphone) don't add padding since the scroll bar is not visible anyway
+            return;
+        }
+        // Adding padding so the modal doesn't skip (messy shit, don't touch)
+        document.querySelector("body")?.classList.add("noscroll");
+        modalRef.current?.classList.add("pr-[10px]", "mobile:pr-0"); //If we're on a mobile (tablet, smartphone) don't add padding since the scroll bar is not visible anyway
     }, [visible]);
 
-    return (
-        <>
-            <AnimatePresence>
-                {visible && (
+    if (!dialogRoot) throw new Error("Unable to find dialog root");
+
+    return ReactDOM.createPortal(
+        <AnimatePresence>
+            {visible && (
+                <motion.div
+                    ref={modalRef}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={onDismiss}
+                    className="fixed z-50 h-full w-full bg-black bg-opacity-50">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onDismiss}
-                        className="fixed z-50 h-full w-full bg-black bg-opacity-50">
-                        <motion.div
-                            initial={{ translateY: "2rem" }}
-                            animate={{ translateY: "0" }}
-                            exit={{ translateY: "2rem" }}
-                            transition={{
-                                ease: "backOut",
-                                duration: 0.5
-                            }}
-                            className="flex h-full w-full items-center justify-center md:h-1/2">
-                            <div
-                                // Prevent dismissing by clicking on the dialog
-                                onClick={(e) => e.stopPropagation()}
-                                className="mx-6 flex w-full flex-col gap-5 rounded-md bg-background p-4 md:mx-0 md:w-1/2 xl:w-1/4">
-                                {children}
-                            </div>
-                        </motion.div>
+                        initial={{ translateY: "2rem" }}
+                        animate={{ translateY: "0" }}
+                        exit={{ translateY: "2rem" }}
+                        transition={{
+                            duration: 0.5,
+                            type: "spring"
+                        }}
+                        className="flex h-full w-full items-center justify-center md:h-1/2">
+                        <div
+                            // Prevent dismissing by clicking on the dialog
+                            onClick={(e) => e.stopPropagation()}
+                            className="mx-6 flex w-full flex-col gap-5 rounded-md bg-background p-4 md:mx-0 md:w-1/2 xl:w-1/4">
+                            {children}
+                        </div>
                     </motion.div>
-                )}
-            </AnimatePresence>
-        </>
+                </motion.div>
+            )}
+        </AnimatePresence>,
+        dialogRoot
     );
 };
 

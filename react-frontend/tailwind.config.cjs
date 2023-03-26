@@ -7,6 +7,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            screens: {
+                mobile: { raw: "only screen and (any-pointer: coarse)" }
+            },
             backgroundImage: {
                 poker: "url('./src/images/poker.webp')"
             },

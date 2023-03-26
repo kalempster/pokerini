@@ -50,5 +50,5 @@
 }
 
 .noscroll {
-    @apply fixed w-full overflow-y-scroll;
+    @apply overflow-y-hidden pr-[10px] mobile:pr-0;
 }

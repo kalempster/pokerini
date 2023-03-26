@@ -5,8 +5,12 @@ import { ReactSVG } from "react-svg";
 import Star from "../images/shine.svg";
 import PlayingCards from "../images/playing-cards.svg";
 import Coin from "../images/coin.svg";
+import Dialog from "../components/Dialog/Dialog";
+import { useState } from "react";
 
 export default function Main() {
+    const [bozoVisible, setBozoVisible] = useState(false);
+
     return (
         <>
             <Section className="flex w-full items-center bg-background" isFirst>
@@ -79,11 +83,7 @@ export default function Main() {
                         We say it&apos;s{" "}
                         <span className="text-secondary">fair</span>,{" "}
                         <a
-                            onClick={() =>
-                                alert(
-                                    "You can't. bozo + L + don't care didn't ask + don't care + ratio + cope + counter ratio + skill issue + cry about it  + pinged owner + seethe + mald + stfu + no life + exposed + canceled + no life + denied + rat + counter ratio + blocked + backpilled + cancelled + stay mad"
-                                )
-                            }
+                            onClick={() => setBozoVisible(true)}
                             className="cursor-pointer underline">
                             check
                         </a>{" "}
@@ -105,6 +105,18 @@ export default function Main() {
                     </div>
                 </div>
             </Section>
+            <Dialog
+                visible={bozoVisible}
+                onDismiss={() => setBozoVisible(false)}>
+                <Dialog.Title>Lol you can&apos;t</Dialog.Title>
+                <Dialog.Content>
+                    You can&apos;t. bozo + L + don&apos;t care didn&apos;t ask +
+                    don&apos;t care + ratio + cope + counter ratio + skill issue
+                    + cry about it + pinged owner + seethe + mald + stfu + no
+                    life + exposed + canceled + no life + denied + rat + counter
+                    ratio + blocked + backpilled + cancelled + stay mad
+                </Dialog.Content>
+            </Dialog>
         </>
     );
 }

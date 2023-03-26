@@ -42,12 +42,14 @@ const rootRoute = new RootRoute({
                     <Dialog.Title>Are you at least 18 years old?</Dialog.Title>
                     <Dialog.Actions className="gap-5">
                         <button
+                            className="rounded-lg bg-secondary bg-opacity-0 px-2 transition-colors hover:bg-opacity-100"
                             onClick={() => {
                                 window.location.href = "https://google.com";
                             }}>
                             No
                         </button>
                         <button
+                            className="rounded-lg bg-secondary bg-opacity-0 px-2 transition-colors hover:bg-opacity-100"
                             onClick={() => {
                                 setIsAdultDialogVisible(false);
                                 localStorage.setItem("isAdult", "1");
@@ -64,7 +66,6 @@ const rootRoute = new RootRoute({
 
 const headerRootRoute = new Route({
     id: "header",
-    path: "/",
     getParentRoute: () => rootRoute,
     component: () => {
         return (

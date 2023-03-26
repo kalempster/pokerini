@@ -1,10 +1,33 @@
 export class ScrollLocker {
     static scrollY = window.scrollY;
     static locked = false;
-    static listener = window.addEventListener("scroll", () => {
-        if (this.locked)
-            window.scroll({ behavior: "instant", top: this.scrollY });
-    });
+
+    static scrollListener = window.addEventListener(
+        "scroll",
+        (e) => {
+            if (this.locked) {
+                e.preventDefault();
+                window.scrollTo({ behavior: "instant", top: this.scrollY });
+            }
+        },
+        { passive: false }
+    );
+
+    static wheelListener = window.addEventListener(
+        "wheel",
+        (e) => {
+            if (this.locked) e.preventDefault();
+        },
+        { passive: false }
+    );
+
+    static touchListener = window.addEventListener(
+        "touchmove",
+        (e) => {
+            if (this.locked) e.preventDefault();
+        },
+        { passive: false }
+    );
 
     static lock() {
         this.locked = true;

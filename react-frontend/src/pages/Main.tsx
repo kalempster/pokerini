@@ -60,14 +60,14 @@ export default function Main() {
                             data-aos="fade-up"
                             data-aos-delay="400"
                             title="Superb immersion"
-                            text="With our game you will feel like you're really sitting right there, at the table playing poker. Smoking a cigar and drinking cold whiskey while enjoying the game."
+                            text="With our game you will feel like you're really sitting right there, at the table playing poker, smoking a cigar and drinking cold whiskey while enjoying the game."
                             icon={PlayingCards}
                         />
                         <Card
                             data-aos="fade-up"
                             data-aos-delay="600"
                             title="Quality in mind"
-                            text="Our priority is provide you seamless gameplay and razor sharp visuals. The game allows for very low delay gameplay so you can make unbottlenecked decisions."
+                            text="Our priority is to provide you with seamless gameplay and razor sharp visuals. The game allows for highly reactive gameplay so you can make quick decisions."
                             icon={Star}
                             className="stroke-white"
                         />
@@ -94,14 +94,14 @@ export default function Main() {
                         data-aos-delay="200"
                         className="text-xl font-light text-white">
                         Our website is fully RNG certified{" "}
-                        <span className="text-transparent">:tf:</span> due to
-                        using random generation algorithms that are{" "}
+                        <span className="text-transparent">:tf:</span> Through
+                         random generation algorithms every hand dealt is verifiably
+{" "}
                         <a href="#" className="underline">
-                            provably fair
+                         legitimate and impartial
                         </a>
                         . With this approach we can guarantee that you&apos;ll
-                        have a pleasent experience playing and that the game is
-                        fair for everyone.
+                        have a pleasant experience playing a fair and honest game for everyone
                     </div>
                 </div>
             </Section>

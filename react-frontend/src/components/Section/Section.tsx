@@ -35,7 +35,7 @@ const Section: FC<Props> = ({
     return (
         <div
             className={
-                (isFirst ? "pt-[var(--header-height)] md:pt-0 " : "") +
+                (isFirst ? "pt-[var(--header-height)] tall:pt-0 " : "") +
                 (isSingle
                     ? "min-h-[calc(100vh-var(--small-footer-height))] pt-[var(--header-height)] md:min-h-[calc(100vh-var(--big-footer-height))] "
                     : "min-h-screen ") +

@@ -34,7 +34,8 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-            <div className=" absolute z-0 flex h-[var(--header-height)] w-full flex-row items-center justify-between bg-background px-4  md:px-32">
+            {/* Sice our header is transparent anyway we justify the items to end and make the header smaller in index.css to make more space for content */}
+            <div className=" absolute z-0 flex h-[var(--header-height)] w-full flex-row items-end justify-between bg-background px-4  md:px-32">
                 <Link
                     to="/"
                     className="text-5xl font-semibold"

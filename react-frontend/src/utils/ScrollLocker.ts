@@ -1,3 +1,5 @@
+// Yes ik ik just overflow hidden but you know what, fuck you.
+// I want the scrollbar to be visible so you take care of your mom (pilnuj starej)
 export class ScrollLocker {
     static scrollY = window.scrollY;
     static locked = false;

@@ -8,7 +8,8 @@ module.exports = {
     theme: {
         extend: {
             screens: {
-                mobile: { raw: "only screen and (any-pointer: coarse)" }
+                mobile: { raw: "only screen and (any-pointer: coarse)" },
+                tall: { raw: "(min-height: 600px)" }
             },
             backgroundImage: {
                 poker: "url('./src/images/poker.webp')"

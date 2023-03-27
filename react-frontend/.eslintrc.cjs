@@ -25,7 +25,7 @@ module.exports = {
                 endOfLine: "auto"
             }
         ],
-
+        "spaced-comment": ["error", "always", { exceptions: ["-", "+"] }],
         "react/react-in-jsx-scope": "off",
         indent: ["error", 4],
         quotes: ["error", "double"],

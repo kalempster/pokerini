@@ -7,6 +7,7 @@ import Register from "../pages/Register";
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import Dialog from "../components/Dialog/Dialog";
+import Dashboard from "../pages/Dashboard";
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -78,6 +79,14 @@ const headerRootRoute = new Route({
     }
 });
 
+const headlessRootRoute = new Route({
+    id: "headless",
+    getParentRoute: () => rootRoute,
+    component: () => {
+        return <Outlet />;
+    }
+});
+
 const indexRoute = new Route({
     getParentRoute: () => headerRootRoute,
     path: "/",
@@ -94,8 +103,15 @@ const registerRoute = new Route({
     component: Register
 });
 
+const dashboardRoute = new Route({
+    getParentRoute: () => headlessRootRoute,
+    path: "/dashboard",
+    component: Dashboard
+});
+
 const routeTree = rootRoute.addChildren([
-    headerRootRoute.addChildren([indexRoute, loginRoute, registerRoute])
+    headerRootRoute.addChildren([indexRoute, loginRoute, registerRoute]),
+    headlessRootRoute.addChildren([dashboardRoute])
 ]);
 
 export const router = new Router({ routeTree });

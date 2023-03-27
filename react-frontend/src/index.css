@@ -8,9 +8,9 @@
 @tailwind utilities;
 
 :root {
-    --header-height: 10rem;
-    --big-footer-height: 8rem;
-    --small-footer-height: 6rem;
+    --header-height: 6.5rem;
+    --big-footer-height: 6rem;
+    --small-footer-height: 4rem;
 }
 
 @layer components {

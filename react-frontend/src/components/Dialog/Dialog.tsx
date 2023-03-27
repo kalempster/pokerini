@@ -9,7 +9,7 @@ const dialogRoot = document.getElementById("dialog-root");
 
 type Props = {
     children?: React.ReactNode;
-    //We don't care about the return type here so that's why I'm disabling next line
+    // We don't care about the return type here so that's why I'm disabling next line
     /**
      * The function that will fire when the dialog gets dismissed by clicking on the background.
      * @example

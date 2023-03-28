@@ -22,7 +22,6 @@ type Props = {
      * <Section isSingle></Section>
      * ```
      */
-
     isSingle?: boolean;
 };
 
@@ -37,8 +36,8 @@ const Section: FC<Props> = ({
             className={
                 (isFirst ? "pt-[var(--header-height)] tall:pt-0 " : "") +
                 (isSingle
-                    ? "min-h-[calc(100vh-var(--small-footer-height))] pt-[var(--header-height)] md:min-h-[calc(100vh-var(--big-footer-height))] "
-                    : "min-h-screen ") +
+                    ? "min-h-[calc(100svh-var(--small-footer-height))] pt-[var(--header-height)] md:min-h-[calc(100svh-var(--big-footer-height))] "
+                    : "min-h-[100svh] ") +
                 (className ?? "")
             }>
             {children}

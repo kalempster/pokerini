@@ -11,8 +11,8 @@ export default function Header() {
             <div
                 className={
                     !activeMenu
-                        ? "fixed z-10 h-screen w-screen -translate-y-full duration-700 ease-in-out"
-                        : "fixed z-10 h-screen w-screen translate-y-0 duration-700 ease-in-out"
+                        ? "fixed z-10 h-[100lvh] w-[100lvw] -translate-y-full duration-700 ease-in-out"
+                        : "fixed z-10 h-[100lvh] w-[100lvw] translate-y-0 duration-700 ease-in-out"
                 }>
                 <div className="absolute z-20 flex h-full w-full flex-col overflow-hidden bg-background  text-5xl text-primary">
                     <div className="absolute top-0 right-0 p-7">

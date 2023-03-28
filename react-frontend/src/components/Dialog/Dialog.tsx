@@ -4,7 +4,9 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { ScrollLocker } from "../../utils/ScrollLocker";
-
+import Title from "./Title/Title";
+import Content from "./Content/Content";
+import Actions from "./Actions/Actions";
 const dialogRoot = document.getElementById("dialog-root");
 
 type Props = {
@@ -96,51 +98,6 @@ const Dialog: DialogType = ({ children, onDismiss, visible = false }) => {
             )}
         </AnimatePresence>,
         dialogRoot
-    );
-};
-
-type TitleProps = {
-    children: string;
-    /**
-     * Classes that will override the default styles.
-     */
-    className?: string;
-};
-
-const Title = ({ children, className }: TitleProps) => {
-    return (
-        <div className={className ? className : "w-full text-3xl text-white "}>
-            {children}
-        </div>
-    );
-};
-
-type ContentProps = {
-    children: React.ReactNode;
-    /**
-     * Classes that will override the default styles.
-     */
-    className?: string;
-};
-
-const Content: FC<ContentProps> = ({ children, className }) => {
-    return (
-        <div className={className ? className : "text-white"}>{children}</div>
-    );
-};
-
-type ActionsProps = {
-    children: React.ReactNode;
-    /**
-     * Classes that will be added to the default styles
-     */
-    className?: string;
-};
-const Actions: FC<ActionsProps> = ({ children, className }) => {
-    return (
-        <div className={`flex w-full justify-end text-white ${className}`}>
-            {children}
-        </div>
     );
 };
 

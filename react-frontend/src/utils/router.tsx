@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import AOS from "aos";
 import Dialog from "../components/Dialog/Dialog";
 import Dashboard from "../pages/Dashboard";
+import ErrorPage from "../pages/ErrorPage"
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -102,6 +103,11 @@ const registerRoute = new Route({
     path: "/register",
     component: Register
 });
+const errorRoute = new Route({
+    getParentRoute: () => headerRootRoute,
+    path: "/*",
+    component: ErrorPage
+})
 
 const dashboardRoute = new Route({
     getParentRoute: () => headlessRootRoute,
@@ -110,7 +116,7 @@ const dashboardRoute = new Route({
 });
 
 const routeTree = rootRoute.addChildren([
-    headerRootRoute.addChildren([indexRoute, loginRoute, registerRoute]),
+    headerRootRoute.addChildren([indexRoute, loginRoute, registerRoute, errorRoute]),
     headlessRootRoute.addChildren([dashboardRoute])
 ]);
 

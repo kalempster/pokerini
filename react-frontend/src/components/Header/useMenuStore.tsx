@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 type MenuState = {
     active: boolean;
-    setActive: (active: boolean) => any;
+    setActive: (active: boolean) => unknown;
 };
 
 const useMenuStore = create<MenuState>((set) => ({

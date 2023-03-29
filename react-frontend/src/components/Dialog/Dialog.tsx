@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // Bugging out in Dialog component, known issue
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { ScrollLocker } from "../../utils/ScrollLocker";

@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { ReactSVG } from "react-svg";
 import burger from "../../images/burger.svg";
 import useMenuStore from "./useMenuStore";
-import { useEffect } from "react";
 export default function Header() {
     const menuStore = useMenuStore();
 

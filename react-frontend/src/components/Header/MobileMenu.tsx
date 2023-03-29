@@ -3,7 +3,6 @@ import { ReactSVG } from "react-svg";
 import close from "../../images/close.svg";
 import ReactDOM from "react-dom";
 import useMenuStore from "./useMenuStore";
-import { useEffect } from "react";
 
 const mobileMenuRoot = document.getElementById("mobile-menu");
 

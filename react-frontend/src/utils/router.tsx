@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import AOS from "aos";
 import Dialog from "../components/Dialog/Dialog";
 import Dashboard from "../pages/Dashboard";
-import ErrorPage from "../pages/ErrorPage"
+import ErrorPage from "../pages/ErrorPage";
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -94,7 +94,7 @@ const indexRoute = new Route({
     component: Main
 });
 const loginRoute = new Route({
-    getParentRoute: () => headerRootRoute,
+    getParentRoute: () => headlessRootRoute,
     path: "/login",
     component: LogIn
 });
@@ -103,11 +103,6 @@ const registerRoute = new Route({
     path: "/register",
     component: Register
 });
-const errorRoute = new Route({
-    getParentRoute: () => headerRootRoute,
-    path: "/*",
-    component: ErrorPage
-})
 
 const dashboardRoute = new Route({
     getParentRoute: () => headlessRootRoute,
@@ -115,9 +110,29 @@ const dashboardRoute = new Route({
     component: Dashboard
 });
 
+const errorRootRoute = new Route({
+    id: "error",
+    getParentRoute: () => rootRoute,
+    component: () => {
+        return (
+            <>
+                <Header />
+                <Outlet />
+                <Feeter />
+            </>
+        );
+    }
+});
+
+const errorRoute = new Route({
+    getParentRoute: () => errorRootRoute,
+    path: "/*",
+    component: ErrorPage
+});
 const routeTree = rootRoute.addChildren([
-    headerRootRoute.addChildren([indexRoute, loginRoute, registerRoute, errorRoute]),
-    headlessRootRoute.addChildren([dashboardRoute])
+    headerRootRoute.addChildren([indexRoute, registerRoute]),
+    headlessRootRoute.addChildren([dashboardRoute, loginRoute]),
+    errorRootRoute.addChildren([errorRoute])
 ]);
 
 export const router = new Router({ routeTree });

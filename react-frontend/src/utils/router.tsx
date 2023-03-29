@@ -9,6 +9,7 @@ import AOS from "aos";
 import Dialog from "../components/Dialog/Dialog";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
+import MobileMenu from "../components/Header/MobileMenu";
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -40,6 +41,7 @@ const rootRoute = new RootRoute({
 
         return (
             <>
+                <MobileMenu />
                 <Dialog visible={isAdultDialogVisible}>
                     <Dialog.Title>Are you at least 18 years old?</Dialog.Title>
                     <Dialog.Actions className="gap-5">

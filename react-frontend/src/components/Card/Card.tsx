@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ReactSVG } from "react-svg";
 type Props = {
     /**
-     * The title that will be displyed in the card
+     * The title that will be displayed in the card
      * @example
      * ```tsx
      * <Card title="Example text"/>
@@ -10,7 +10,7 @@ type Props = {
      */
     title: string;
     /**
-     * The text that will be displyed in the card
+     * The text that will be displayed in the card
      * @example
      * ```tsx
      * <Card text="Example text"/>

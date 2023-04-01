@@ -48,7 +48,7 @@ const rootRoute = new RootRoute({
                         <button
                             className="rounded-lg bg-secondary bg-opacity-0 px-2 transition-colors hover:bg-opacity-100"
                             onClick={() => {
-                                window.location.href = "https://google.com";
+                                window.location.href = "https://www.amazon.com/McLovin-Fun-Fake-License-Model/dp/B00W98CY3C";
                             }}>
                             No
                         </button>

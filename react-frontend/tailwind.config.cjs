@@ -31,7 +31,6 @@ module.exports = {
                 twojstary: "#30365C",
                 font:"#92A3AC",
                 backgroundshadow: "#141624",
-                twojstary: "#30365C"
             },
             transitionProperty: {
                 "opacity-transform": "opacity, transform"

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import poker from "../images/poker.png"
+import poker from "../images/poker.png";
 
 export default function Register() {
     return (
@@ -18,35 +18,37 @@ export default function Register() {
                             <input
                                 type="text"
                                 placeholder="Username"
-                                className="flex items-center justify-center rounded-md px-3 py-2 pt-3  shadow-2xl outline-none bg-twojstary font-thin"
+                                className="flex items-center justify-center rounded-md bg-twojstary px-3 py-2  pt-3 font-thin shadow-2xl outline-none"
                             />
                             <input
-                                type="text"
-                                placeholder="e-mail"
-                                className="flex items-center justify-center rounded-md px-3 py-2 pt-3  shadow-2xl outline-none bg-twojstary font-thin"
+                                type="email"
+                                placeholder="E-mail"
+                                className="flex items-center justify-center rounded-md bg-twojstary px-3 py-2  pt-3 font-thin shadow-2xl outline-none"
                             />
                             <div className="flex flex-row gap-5">
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                className="flex items-center align-bottom rounded-md w-full px-3 py-2 pt-3  shadow-2xl outline-none bg-twojstary font-thin"
-                            />
-                            <input
-                                type="password"
-                                placeholder="Confirm password"
-                                className="flex items-center align-bottom rounded-md w-full px-3 py-2 pt-3  shadow-2xl outline-none bg-twojstary font-thin"
-                            />
+                                <input
+                                    type="password"
+                                    placeholder="Password"
+                                    className="flex w-full items-center rounded-md bg-twojstary px-3 py-2 pt-3  align-bottom font-thin shadow-2xl outline-none"
+                                />
+                                <input
+                                    type="password"
+                                    placeholder="Confirm password"
+                                    className="flex w-full items-center rounded-md bg-twojstary px-3 py-2 pt-3  align-bottom font-thin shadow-2xl outline-none"
+                                />
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center justify-center gap-2">
-                            <button className="w-fit rounded-md bg-secondary py-2 px-20 text-2xl text-primary lg:w-full xl:px-20">
+                            <button
+                                role="form"
+                                className="w-fit rounded-md bg-secondary py-2 px-20 text-2xl text-primary lg:w-full xl:px-20">
                                 Sign up
                             </button>
                             <div className="flex justify-center whitespace-pre-wrap">
                                 <Link
                                     to="/login"
                                     className="text-primary underline">
-                                    log in 
+                                    Log in
                                 </Link>
                                 <span> instead</span>
                             </div>
@@ -54,7 +56,9 @@ export default function Register() {
                     </div>
                 </div>
             </div>
-            <div className="hidden min-h-full w-3/5 bg-secondary md:flex"><img src={poker} className="min-w-[995px]" alt="" /></div>
+            <div className="hidden min-h-full w-3/5 bg-background md:flex">
+                <img src={poker} className="min-w-[995px]" alt="" />
+            </div>
         </div>
     );
 }

@@ -28,8 +28,13 @@ module.exports = {
                 primary: "#FFCD01",
                 secondary: "#EF2A4F",
                 background: "#181B30",
+<<<<<<< Updated upstream
                 twojstary: "#30365C",
                 font:"#92A3AC"
+=======
+                backgroundshadow: "#141624",
+                twojstary: "#30365C"
+>>>>>>> Stashed changes
             },
             transitionProperty: {
                 "opacity-transform": "opacity, transform"

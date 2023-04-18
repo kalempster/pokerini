@@ -7,6 +7,7 @@ import PlayingCards from "../images/playing-cards.svg";
 import Coin from "../images/coin.svg";
 import Dialog from "../components/Dialog/Dialog";
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 export default function Main() {
     const [bozoVisible, setBozoVisible] = useState(false);
@@ -28,9 +29,9 @@ export default function Main() {
                             </div>
                         </div>
 
-                        <a className=" flex w-full cursor-pointer items-center justify-center rounded-[20px] bg-secondary py-6 text-3xl font-semibold text-primary ">
+                        <Link to="/register" className=" flex w-full cursor-pointer items-center justify-center rounded-[20px] bg-secondary py-6 text-3xl font-semibold text-primary ">
                             Join now
-                        </a>
+                        </Link>
                     </div>
                     <div
                         data-aos="fade-left"

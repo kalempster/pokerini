@@ -41,7 +41,7 @@ export default function Register() {
                             </button>
                             <div className="flex justify-center whitespace-pre-wrap">
                                 <Link
-                                    to="/register"
+                                    to="/login"
                                     className="text-primary underline">
                                     log in 
                                 </Link>

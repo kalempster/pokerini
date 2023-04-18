@@ -11,7 +11,7 @@ export default function Register() {
                     </Link>
                 </div>
                 <div className="flex min-h-[100lvh] items-center justify-center pt-[var(--header-height)] text-white tall:pt-0 ">
-                    <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-3/4 xl:w-1/2 ">
+                    <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-3/4 xl:w-2/3">
                         <div className="text-6xl text-primary">Sign Up</div>
                         <div className="flex w-full flex-col gap-5">
                             <input
@@ -24,16 +24,18 @@ export default function Register() {
                                 placeholder="e-mail"
                                 className="flex items-center justify-center rounded-md px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
                             />
+                            <div className="flex flex-row gap-5">
                             <input
                                 type="password"
                                 placeholder="Password"
-                                className="flex items-center align-bottom rounded-md px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
+                                className="flex items-center align-bottom rounded-md w-full px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
                             />
                             <input
                                 type="password"
                                 placeholder="Confirm password"
-                                className="flex items-center align-bottom rounded-md px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
+                                className="flex items-center align-bottom rounded-md w-full px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
                             />
+                            </div>
                         </div>
                         <div className="flex w-full flex-col items-center justify-center gap-2">
                             <button className="w-fit rounded-md bg-secondary py-2 px-20 text-2xl text-primary lg:w-full xl:px-20">

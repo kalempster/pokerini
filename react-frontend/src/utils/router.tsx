@@ -101,7 +101,7 @@ const loginRoute = new Route({
     component: LogIn
 });
 const registerRoute = new Route({
-    getParentRoute: () => headerRootRoute,
+    getParentRoute: () => headlessRootRoute,
     path: "/register",
     component: Register
 });
@@ -132,8 +132,8 @@ const errorRoute = new Route({
     component: ErrorPage
 });
 const routeTree = rootRoute.addChildren([
-    headerRootRoute.addChildren([indexRoute, registerRoute]),
-    headlessRootRoute.addChildren([dashboardRoute, loginRoute]),
+    headerRootRoute.addChildren([indexRoute]),
+    headlessRootRoute.addChildren([dashboardRoute, loginRoute, registerRoute]),
     errorRootRoute.addChildren([errorRoute])
 ]);
 

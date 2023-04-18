@@ -27,7 +27,8 @@ module.exports = {
             colors: {
                 primary: "#FFCD01",
                 secondary: "#EF2A4F",
-                background: "#181B30"
+                background: "#181B30",
+                twojstary: "#30365C"
             },
             transitionProperty: {
                 "opacity-transform": "opacity, transform"

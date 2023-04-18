@@ -2,52 +2,56 @@ import { Link } from "@tanstack/react-router";
 
 export default function Register() {
     return (
-        <div className="flex h-full w-full flex-col bg-[#F3CDAD]">
-            <div className="flex h-full items-center  justify-center bg-[#F3CDAD] ">
-                <div className="  flex flex-col justify-center gap-14 bg-[#FFEFE1] pl-12 pr-12 pt-10 pb-10 drop-shadow-[0px_4px_100px_rgba(161,107,86,0.52)] sm:pl-24 sm:pr-24 sm:pb-20 sm:pt-20 ">
-                    <div className=" flex flex-col items-center justify-center gap-11">
-                        <div className="font-siemano text-4xl text-[#A16B56]">
-                            Register
+        <div className="flex h-[100lvh] items-center justify-center">
+            <div className="flex min-h-[100lvh] w-full flex-col px-5 md:w-2/5 md:px-14">
+                <div className=" absolute z-0 flex h-[var(--header-height)] flex-row items-end justify-between bg-background">
+                    <Link to="/" className="text-5xl font-semibold">
+                        <span className="text-secondary">Poker</span>
+                        <span className="text-primary ">inee</span>
+                    </Link>
+                </div>
+                <div className="flex min-h-[100lvh] items-center justify-center pt-[var(--header-height)] text-white tall:pt-0 ">
+                    <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-3/4 xl:w-1/2 ">
+                        <div className="text-6xl text-primary">Sign Up</div>
+                        <div className="flex w-full flex-col gap-5">
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                className="flex items-center justify-center rounded-md px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
+                            />
+                            <input
+                                type="text"
+                                placeholder="e-mail"
+                                className="flex items-center justify-center rounded-md px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
+                            />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                className="flex items-center align-bottom rounded-md px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
+                            />
+                            <input
+                                type="password"
+                                placeholder="Confirm password"
+                                className="flex items-center align-bottom rounded-md px-3 py-2 pt-3 text-black shadow-2xl outline-none bg-twojstary font-thin"
+                            />
                         </div>
-                        <div className="flex grid-flow-row flex-col gap-9 xl:flex-row">
-                            <div className="flex flex-col gap-9">
-                                <input
-                                    type="text"
-                                    placeholder="username"
-                                    className="h-14 w-64 justify-center bg-[#E0A370] bg-opacity-20 pl-6 font-gotyk text-lg text-black text-opacity-25 placeholder-black placeholder-opacity-25 "
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="email"
-                                    className="h-14 w-64 justify-center bg-[#E0A370] bg-opacity-20 pl-6 font-gotyk text-lg text-black text-opacity-25 placeholder-black placeholder-opacity-25 "
-                                />
-                            </div>
-                            <div className="flex flex-col gap-9">
-                                <input
-                                    type="text"
-                                    placeholder="password"
-                                    className="h-14 w-64 justify-center bg-[#E0A370]  bg-opacity-20 pl-6 font-gotyk text-lg text-black text-opacity-25 placeholder-black placeholder-opacity-25 "
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="repeat password"
-                                    className="h-14 w-64 justify-center bg-[#E0A370] bg-opacity-20 pl-6 font-gotyk text-lg text-black text-opacity-25 placeholder-black placeholder-opacity-25 "
-                                />
+                        <div className="flex w-full flex-col items-center justify-center gap-2">
+                            <button className="w-fit rounded-md bg-secondary py-2 px-20 text-2xl text-primary lg:w-full xl:px-20">
+                                Sign up
+                            </button>
+                            <div className="flex justify-center whitespace-pre-wrap">
+                                <Link
+                                    to="/register"
+                                    className="text-primary underline">
+                                    log in 
+                                </Link>
+                                <span> instead</span>
                             </div>
                         </div>
-                    </div>
-                    <div className="flex w-full flex-col items-center justify-center gap-11">
-                        <div className="flex h-14 w-56 items-center justify-center bg-[#567D89] font-gotyk text-lg text-white">
-                            sign up
-                        </div>
-                        <Link to="/login">
-                            <div className="flex text-lg text-[#567D89]">
-                                log in
-                            </div>
-                        </Link>
                     </div>
                 </div>
             </div>
+            <div className="hidden min-h-full w-3/5 bg-secondary md:flex"></div>
         </div>
     );
 }

@@ -17,12 +17,12 @@ export default function LogIn() {
                             <input
                                 type="text"
                                 placeholder="Username"
-                                className="flex items-center justify-center rounded-md px-3 py-2 text-[#92A3AC] shadow-2xl outline-none bg-twojstary"
+                                className="flex items-center justify-center rounded-md px-3 py-2 text-font shadow-2xl outline-none bg-twojstary"
                             />
                             <input
                                 type="password"
                                 placeholder="Password"
-                                className="flex items-center justify-center rounded-md px-3 py-2 text-[#92A3AC] shadow-2xl outline-none bg-twojstary"
+                                className="flex items-center justify-center rounded-md px-3 py-2 text-font shadow-2xl outline-none bg-twojstary"
                             />
                         </div>
                         <div className="flex w-full flex-col items-center justify-center gap-2">

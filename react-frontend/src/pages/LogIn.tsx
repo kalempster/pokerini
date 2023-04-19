@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import poker from "../images/poker.png";
+import { FormEvent, useState } from "react";
 import { loginFormSchema } from "../../shared-schemas/loginFormSchema";
-import { FormEvent, useEffect, useState } from "react";
+import poker from "../images/poker.png";
 export default function LogIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -22,13 +22,11 @@ export default function LogIn() {
                     ? parsed.error.flatten().fieldErrors.username![0]
                     : undefined
             );
-            setPasswordError(
+            return setPasswordError(
                 parsed.error.flatten().fieldErrors.password
                     ? parsed.error.flatten().fieldErrors.password![0]
                     : undefined
             );
-
-            return;
         }
         console.log(parsed.data);
     };
@@ -72,13 +70,15 @@ export default function LogIn() {
                                     placeholder="Password"
                                     className="flex w-full items-center justify-center rounded-md bg-twojstary px-3 py-2 text-font shadow-2xl outline-none"
                                 />
-                                <label htmlFor="password" className="text-red-400">
+                                <label
+                                    htmlFor="password"
+                                    className="text-red-400">
                                     {passwordError ? passwordError : null}
                                 </label>
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center justify-center gap-2">
-                            <button className="w-fit rounded-md bg-secondary py-2 px-20 text-2xl text-primary lg:w-full xl:px-20">
+                            <button className="w-fit rounded-md bg-secondary px-20 py-2 text-2xl text-primary lg:w-full xl:px-20">
                                 Login
                             </button>
                             <div className="flex justify-center whitespace-pre-wrap">

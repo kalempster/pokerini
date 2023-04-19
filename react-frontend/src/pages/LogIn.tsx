@@ -17,6 +17,7 @@ export default function LogIn() {
 
         const parsed = loginFormSchema.safeParse({ username, password });
         if (!parsed.success) {
+            console.log(parsed.error.flatten())
             setUsernameError(
                 parsed.error.flatten().fieldErrors.username
                     ? parsed.error.flatten().fieldErrors.username![0]

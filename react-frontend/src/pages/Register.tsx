@@ -1,8 +1,73 @@
 import { Link } from "@tanstack/react-router";
+import { FormEvent, useState } from "react";
+import { registerFormSchema } from "../../shared-schemas/registerFormSchema";
 import poker from "../images/poker.png";
-import {registerFormSchema} from "../../shared-schemas/registerFormSchema";
-import {FormEvent,useEffect,useState} from 'react'
 export default function Register() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [formError, setFormError] = useState<string | undefined>();
+    const [usernameError, setUsernameError] = useState<string | undefined>();
+    const [passwordError, setPasswordError] = useState<string | undefined>();
+    const [emailError, setEmailError] = useState<string | undefined>();
+    const [confirmPasswordError, setConfirmPasswordError] = useState<
+        string | undefined
+    >();
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setUsernameError(undefined);
+        setPasswordError(undefined);
+        setConfirmPasswordError(undefined);
+        setEmailError(undefined);
+        setFormError(undefined);
+        console.log(email);
+        const parsed = registerFormSchema.safeParse({
+            username,
+            email,
+            password,
+            confirmPassword
+        });
+        if (!parsed.success) {
+            console.log(parsed.error.flatten());
+
+            setUsernameError(
+                parsed.error.flatten().fieldErrors.username
+                    ? parsed.error.flatten().fieldErrors.username![0]
+                    : undefined
+            );
+            setConfirmPasswordError(
+                parsed.error.flatten().fieldErrors.confirmPassword
+                    ? parsed.error.flatten().fieldErrors.confirmPassword![0]
+                    : undefined
+            );
+            setEmailError(
+                parsed.error.flatten().fieldErrors.email
+                    ? parsed.error.flatten().fieldErrors.email![0]
+                    : undefined
+            );
+            setPasswordError(
+                parsed.error.flatten().fieldErrors.password
+                    ? parsed.error.flatten().fieldErrors.password![0]
+                    : undefined
+            );
+            if (
+                !(
+                    usernameError &&
+                    emailError &&
+                    passwordError &&
+                    confirmPasswordError
+                )
+            ) {
+                setFormError(
+                    parsed.error.flatten().formErrors
+                        ? parsed.error.flatten().formErrors![0]
+                        : undefined
+                );
+            }
+        }
+    };
     return (
         <div className="flex h-[100lvh] items-center justify-center overflow-hidden">
             <div className="flex min-h-[100lvh] w-full flex-col px-5 md:w-2/5 md:px-14">
@@ -13,32 +78,68 @@ export default function Register() {
                     </Link>
                 </div>
                 <div className="flex min-h-[100lvh] items-center justify-center pt-[var(--header-height)] text-white tall:pt-0 ">
-                    <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-3/4 xl:w-2/3">
+                    <form
+                        onSubmit={onSubmit}
+                        className="flex w-full flex-col items-center justify-center gap-10 lg:w-3/4 xl:w-2/3">
                         <div className="text-6xl text-primary">Sign Up</div>
                         <div className="flex w-full flex-col gap-5 text-font">
-                            <input
-                                type="text"
-                                placeholder="Username"
-                                className="flex items-center justify-center rounded-md bg-twojstary px-3 py-2  pt-3 font-thin shadow-2xl outline-none"
-                            />
-                            <input
-                                type="email"
-                                placeholder="E-mail"
-                                className="flex items-center justify-center rounded-md bg-twojstary px-3 py-2  pt-3 font-thin shadow-2xl outline-none"
-                            />
+                            <div className="flex flex-col gap-1">
+                                <input
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
+                                    type="text"
+                                    placeholder="Username"
+                                    className="flex items-center justify-center rounded-md bg-twojstary px-3 py-2  pt-3 font-thin shadow-2xl outline-none"
+                                />
+                                <span className="text-red-400">
+                                    {usernameError ? usernameError : null}
+                                </span>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <input
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="E-mail"
+                                    className="flex items-center justify-center rounded-md bg-twojstary px-3 py-2  pt-3 font-thin shadow-2xl outline-none"
+                                />
+                                <span className="text-red-400">
+                                    {emailError}
+                                </span>
+                            </div>
                             <div className="flex flex-row gap-5">
-                                <input
-                                    type="password"
-                                    placeholder="Password"
-                                    className="flex w-full items-center rounded-md bg-twojstary px-3 py-2 pt-3  align-bottom font-thin shadow-2xl outline-none"
-                                />
-                                <input
-                                    type="password"
-                                    placeholder="Confirm password"
-                                    className="flex w-full items-center rounded-md bg-twojstary px-3 py-2 pt-3  align-bottom font-thin shadow-2xl outline-none"
-                                />
+                                <div className="flex w-full flex-col gap-1">
+                                    <input
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
+                                        type="password"
+                                        placeholder="Password"
+                                        className="flex w-full items-center rounded-md bg-twojstary px-3 py-2 pt-3  align-bottom font-thin shadow-2xl outline-none"
+                                    />
+                                    <span className="text-red-400">
+                                        {passwordError ? passwordError : null}
+                                    </span>
+                                </div>
+                                <div className="flex w-full flex-col gap-1">
+                                    <input
+                                        onChange={(e) =>
+                                            setConfirmPassword(e.target.value)
+                                        }
+                                        type="password"
+                                        placeholder="Confirm password"
+                                        className="flex w-full items-center rounded-md bg-twojstary px-3 py-2 pt-3  align-bottom font-thin shadow-2xl outline-none"
+                                    />
+                                    <span className="text-red-400">
+                                        {confirmPasswordError
+                                            ? confirmPasswordError
+                                            : null}
+                                    </span>
+                                </div>
                             </div>
                         </div>
+                        <span className="text-red-400">
+                            {formError ? formError : null}
+                        </span>
                         <div className="flex w-full flex-col items-center justify-center gap-2">
                             <button
                                 role="form"
@@ -54,7 +155,7 @@ export default function Register() {
                                 <span> instead</span>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <div className="hidden min-h-full w-3/5 bg-background md:flex">

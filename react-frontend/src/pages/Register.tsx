@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import poker from "../images/poker.png";
-
+import {registerFormSchema} from "../../shared-schemas/registerFormSchema";
+import {FormEvent,useEffect,useState} from 'react'
 export default function Register() {
     return (
         <div className="flex h-[100lvh] items-center justify-center overflow-hidden">

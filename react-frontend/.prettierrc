@@ -5,8 +5,8 @@
     "trailingComma": "none",
     "semi": true,
     "plugins": [
-        "prettier-plugin-tailwindcss",
-        "prettier-plugin-organize-imports"
+        "./node_modules/prettier-plugin-organize-imports",
+        "./node_modules/prettier-plugin-organize-imports"
     ],
     "quoteProps": "as-needed"
 }

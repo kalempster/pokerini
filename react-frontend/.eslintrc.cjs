@@ -25,6 +25,7 @@ module.exports = {
                 endOfLine: "auto"
             }
         ],
+        "@typescript-eslint/no-unused-vars": ["off"],
         "spaced-comment": ["error", "always", { exceptions: ["-", "+"] }],
         "react/react-in-jsx-scope": "off",
         indent: ["error", 4],

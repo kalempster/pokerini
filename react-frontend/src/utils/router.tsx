@@ -1,15 +1,16 @@
-import { RootRoute, Route, Router, Outlet } from "@tanstack/react-router";
-import Header from "../components/Header/Header";
-import Feeter from "../components/Feeter/Feeter";
-import Main from "../pages/Main";
-import LogIn from "../pages/LogIn";
-import Register from "../pages/Register";
-import { useEffect, useState } from "react";
+import { Outlet, RootRoute, Route, Router } from "@tanstack/react-router";
 import AOS from "aos";
+import { useEffect, useState } from "react";
 import Dialog from "../components/Dialog/Dialog";
+import Feeter from "../components/Feeter/Feeter";
+import Header from "../components/Header/Header";
+import MobileMenu from "../components/Header/MobileMenu";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
-import MobileMenu from "../components/Header/MobileMenu";
+import Game from "../pages/Game";
+import LogIn from "../pages/LogIn";
+import Main from "../pages/Main";
+import Register from "../pages/Register";
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -48,7 +49,8 @@ const rootRoute = new RootRoute({
                         <button
                             className="rounded-lg bg-secondary bg-opacity-0 px-2 transition-colors hover:bg-opacity-100"
                             onClick={() => {
-                                window.location.href = "https://www.amazon.com/McLovin-Fun-Fake-License-Model/dp/B00W98CY3C";
+                                window.location.href =
+                                    "https://www.amazon.com/McLovin-Fun-Fake-License-Model/dp/B00W98CY3C";
                             }}>
                             No
                         </button>
@@ -112,6 +114,12 @@ const dashboardRoute = new Route({
     component: Dashboard
 });
 
+const gameRoute = new Route({
+    getParentRoute: () => headlessRootRoute,
+    path: "/game",
+    component: Game
+});
+
 const errorRootRoute = new Route({
     id: "error",
     getParentRoute: () => rootRoute,
@@ -133,7 +141,12 @@ const errorRoute = new Route({
 });
 const routeTree = rootRoute.addChildren([
     headerRootRoute.addChildren([indexRoute]),
-    headlessRootRoute.addChildren([dashboardRoute, loginRoute, registerRoute]),
+    headlessRootRoute.addChildren([
+        dashboardRoute,
+        loginRoute,
+        registerRoute,
+        gameRoute
+    ]),
     errorRootRoute.addChildren([errorRoute])
 ]);
 

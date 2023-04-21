@@ -6,7 +6,7 @@ import Section from "../components/Section/Section";
 const Dashboard = () => {
     const [code, setCode] = useState("");
     const [codeValid, setCodeValid] = useState(false);
-
+    const [lastCode, setLastCode] = useState("");
     const validateCode = () => {
         return gameCodeSchema.safeParse(code).success;
     };
@@ -14,6 +14,11 @@ const Dashboard = () => {
     useEffect(() => {
         if (validateCode()) setCodeValid(true); // TODO: JOIN GAME
         else if (codeValid) setCodeValid(false);
+
+        setLastCode(code);
+        if (lastCode.length < code.length && code.length == 4) {
+            setCode(code.concat("-"));
+        }
     }, [code]);
 
     return (
@@ -39,14 +44,14 @@ const Dashboard = () => {
                             onChange={(e) =>
                                 setCode(e.target.value.toUpperCase())
                             }
+                            value={code}
                             id="code"
                             type="code"
                             placeholder="ABCD-EFGH"
-                            className={`flex uppercase items-center justify-center rounded-md  px-3 py-2  shadow-2xl outline-none ${
-                                codeValid
+                            className={`flex uppercase items-center justify-center rounded-md  px-3 py-2  shadow-2xl outline-none ${codeValid
                                     ? "text-primary bg-secondary"
                                     : "text-font bg-twojstary"
-                            }`}
+                                }`}
                         />
                         <label htmlFor="code" className="text-red-400"></label>
                     </div>

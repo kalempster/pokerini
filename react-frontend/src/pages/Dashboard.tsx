@@ -34,10 +34,7 @@ const Dashboard = () => {
                     <div>kalempster</div>
                 </div>
             </div>
-            <Section
-                className="flex flex-col gap-5 items-center justify-center"
-                isFirst
-                isSingle>
+            <Section className="flex flex-col gap-5 items-center justify-center pt-[calc(var(--header-height)*1.5)] tall:pt-0">
                 <div className="text-3xl md:text-6xl font-semibold text-primary flex justify-center flex-col items-center gap-5">
                     <div>Join a game</div>
                     <div>
@@ -49,7 +46,7 @@ const Dashboard = () => {
                             id="code"
                             type="code"
                             placeholder="ABCD-EFGH"
-                            className={`font-mono disabled:bg-opacity-60 flex uppercase items-center justify-center rounded-md  px-3 py-2  shadow-2xl outline-none ${
+                            className={`font-mono disabled:opacity-60 flex uppercase items-center justify-center rounded-md  px-3 py-2  shadow-2xl outline-none ${
                                 codeValid
                                     ? "text-primary bg-secondary"
                                     : "text-font bg-twojstary"

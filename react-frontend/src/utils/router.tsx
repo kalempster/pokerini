@@ -5,6 +5,7 @@ import Dialog from "../components/Dialog/Dialog";
 import Feeter from "../components/Feeter/Feeter";
 import Header from "../components/Header/Header";
 import MobileMenu from "../components/Header/MobileMenu";
+import CreateGame from "../pages/CreateGame";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
 import Game from "../pages/Game";
@@ -114,6 +115,12 @@ const dashboardRoute = new Route({
     component: Dashboard
 });
 
+const createGameRoute = new Route({
+    getParentRoute: () => headlessRootRoute,
+    path: "/create",
+    component: CreateGame
+});
+
 const gameRoute = new Route({
     getParentRoute: () => headlessRootRoute,
     path: "/game",
@@ -145,7 +152,8 @@ const routeTree = rootRoute.addChildren([
         dashboardRoute,
         loginRoute,
         registerRoute,
-        gameRoute
+        gameRoute,
+        createGameRoute
     ]),
     errorRootRoute.addChildren([errorRoute])
 ]);

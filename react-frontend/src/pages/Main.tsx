@@ -55,22 +55,21 @@ export default function Main() {
                             divClassName="mt-5"
                             data-aos="fade-up"
                             data-aos-delay="400"
+                            title="Superb immersion"
+                            text="With our game you will feel like you're really sitting right there, at the table playing poker, smoking a cigar and drinking cold whiskey while enjoying the game."
+                            icon={PlayingCards}
+                        />
+                        <Card
+                            data-aos="fade-up"
+                            data-aos-delay="200"
                             title="Free forever"
                             text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friends without having to pay a cent for it. Just create an acount and start playing!"
                             icon={Coin}
                         />
                         <Card
-                            data-aos="fade-up"
-                            data-aos-delay="200"
-                            title="Superb immersion"
-                            text="With our game you will feel like you're really sitting right there, at the table playing poker, smoking a cigar and drinking cold whiskey while enjoying the game."
-                            icon={PlayingCards}
-                        />
-
-                        <Card
                             divClassName="mt-5"
                             data-aos="fade-up"
-                            data-aos-delay="400"
+                            data-aos-delay="600"
                             title="Quality in mind"
                             text="Our priority is to provide you with seamless gameplay and razor sharp visuals. The game allows for highly reactive gameplay so you can make quick decisions."
                             icon={Star}

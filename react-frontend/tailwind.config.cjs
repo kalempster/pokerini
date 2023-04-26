@@ -29,8 +29,8 @@ module.exports = {
                 secondary: "#EF2A4F",
                 background: "#181B30",
                 twojstary: "#30365C",
-                font:"#92A3AC",
-                backgroundshadow: "#141624",
+                font: "#92A3AC",
+                backgroundshadow: "#141624"
             },
             transitionProperty: {
                 "opacity-transform": "opacity, transform"

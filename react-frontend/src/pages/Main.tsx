@@ -1,13 +1,13 @@
-import Card from "../components/Card/Card";
-import Section from "../components/Section/Section";
-import Karty from "../images/karty.svg";
-import { ReactSVG } from "react-svg";
-import Star from "../images/shine.svg";
-import PlayingCards from "../images/playing-cards.svg";
-import Coin from "../images/coin.svg";
-import Dialog from "../components/Dialog/Dialog";
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { ReactSVG } from "react-svg";
+import Card from "../components/Card/Card";
+import Dialog from "../components/Dialog/Dialog";
+import Section from "../components/Section/Section";
+import Coin from "../images/coin.svg";
+import Karty from "../images/karty.svg";
+import PlayingCards from "../images/playing-cards.svg";
+import Star from "../images/shine.svg";
 
 export default function Main() {
     const [bozoVisible, setBozoVisible] = useState(false);
@@ -24,12 +24,13 @@ export default function Main() {
                             Generations worth of work Poker experience
                             <div className="text-xl font-extralight text-[#FFCD01DA]">
                                 Immerse yourself into the game of Poker and feel
-                                the game like you&apos;ve never have felt
-                                before.
+                                it like you&apos;ve never have felt before.
                             </div>
                         </div>
 
-                        <Link to="/register" className=" flex w-full cursor-pointer items-center justify-center rounded-[20px] bg-secondary py-6 text-3xl font-semibold text-primary ">
+                        <Link
+                            to="/register"
+                            className=" flex w-full cursor-pointer items-center justify-center rounded-[20px] bg-secondary py-6 text-3xl font-semibold text-primary ">
                             Join now
                         </Link>
                     </div>
@@ -51,22 +52,25 @@ export default function Main() {
                     </div>
                     <div className="flex  flex-col items-stretch gap-10 lg:flex-row">
                         <Card
+                            divClassName="mt-5"
                             data-aos="fade-up"
-                            data-aos-delay="200"
+                            data-aos-delay="400"
                             title="Free forever"
                             text="Our service is provided to you free of charge, forever. Enjoy the game of poker with your friends without having to pay a cent for it. Just create an acount and start playing!"
                             icon={Coin}
                         />
                         <Card
                             data-aos="fade-up"
-                            data-aos-delay="400"
+                            data-aos-delay="200"
                             title="Superb immersion"
                             text="With our game you will feel like you're really sitting right there, at the table playing poker, smoking a cigar and drinking cold whiskey while enjoying the game."
                             icon={PlayingCards}
                         />
+
                         <Card
+                            divClassName="mt-5"
                             data-aos="fade-up"
-                            data-aos-delay="600"
+                            data-aos-delay="400"
                             title="Quality in mind"
                             text="Our priority is to provide you with seamless gameplay and razor sharp visuals. The game allows for highly reactive gameplay so you can make quick decisions."
                             icon={Star}

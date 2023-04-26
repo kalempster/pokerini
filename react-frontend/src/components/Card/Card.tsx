@@ -36,6 +36,14 @@ type Props = {
      * ```
      */
     className?: string;
+    /**
+     * Classes that will be applied to the div
+     * @example
+     * ```tsx
+     * <Card divClassName="-mt-10" />
+     * ```
+     */
+    divClassName?: string;
 };
 
 const Card: FC<Props> = ({
@@ -43,12 +51,13 @@ const Card: FC<Props> = ({
     title,
     icon,
     className = "fill-white",
+    divClassName = "",
     ...rest
 }) => {
     return (
         <div
             {...rest}
-            className="flex w-full flex-col gap-2 rounded-xl px-5 bg-secondary p-6 text-white shadow-2xl shadow-backgroundshadow selection:bg-primary selection:text-white lg:w-1/3">
+            className={`flex w-full flex-col gap-2 rounded-xl px-5 bg-secondary p-6 text-white shadow-2xl shadow-backgroundshadow selection:bg-primary selection:text-white lg:w-1/3 ${divClassName}`}>
             <div className="flex flex-col items-center justify-center gap-2">
                 <ReactSVG
                     src={icon}

@@ -9,6 +9,7 @@ import CreateGame from "../pages/CreateGame";
 import Dashboard from "../pages/Dashboard";
 import ErrorPage from "../pages/ErrorPage";
 import Game from "../pages/Game";
+import Lobby from "../pages/Lobby";
 import LogIn from "../pages/LogIn";
 import Main from "../pages/Main";
 import Register from "../pages/Register";
@@ -127,6 +128,12 @@ const gameRoute = new Route({
     component: Game
 });
 
+const lobbyRoute = new Route({
+    getParentRoute: () => headlessRootRoute,
+    path: "/lobby",
+    component: Lobby
+});
+
 const errorRootRoute = new Route({
     id: "error",
     getParentRoute: () => rootRoute,
@@ -153,7 +160,8 @@ const routeTree = rootRoute.addChildren([
         loginRoute,
         registerRoute,
         gameRoute,
-        createGameRoute
+        createGameRoute,
+        lobbyRoute
     ]),
     errorRootRoute.addChildren([errorRoute])
 ]);

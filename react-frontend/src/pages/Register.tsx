@@ -34,22 +34,22 @@ export default function Register() {
 
             setUsernameError(
                 parsed.error.flatten().fieldErrors.username
-                    ? parsed.error.flatten().fieldErrors.username![0]
+                    ? parsed.error.flatten().fieldErrors.username?.[0]
                     : undefined
             );
             setConfirmPasswordError(
                 parsed.error.flatten().fieldErrors.confirmPassword
-                    ? parsed.error.flatten().fieldErrors.confirmPassword![0]
+                    ? parsed.error.flatten().fieldErrors.confirmPassword?.[0]
                     : undefined
             );
             setEmailError(
                 parsed.error.flatten().fieldErrors.email
-                    ? parsed.error.flatten().fieldErrors.email![0]
+                    ? parsed.error.flatten().fieldErrors.email?.[0]
                     : undefined
             );
             setPasswordError(
                 parsed.error.flatten().fieldErrors.password
-                    ? parsed.error.flatten().fieldErrors.password![0]
+                    ? parsed.error.flatten().fieldErrors.password?.[0]
                     : undefined
             );
             if (
@@ -62,7 +62,7 @@ export default function Register() {
             ) {
                 setFormError(
                     parsed.error.flatten().formErrors
-                        ? parsed.error.flatten().formErrors![0]
+                        ? parsed.error.flatten().formErrors?.[0]
                         : undefined
                 );
             }

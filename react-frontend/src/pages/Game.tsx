@@ -1,12 +1,12 @@
 import Diler from "../images/diler.png";
 const Game = () => {
     return (
-        <div className="h-[100lvh] w-[100lvw] flex items-center justify-center">
-            <div className="flex relative items-center justify-center w-7/12">
+        <div className="flex h-[100lvh] items-center justify-center">
+            <div className="relative flex w-7/12 items-center justify-center">
                 <img
                     src={Diler}
                     alt=""
-                    className="absolute top-0 -translate-y-full h-52"
+                    className="absolute top-0 h-52 -translate-y-full"
                 />
                 <svg
                     className="aspect-[1194/544] w-full max-w-[1120px]"

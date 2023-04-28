@@ -17,15 +17,15 @@ export default function LogIn() {
 
         const parsed = loginFormSchema.safeParse({ username, password });
         if (!parsed.success) {
-            console.log(parsed.error.flatten())
+            console.log(parsed.error.flatten());
             setUsernameError(
                 parsed.error.flatten().fieldErrors.username
-                    ? parsed.error.flatten().fieldErrors.username![0]
+                    ? parsed.error.flatten().fieldErrors.username?.[0]
                     : undefined
             );
             return setPasswordError(
                 parsed.error.flatten().fieldErrors.password
-                    ? parsed.error.flatten().fieldErrors.password![0]
+                    ? parsed.error.flatten().fieldErrors.password?.[0]
                     : undefined
             );
         }

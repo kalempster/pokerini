@@ -23,19 +23,19 @@ const Dashboard = () => {
     }, [code]);
 
     return (
-        <div className="h-[100lvh] w-[100lvw]">
-            <div className=" absolute z-0 flex h-[calc(var(--header-height)*1.5)] px-5 md:px-20 w-full flex-row items-center justify-between bg-background">
+        <div className="h-[100lvh]">
+            <div className=" absolute z-0 flex h-[calc(var(--header-height)*1.5)] w-full flex-row items-center justify-between bg-background px-5 md:px-20">
                 <Link to="/" className="text-5xl font-semibold">
                     <span className="text-secondary">Poker</span>
                     <span className="text-primary ">inee</span>
                 </Link>
-                <div className="flex text-xl text-primary whitespace-pre-wrap">
+                <div className="flex whitespace-pre-wrap text-xl text-primary">
                     <div>1000 </div>
                     <div>kalempster</div>
                 </div>
             </div>
-            <Section className="flex flex-col gap-5 items-center justify-center pt-[calc(var(--header-height)*1.5)] tall:pt-0">
-                <div className="text-3xl md:text-6xl font-semibold text-primary flex justify-center flex-col items-center gap-5">
+            <Section className="flex flex-col items-center justify-center gap-5 pt-[calc(var(--header-height)*1.5)] tall:pt-0">
+                <div className="flex flex-col items-center justify-center gap-5 text-3xl font-semibold text-primary md:text-6xl">
                     <div>Join a game</div>
                     <div>
                         <input
@@ -46,19 +46,21 @@ const Dashboard = () => {
                             id="code"
                             type="code"
                             placeholder="ABCD-EFGH"
-                            className={`font-mono disabled:opacity-60 flex uppercase items-center justify-center rounded-md  px-3 py-2  shadow-2xl outline-none ${
+                            className={`flex items-center justify-center rounded-md px-3 py-2 font-mono  uppercase shadow-2xl  outline-none disabled:opacity-60 ${
                                 codeValid
-                                    ? "text-primary bg-secondary"
-                                    : "text-font bg-twojstary"
+                                    ? "bg-secondary text-primary"
+                                    : "bg-twojstary text-font"
                             }`}
                         />
                         <label htmlFor="code" className="text-red-400"></label>
                     </div>
                 </div>
-                <div className="text-secondary text-xl">or</div>
-                <button className=" rounded-md bg-secondary px-20 py-5 text-2xl md:text-5xl font-bold text-primary xl:px-20">
+                <div className="text-xl text-secondary">or</div>
+                <Link
+                    to="/create"
+                    className=" rounded-md bg-secondary px-20 py-5 text-2xl font-bold text-primary md:text-5xl xl:px-20">
                     Create a game
-                </button>
+                </Link>
             </Section>
         </div>
     );

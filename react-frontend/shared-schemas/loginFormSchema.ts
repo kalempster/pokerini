@@ -9,6 +9,6 @@ export const loginFormSchema = z.object({
     password: z
         .string()
         .min(8, "Password must contain at least 8 chatacters")
-        .max(50, "Password must contain at most 16 characters")
+        .max(16, "Password must contain at most 16 characters")
         .regex(/^\w{0,}$/, "Only alphanumeric characters are allowed")
 });

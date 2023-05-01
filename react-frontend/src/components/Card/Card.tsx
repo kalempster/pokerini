@@ -57,7 +57,7 @@ const Card: FC<Props> = ({
     return (
         <div
             {...rest}
-            className={`flex w-full flex-col gap-2 rounded-xl px-5 bg-secondary p-6 text-white shadow-2xl shadow-backgroundshadow selection:bg-primary selection:text-white lg:w-1/3 ${divClassName}`}>
+            className={`flex w-full flex-col gap-2 rounded-xl bg-secondary p-6 px-5 text-white shadow-2xl shadow-backgroundshadow selection:bg-primary selection:text-white lg:w-1/3 ${divClassName}`}>
             <div className="flex flex-col items-center justify-center gap-2">
                 <ReactSVG
                     src={icon}
@@ -68,7 +68,7 @@ const Card: FC<Props> = ({
                 </div>
             </div>
 
-            <div className="text-justify text-lg [text-align-last:center] px-12">
+            <div className="px-12 text-justify text-lg [text-align-last:center]">
                 {text}
             </div>
         </div>

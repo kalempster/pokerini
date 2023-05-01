@@ -1,13 +1,39 @@
+import GamePlayer from "../components/Player/GamePlayer";
 import Diler from "../images/diler.png";
 const Game = () => {
     return (
         <div className="flex h-[100lvh] items-center justify-center">
-            <div className="relative flex w-7/12 items-center justify-center">
+            <div className="relative flex w-full items-center justify-center lg:w-7/12">
                 <img
                     src={Diler}
-                    alt=""
                     className="absolute top-0 h-52 -translate-y-full"
                 />
+                <GamePlayer
+                    username="jdkurwe"
+                    currentChips={300}
+                    playerIndex={0}
+                />
+                <GamePlayer
+                    username="cwel"
+                    currentChips={120}
+                    playerIndex={1}
+                />
+                <GamePlayer
+                    username="kalempster"
+                    currentChips={3000}
+                    playerIndex={2}
+                />
+                <GamePlayer
+                    username="irek_hazardownik26"
+                    currentChips={30123}
+                    playerIndex={3}
+                />
+                <GamePlayer
+                    username="mikolaj_siec"
+                    currentChips={2314}
+                    playerIndex={4}
+                />
+
                 <svg
                     className="aspect-[1194/544] w-full max-w-[1120px]"
                     viewBox="0 0 1194 544"

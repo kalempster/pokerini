@@ -30,7 +30,7 @@ const Lobby = () => {
                     <div className="text-6xl font-semibold text-primary">
                         Lobby
                     </div>
-                    <div className="flex items-center gap-2 rounded-md bg-twojstary px-3 text-lg text-white">
+                    <div className="flex items-center gap-2 rounded-md bg-twojstary px-3 font-mono text-lg text-white">
                         <input
                             readOnly
                             type={!codeVisible ? "password" : "text"}

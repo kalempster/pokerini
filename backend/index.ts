@@ -67,6 +67,7 @@ export const isAuthed = t.middleware(async ({ ctx, next }) => {
     if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
     return next({ ctx: { ...ctx, user } });
 });
+
 const lockOut = t.middleware(async ({ ctx, next }) => {
     console.log(ctx.req.headers["api-version"]);
 

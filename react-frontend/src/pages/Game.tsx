@@ -8,6 +8,7 @@ const Game = () => {
                     src={Diler}
                     className="absolute top-0 h-52 -translate-y-full"
                 />
+                <div className="absolute text-primary">1000</div>
                 <GamePlayer
                     username="jdkurwe"
                     currentChips={300}

@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { MdMonetizationOn } from "react-icons/md";
+import Cards from "./Cards";
+import Card from "./Card";
 
 const GamePlayer = ({
     username,
@@ -80,7 +82,12 @@ const GamePlayer = ({
                     </div>
                 </div>
             </div>
-            <div className={cardsPositionClass + " text-white"}>karty</div>
+            <div className={cardsPositionClass + " text-white"}>
+                <Cards>
+                    <Card color="CLUBS" value={9} />
+                    <Card color="CLUBS" value={13} />
+                </Cards>
+            </div>
         </>
     );
 };

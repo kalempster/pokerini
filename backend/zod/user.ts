@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { User } from ".prisma/client/index";
+import { User } from "@prisma/client/index";
 //jak juz piotrus przegladasz ten kod to pewnie dawno sie  zorientowales ze podjebalem
 //z twoj przyjaciel robot, staralem sie myslec, wiekszosc rzeczy rozumiem,
 //ale robi sie ciezko jak pojawia sie trpc
@@ -52,8 +52,7 @@ export const userSchema = zObject<Omit<User, "password">>({
     id: z.string().cuid(),
     username: z.string(),
     email: z.string().email(),
-    points: z.number(),
-    emailVerified: z.boolean(),
+    chips: z.number(),
     createdAt: z.date(),
     updatedAt: z.date()
 });

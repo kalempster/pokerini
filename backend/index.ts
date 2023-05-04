@@ -4,7 +4,6 @@ import * as trpcExpress from "@trpc/server/adapters/express";
 import { config } from "dotenv";
 import * as express from "express";
 import { ZodError, z } from "zod";
-import { authRouter } from "./routers/auth";
 import { envSchema } from "./zod/env";
 
 export const prisma = new PrismaClient();
@@ -47,10 +46,13 @@ export const t = initTRPC.context<Context>().create({
         };
     }
 });
+export const publicProcedure = t.procedure;
+
+import { authRouter } from "./routers/auth";
+
 export const appRouter = t.router({
     auth: authRouter
 });
-export const publicProcedure = t.procedure;
 app.use(
     "/api",
     trpcExpress.createExpressMiddleware({
@@ -58,3 +60,5 @@ app.use(
         createContext
     })
 );
+
+app.listen(3000, () => console.log("listening"));

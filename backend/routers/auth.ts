@@ -1,19 +1,21 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { compare, hash } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { z } from "zod";
 import { env, prisma, publicProcedure, t } from "..";
-import { userLoginInput, userRegisterInput, userSchema } from "../zod/user";
+import { loginFormSchema } from "../../react-frontend/shared-schemas/loginFormSchema";
+import { registerFormSchema } from "../../react-frontend/shared-schemas/registerFormSchema";
+import { userSchema } from "../zod/user";
 
 export const authRouter = t.router({
     register: publicProcedure
-        .input(userRegisterInput)
+        .input(registerFormSchema)
         .mutation(async ({ input }) => {
             try {
                 const hashedPassword = await hash(input.password, 10);
 
-                const user = await prisma.user.create({
+                await prisma.user.create({
                     data: {
                         username: input.username,
                         password: hashedPassword,
@@ -21,21 +23,19 @@ export const authRouter = t.router({
                     }
                 });
             } catch (error) {
-                if (error instanceof PrismaClientKnownRequestError) {
+                if (error instanceof Prisma.PrismaClientKnownRequestError) {
                     if (error.code == "P2002") {
                         if (error.meta && Array.isArray(error.meta.target)) {
                             if (error.meta.target[0] == "email")
                                 throw new TRPCError({
                                     code: "BAD_REQUEST",
-                                    message:
-                                        "Konto z takim emailem już istnieje"
+                                    message: "That email already exists"
                                 });
 
                             if (error.meta.target[0] == "username")
                                 throw new TRPCError({
                                     code: "BAD_REQUEST",
-                                    message:
-                                        "Konto z taką nazwą użytkownika już istnieje"
+                                    message: "That username already exists"
                                 });
                         }
                     }
@@ -43,7 +43,7 @@ export const authRouter = t.router({
             }
         }),
     login: publicProcedure
-        .input(userLoginInput)
+        .input(loginFormSchema)
         .output(
             z.object({
                 ACCESS_TOKEN: z.string(),
@@ -59,7 +59,7 @@ export const authRouter = t.router({
             if (!user)
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Nieprawidłowa nazwa użytkownika lub hasło"
+                    message: "Invalid username or password"
                 });
 
             const { password, ...safeUser } = user;
@@ -67,7 +67,7 @@ export const authRouter = t.router({
             if (!(await compare(input.password, password)))
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Nieprawidłowa nazwa użytkownika lub hasło"
+                    message: "Invalid username or password"
                 });
             const ACCESS_TOKEN = jwt.sign({ id: user.id }, env.JWT_SECRET, {
                 expiresIn: "20m"
@@ -96,16 +96,16 @@ export const authRouter = t.router({
             };
         }),
     logout: publicProcedure
-        .input(z.object({ REFRESH_TOKEN: z.string() }))
+        .input(z.object({ refreshToken: z.string() }))
         .mutation(async ({ input }) => {
-            if (!jwt.verify(input.REFRESH_TOKEN, env.JWT_REFRESH_SECRET))
+            if (!jwt.verify(input.refreshToken, env.JWT_REFRESH_SECRET))
                 throw new TRPCError({
                     code: "FORBIDDEN",
                     message: "Invalid refresh token"
                 });
             try {
                 await prisma.token.delete({
-                    where: { token: input.REFRESH_TOKEN }
+                    where: { token: input.refreshToken }
                 });
             } catch (error) {
                 throw new TRPCError({

@@ -1,47 +1,8 @@
-import { User } from "@prisma/client/index";
+import { User } from "@prisma/client";
 import { z } from "zod";
 //jak juz piotrus przegladasz ten kod to pewnie dawno sie  zorientowales ze podjebalem
 //z twoj przyjaciel robot, staralem sie myslec, wiekszosc rzeczy rozumiem,
 //ale robi sie ciezko jak pojawia sie trpc
-const loginData = {
-    username: z
-        .string({
-            description: "Nazwa użytkownika",
-            invalid_type_error: "Nazwa użytkownika musi być tekstem",
-            required_error: "Nazwa użytkownika jest wymagana"
-        })
-        .regex(/^\w+$/, {
-            message:
-                "Nazwa użytkownika może zawierać tylko znaki alfanumeryczne"
-        })
-        .max(16, {
-            message: "Nazwa użytkownika może zawierać maksymalnie 16 znaków"
-        })
-        .min(3, { message: "Nazwa użytkownika musi zawierać minimum 3 znaki" }),
-
-    password: z
-        .string({
-            description: "Hasło użytkownika",
-            invalid_type_error: "Hasło musi być tekstem",
-            required_error: "Hasło jest wymagane"
-        })
-        .min(8, { message: "Hasło musi zawierać przynajmniej 8 znaków" })
-        .max(16, { message: "Hasło może zawirać maksymalnie 16 znaków" })
-        .regex(/^\S*$/, { message: "Hasło nie może zawierać spacji" })
-};
-export const userRegisterInput = z.object({
-    ...loginData,
-    email: z
-        .string({
-            description: "Email",
-            invalid_type_error: "Email musi być tekstem",
-            required_error: "Email jest wymagany"
-        })
-        .email({
-            message: "Tekst musi być poprawnym emailem"
-        })
-});
-export const userLoginInput = z.object(loginData);
 
 type AnyObj = Record<PropertyKey, unknown>;
 

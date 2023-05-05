@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
+import * as cors from "cors";
 import { config } from "dotenv";
 import * as express from "express";
 import { ZodError, z } from "zod";
@@ -53,6 +54,11 @@ import { authRouter } from "./routers/auth";
 export const appRouter = t.router({
     auth: authRouter
 });
+
+export type AppRouter = typeof appRouter;
+
+app.use(cors({ origin: "*" }));
+
 app.use(
     "/api",
     trpcExpress.createExpressMiddleware({
@@ -61,4 +67,4 @@ app.use(
     })
 );
 
-app.listen(3000, () => console.log("listening"));
+app.listen(3001, () => console.log("listening"));

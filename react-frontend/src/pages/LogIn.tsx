@@ -1,35 +1,59 @@
-import { Link } from "@tanstack/react-router";
-import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { FormEvent, useEffect, useState } from "react";
 import { loginFormSchema } from "../../shared-schemas/loginFormSchema";
 import poker from "../images/poker.png";
+import { trpc } from "../utils/trpc";
+import { useJwtStore } from "../stores/jwtStore";
+import { TRPCClientError } from "@trpc/client";
 export default function LogIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const [usernameError, setUsernameError] = useState<string | undefined>();
-    const [passwordError, setPasswordError] = useState<string | undefined>();
+    const navigate = useNavigate();
 
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const jwtStore = useJwtStore();
+
+    const [systemError, setSystemError] = useState<string | null>();
+    const [usernameError, setUsernameError] = useState<string | null>();
+    const [passwordError, setPasswordError] = useState<string | null>();
+
+    const mutation = trpc.auth.login.useMutation();
+
+    useEffect(() => {
+        if (jwtStore.isLoggedIn()) navigate({ to: "/dashboard" });
+    }, []);
+
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setUsernameError(undefined);
-        setPasswordError(undefined);
+        setSystemError(null);
+        setUsernameError(null);
+        setPasswordError(null);
 
         const parsed = loginFormSchema.safeParse({ username, password });
         if (!parsed.success) {
-            console.log(parsed.error.flatten());
             setUsernameError(
                 parsed.error.flatten().fieldErrors.username
                     ? parsed.error.flatten().fieldErrors.username?.[0]
-                    : undefined
+                    : null
             );
-            return setPasswordError(
+            setPasswordError(
                 parsed.error.flatten().fieldErrors.password
                     ? parsed.error.flatten().fieldErrors.password?.[0]
-                    : undefined
+                    : null
             );
+            return;
         }
-        console.log(parsed.data);
+        try {
+            const result = await mutation.mutateAsync({ username, password });
+
+            jwtStore.setAccessToken(result.ACCESS_TOKEN);
+            jwtStore.setRefreshToken(result.REFRESH_TOKEN);
+
+            navigate({ to: "/dashboard" });
+        } catch (error) {
+            if (error instanceof TRPCClientError) setSystemError(error.message);
+        }
     };
 
     return (
@@ -46,6 +70,10 @@ export default function LogIn() {
                     className="flex min-h-[100lvh] items-center justify-center pt-[var(--header-height)] text-white tall:pt-0 ">
                     <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-3/4 xl:w-1/2 ">
                         <div className="text-6xl text-primary">Log In</div>
+
+                        <div className="text-red-400">
+                            {systemError ? systemError : null}
+                        </div>
                         <div className="flex w-full flex-col gap-5">
                             <div className="flex flex-col gap-1">
                                 <input
@@ -79,12 +107,14 @@ export default function LogIn() {
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center justify-center gap-2">
-                            <button className="w-fit rounded-md bg-secondary px-20 py-2 text-2xl text-primary lg:w-full xl:px-20">
+                            <button
+                                disabled={mutation.isLoading}
+                                className="w-fit rounded-md bg-secondary px-20 py-2 text-2xl text-primary disabled:opacity-40 lg:w-full xl:px-20">
                                 Login
                             </button>
                             <div className="flex justify-center whitespace-pre-wrap">
                                 <Link
-                                    to="/register"
+                                    to="/sign-up"
                                     className="text-primary underline">
                                     Sign up
                                 </Link>
@@ -95,7 +125,7 @@ export default function LogIn() {
                 </form>
             </div>
             <div className="hidden min-h-full w-3/5 bg-background md:flex">
-                <img src={poker} className="min-w-[995px]" alt="" />
+                <img src={poker} alt="" />
             </div>
         </div>
     );

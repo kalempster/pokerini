@@ -8,20 +8,23 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [formError, setFormError] = useState<string | undefined>();
-    const [usernameError, setUsernameError] = useState<string | undefined>();
-    const [passwordError, setPasswordError] = useState<string | undefined>();
-    const [emailError, setEmailError] = useState<string | undefined>();
+    const [formError, setFormError] = useState<string | null>();
+    const [usernameError, setUsernameError] = useState<string | null>();
+    const [passwordError, setPasswordError] = useState<string | null>();
+    const [emailError, setEmailError] = useState<string | null>();
     const [confirmPasswordError, setConfirmPasswordError] = useState<
-        string | undefined
+        string | null
     >();
+
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setUsernameError(undefined);
-        setPasswordError(undefined);
-        setConfirmPasswordError(undefined);
-        setEmailError(undefined);
-        setFormError(undefined);
+
+        setUsernameError(null);
+        setPasswordError(null);
+        setConfirmPasswordError(null);
+        setEmailError(null);
+        setFormError(null);
+
         console.log(email);
         const parsed = registerFormSchema.safeParse({
             username,

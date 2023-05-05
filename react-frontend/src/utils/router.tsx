@@ -1,9 +1,13 @@
-import { Outlet, RootRoute, Route, Router } from "@tanstack/react-router";
+import {
+    Outlet,
+    RootRoute,
+    Route,
+    Router,
+    useNavigate
+} from "@tanstack/react-router";
 import AOS from "aos";
 import { useEffect, useState } from "react";
 import Dialog from "../components/Dialog/Dialog";
-import Feeter from "../components/Feeter/Feeter";
-import Header from "../components/Header/Header";
 import MobileMenu from "../components/Header/MobileMenu";
 import CreateGame from "../pages/CreateGame";
 import Dashboard from "../pages/Dashboard";
@@ -13,6 +17,7 @@ import Lobby from "../pages/Lobby";
 import LogIn from "../pages/LogIn";
 import Main from "../pages/Main";
 import Register from "../pages/Register";
+import { useJwtStore } from "../stores/jwtStore";
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -72,98 +77,89 @@ const rootRoute = new RootRoute({
     }
 });
 
-const headerRootRoute = new Route({
-    id: "header",
+const protectedRootRoute = new Route({
     getParentRoute: () => rootRoute,
+    id: "protected",
     component: () => {
-        return (
-            <>
-                <Header />
-                <Outlet />
-                <Feeter />
-            </>
-        );
+        const jwtStore = useJwtStore();
+        const navigate = useNavigate();
+        useEffect(() => {
+            if (!jwtStore.isLoggedIn()) navigate({ to: "/login" });
+        }, []);
+
+        return <Outlet />;
     }
 });
 
-const headlessRootRoute = new Route({
-    id: "headless",
+const unprotectedOnlyRoute = new Route({
     getParentRoute: () => rootRoute,
+    id: "unprotected",
     component: () => {
+        const jwtStore = useJwtStore();
+        const navigate = useNavigate();
+        useEffect(() => {
+            if (jwtStore.isLoggedIn()) navigate({ to: "/dashboard" });
+        }, []);
+
         return <Outlet />;
     }
 });
 
 const indexRoute = new Route({
-    getParentRoute: () => headerRootRoute,
+    getParentRoute: () => rootRoute,
     path: "/",
     component: Main
 });
 const loginRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
-    path: "/login",
+    getParentRoute: () => unprotectedOnlyRoute,
+    path: "login",
     component: LogIn
 });
 const registerRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
-    path: "/register",
+    getParentRoute: () => unprotectedOnlyRoute,
+    path: "/sign-up",
     component: Register
 });
 
 const dashboardRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/dashboard",
     component: Dashboard
 });
 
 const createGameRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/create",
     component: CreateGame
 });
 
 const gameRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/game",
     component: Game
 });
 
 const lobbyRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/lobby",
     component: Lobby
 });
 
-const errorRootRoute = new Route({
-    id: "error",
+const _404Route = new Route({
     getParentRoute: () => rootRoute,
-    component: () => {
-        return (
-            <>
-                <Header />
-                <Outlet />
-                <Feeter />
-            </>
-        );
-    }
-});
-
-const errorRoute = new Route({
-    getParentRoute: () => errorRootRoute,
-    path: "/*",
+    path: "*",
     component: ErrorPage
 });
 const routeTree = rootRoute.addChildren([
-    headerRootRoute.addChildren([indexRoute]),
-    headlessRootRoute.addChildren([
+    indexRoute,
+    unprotectedOnlyRoute.addChildren([loginRoute, registerRoute]),
+    protectedRootRoute.addChildren([
         dashboardRoute,
-        loginRoute,
-        registerRoute,
         gameRoute,
         createGameRoute,
         lobbyRoute
     ]),
-    errorRootRoute.addChildren([errorRoute])
+    _404Route
 ]);
 
 export const router = new Router({ routeTree });

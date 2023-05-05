@@ -1,9 +1,14 @@
 import { useMask } from "@react-input/mask";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { gameCodeSchema } from "../../shared-schemas/gameCodeSchema";
 import Section from "../components/Section/Section";
+import { useJwtStore } from "../stores/jwtStore";
 const Dashboard = () => {
+    const jwtStore = useJwtStore();
+
+    const navigate = useNavigate();
+
     const codeInputRef = useMask({
         mask: "____-____",
         replacement: { _: /\w/ },
@@ -16,6 +21,10 @@ const Dashboard = () => {
     const validateCode = (code: string) => {
         return gameCodeSchema.safeParse(code).success;
     };
+
+    useEffect(() => {
+        if (!jwtStore.isLoggedIn()) navigate({ to: "/login" });
+    }, []);
 
     useEffect(() => {
         if (validateCode(code)) setCodeValid(true); // TODO: JOIN GAME

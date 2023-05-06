@@ -18,7 +18,7 @@ try {
 } catch (error) {
     if (error instanceof ZodError) {
         for (const err of error.errors) {
-            console.log(`Env missing: ${err.path}`);
+            console.log(`Env error: ${err.path}: ${err.message}`);
         }
     }
     process.exit(1);

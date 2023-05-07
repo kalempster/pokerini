@@ -47,7 +47,7 @@ const Dashboard = () => {
                             id="code"
                             type="code"
                             placeholder="ABCD-EFGH"
-                            className={`flex items-center justify-center rounded-md px-3 py-2 font-mono  uppercase shadow-2xl  outline-none disabled:opacity-60 ${
+                            className={`flex items-center justify-center rounded-md px-3 py-2 text-center font-mono  uppercase shadow-2xl  outline-none disabled:opacity-60 ${
                                 codeValid
                                     ? "bg-secondary text-primary"
                                     : "bg-twojstary text-font"

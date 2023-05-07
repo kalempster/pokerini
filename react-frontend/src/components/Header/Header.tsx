@@ -44,7 +44,7 @@ export default function Header() {
                     <span className="text-secondary">Poker</span>
                     <span className="text-primary ">inee</span>
                 </Link>
-                {!jwtStore.isLoggedIn ? (
+                {!jwtStore.isLoggedIn() ? (
                     <div className="hidden flex-row gap-16 text-primary md:text-2xl  lg:flex">
                         <Link
                             data-aos="fade-down"
@@ -55,7 +55,7 @@ export default function Header() {
                     </div>
                 ) : (
                     <div className="flex whitespace-pre-wrap text-xl text-primary">
-                        <div>{data.chips}</div>
+                        <div>{data.chips} </div>
                         <div>{data.username}</div>
                     </div>
                 )}

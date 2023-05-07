@@ -4,7 +4,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useEffect, useState } from "react";
 import Section from "../components/Section/Section";
-
+import Header from "../components/Header/Header";
 const bets = [100, 500, 1000, 5000, 10000];
 const CreateGame = () => {
     const [selectedBet, setSelectedBet] = useState(bets[0]);
@@ -16,16 +16,7 @@ const CreateGame = () => {
 
     return (
         <div className="h-[100lvh]">
-            <div className=" absolute z-0 flex h-[calc(var(--header-height)*1.5)] w-full flex-row items-center justify-between bg-background px-5 md:px-20">
-                <Link to="/" className="text-5xl font-semibold">
-                    <span className="text-secondary">Poker</span>
-                    <span className="text-primary ">inee</span>
-                </Link>
-                <div className="flex whitespace-pre-wrap text-xl text-primary">
-                    <div>1000 </div>
-                    <div>kalempster</div>
-                </div>
-            </div>
+            <Header />
             <Section className="flex flex-col items-center justify-center gap-5 pt-[calc(var(--header-height)*1.5)] tall:pt-0">
                 <div className=" flex flex-col items-center justify-center gap-10 font-semibold text-primary">
                     <div className="text-3xl md:text-6xl">Create a game</div>
@@ -78,21 +69,19 @@ const CreateGame = () => {
                                         <Listbox.Option
                                             key={betIdx}
                                             className={({ active }) =>
-                                                `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                                    active
-                                                        ? "bg-secondary text-primary"
-                                                        : "text-white"
+                                                `relative cursor-default select-none py-2 pl-10 pr-4 ${active
+                                                    ? "bg-secondary text-primary"
+                                                    : "text-white"
                                                 }`
                                             }
                                             value={bet}>
                                             {({ selected }) => (
                                                 <>
                                                     <span
-                                                        className={`block truncate ${
-                                                            selected
+                                                        className={`block truncate ${selected
                                                                 ? "font-medium"
                                                                 : "font-normal"
-                                                        }`}>
+                                                            }`}>
                                                         {bet}
                                                     </span>
                                                 </>

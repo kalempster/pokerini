@@ -9,22 +9,14 @@ import {
 import Section from "../components/Section/Section";
 import LobbyPlayer from "../components/Player/LobbyPlayer";
 import { useState } from "react";
+import Header from "../components/Header/Header";
 
 const Lobby = () => {
     const [codeVisible, setCodeVisible] = useState(false);
 
     return (
         <div className="h-[100lvh]">
-            <div className=" absolute z-0 flex h-[calc(var(--header-height)*1.5)] w-full flex-row items-center justify-between bg-background px-5 md:px-20">
-                <Link to="/" className="text-5xl font-semibold">
-                    <span className="text-secondary">Poker</span>
-                    <span className="text-primary ">inee</span>
-                </Link>
-                <div className="flex whitespace-pre-wrap text-xl text-primary">
-                    <div>1000 </div>
-                    <div>kalempster</div>
-                </div>
-            </div>
+            <Header />
             <Section className="flex flex-col items-center justify-center gap-5 pt-[calc(var(--header-height)*1.5)] tall:pt-0">
                 <div className="flex flex-col items-center gap-1">
                     <div className="text-6xl font-semibold text-primary">

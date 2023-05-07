@@ -69,19 +69,21 @@ const CreateGame = () => {
                                         <Listbox.Option
                                             key={betIdx}
                                             className={({ active }) =>
-                                                `relative cursor-default select-none py-2 pl-10 pr-4 ${active
-                                                    ? "bg-secondary text-primary"
-                                                    : "text-white"
+                                                `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                                    active
+                                                        ? "bg-secondary text-primary"
+                                                        : "text-white"
                                                 }`
                                             }
                                             value={bet}>
                                             {({ selected }) => (
                                                 <>
                                                     <span
-                                                        className={`block truncate ${selected
+                                                        className={`block truncate ${
+                                                            selected
                                                                 ? "font-medium"
                                                                 : "font-normal"
-                                                            }`}>
+                                                        }`}>
                                                         {bet}
                                                     </span>
                                                 </>

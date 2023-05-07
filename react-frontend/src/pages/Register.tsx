@@ -181,7 +181,7 @@ export default function Register() {
                                 Sign up
                             </button>
 
-                            <div className="flex justify-center whitespace-pre-wrap">
+                            <div className="whitespace-pre-wrap flex justify-center">
                                 <Link
                                     to="/login"
                                     className="text-primary underline">

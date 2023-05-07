@@ -22,7 +22,6 @@ import { useJwtStore } from "../stores/jwtStore";
 const rootRoute = new RootRoute({
     component: () => {
         const [isAdultDialogVisible, setIsAdultDialogVisible] = useState(false);
-
         useEffect(() => {
             AOS.init({ once: true, easing: "ease-out-quad", duration: 1000 });
             (() => {

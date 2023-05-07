@@ -1,7 +1,11 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { FormEvent, useState } from "react";
 import { registerFormSchema } from "../../shared-schemas/registerFormSchema";
 import poker from "../images/poker.png";
+
+import { trpc } from "../utils/trpc";
+import { useJwtStore } from "../stores/jwtStore";
+import { TRPCClientError } from "@trpc/client";
 export default function Register() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -15,17 +19,20 @@ export default function Register() {
     const [confirmPasswordError, setConfirmPasswordError] = useState<
         string | null
     >();
-
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const [systemError, setSystemError] = useState<string | null>();
+    const jwtStore = useJwtStore();
+    const navigate = useNavigate();
+    const registerMutation = trpc.auth.register.useMutation();
+    const loginMutation = trpc.auth.login.useMutation();
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        setSystemError(null);
         setUsernameError(null);
         setPasswordError(null);
         setConfirmPasswordError(null);
         setEmailError(null);
         setFormError(null);
 
-        console.log(email);
         const parsed = registerFormSchema.safeParse({
             username,
             email,
@@ -68,7 +75,27 @@ export default function Register() {
                         ? parsed.error.flatten().formErrors?.[0]
                         : undefined
                 );
+                return;
             }
+        }
+        try {
+            console.log(email);
+            await registerMutation.mutateAsync({
+                username,
+                email,
+                password,
+                confirmPassword
+            });
+            const result = await loginMutation.mutateAsync({
+                username,
+                password
+            });
+            jwtStore.setAccessToken(result.ACCESS_TOKEN);
+            jwtStore.setRefreshToken(result.REFRESH_TOKEN);
+
+            navigate({ to: "/dashboard" });
+        } catch (error) {
+            if (error instanceof TRPCClientError) setSystemError(error.message);
         }
     };
     return (
@@ -85,6 +112,9 @@ export default function Register() {
                         onSubmit={onSubmit}
                         className="flex w-full flex-col items-center justify-center gap-10 lg:w-3/4 xl:w-2/3">
                         <div className="text-6xl text-primary">Sign Up</div>
+                        <div className="text-red-400">
+                            {systemError ? systemError : null}
+                        </div>
                         <div className="flex w-full flex-col gap-5 text-font">
                             <div className="flex flex-col gap-1">
                                 <input
@@ -145,10 +175,12 @@ export default function Register() {
                         </span>
                         <div className="flex w-full flex-col items-center justify-center gap-2">
                             <button
+                                disabled={registerMutation.isLoading}
                                 role="form"
-                                className="w-fit rounded-md bg-secondary py-2 px-20 text-2xl text-primary lg:w-full xl:px-20">
+                                className="w-fit rounded-md bg-secondary px-20 py-2 text-2xl text-primary lg:w-full xl:px-20">
                                 Sign up
                             </button>
+
                             <div className="flex justify-center whitespace-pre-wrap">
                                 <Link
                                     to="/login"

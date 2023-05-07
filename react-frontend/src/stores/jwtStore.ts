@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 type JwtStore = {
     accessToken: string;
@@ -7,6 +7,7 @@ type JwtStore = {
     setAccessToken: (token: string) => any;
     setRefreshToken: (token: string) => any;
     isLoggedIn: () => boolean;
+    getAccessToken(): string;
 };
 
 export const useJwtStore = create<JwtStore>()(
@@ -16,7 +17,8 @@ export const useJwtStore = create<JwtStore>()(
             refreshToken: "",
             setAccessToken: (token) => set(() => ({ accessToken: token })),
             setRefreshToken: (token) => set(() => ({ refreshToken: token })),
-            isLoggedIn: () => get().refreshToken.length > 0
+            isLoggedIn: () => get().refreshToken.length > 0,
+            getAccessToken: () => get().accessToken
         }),
         {
             name: "jwt-store"

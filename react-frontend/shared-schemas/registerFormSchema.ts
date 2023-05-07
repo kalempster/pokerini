@@ -4,7 +4,7 @@ export const registerFormSchema = z
     .object({
         username: z
             .string()
-            .min(3, "Username must contain at least 3 chatacters")
+            .min(3, "Username must contain at least 3 characters")
             .max(16, "Username must contain at most 16 characters")
             .regex(/^\w{0,}$/, "Only alphanumeric characters are allowed"), // alphanumeric characters
         email: z
@@ -13,12 +13,12 @@ export const registerFormSchema = z
             .email("This is not a valid email."),
         password: z
             .string()
-            .min(8, "Password must contain at least 8 chatacters")
+            .min(8, "Password must contain at least 8 characters")
             .max(50, "Password must contain at most 16 characters")
             .regex(/^\w{0,}$/, "Only alphanumeric characters are allowed"),
         confirmPassword: z
             .string()
-            .min(8, "Password must contain at least 8 chatacters")
+            .min(8, "Password must contain at least 8 characters")
             .max(50, "Password must contain at most 16 characters")
             .regex(/^\w{0,}$/, "Only alphanumeric characters are allowed")
     })

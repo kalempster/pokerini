@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { gameCodeSchema } from "../../shared-schemas/gameCodeSchema";
 import Section from "../components/Section/Section";
 import { useJwtStore } from "../stores/jwtStore";
+import Header from "../components/Header/Header";
 const Dashboard = () => {
     const jwtStore = useJwtStore();
 
@@ -33,16 +34,7 @@ const Dashboard = () => {
 
     return (
         <div className="h-[100lvh]">
-            <div className=" absolute z-0 flex h-[calc(var(--header-height)*1.5)] w-full flex-row items-center justify-between bg-background px-5 md:px-20">
-                <Link to="/" className="text-5xl font-semibold">
-                    <span className="text-secondary">Poker</span>
-                    <span className="text-primary ">inee</span>
-                </Link>
-                <div className="flex whitespace-pre-wrap text-xl text-primary">
-                    <div>1000 </div>
-                    <div>kalempster</div>
-                </div>
-            </div>
+            <Header />
             <Section className="flex flex-col items-center justify-center gap-5 pt-[calc(var(--header-height)*1.5)] tall:pt-0">
                 <div className="flex flex-col items-center justify-center gap-5 text-3xl font-semibold text-primary md:text-6xl">
                     <div>Join a game</div>

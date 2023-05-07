@@ -3,7 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { compare, hash } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { z } from "zod";
-import { env, prisma, publicProcedure, t } from "..";
+import { env, isAuthed, prisma, publicProcedure, t } from "..";
 import { loginFormSchema } from "../../react-frontend/shared-schemas/loginFormSchema";
 import { registerFormSchema } from "../../react-frontend/shared-schemas/registerFormSchema";
 import { userSchema } from "../zod/user";
@@ -41,6 +41,11 @@ export const authRouter = t.router({
                     }
                 }
             }
+        }),
+        
+    me: publicProcedure.use(isAuthed).query(async ({ ctx }) => {
+            const { password, ...safeUser } = ctx.user;
+            return safeUser;
         }),
     login: publicProcedure
         .input(loginFormSchema)

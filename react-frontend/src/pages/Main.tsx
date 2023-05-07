@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ReactSVG } from "react-svg";
 import Card from "../components/Card/Card";
 import Dialog from "../components/Dialog/Dialog";
@@ -10,10 +10,15 @@ import PlayingCards from "../images/playing-cards.svg";
 import Star from "../images/shine.svg";
 import Header from "../components/Header/Header";
 import Feeter from "../components/Feeter/Feeter";
+import { useJwtStore } from "../stores/jwtStore";
 
 export default function Main() {
     const [bozoVisible, setBozoVisible] = useState(false);
-
+    const jwtStore = useJwtStore();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (jwtStore.isLoggedIn()) navigate({ to: "/dashboard" });
+    }, []);
     return (
         <>
             <Header />
@@ -32,7 +37,7 @@ export default function Main() {
                         </div>
 
                         <Link
-                            to="/register"
+                            to="/sign-up"
                             className=" flex w-full cursor-pointer items-center justify-center rounded-[20px] bg-secondary py-6 text-3xl font-semibold text-primary ">
                             Join now
                         </Link>

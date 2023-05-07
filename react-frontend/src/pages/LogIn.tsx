@@ -5,10 +5,11 @@ import poker from "../images/poker.png";
 import { trpc } from "../utils/trpc";
 import { useJwtStore } from "../stores/jwtStore";
 import { TRPCClientError } from "@trpc/client";
+import { useUserStore } from "../stores/userStore";
 export default function LogIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
+    const userStore = useUserStore();
     const navigate = useNavigate();
 
     const jwtStore = useJwtStore();
@@ -49,7 +50,11 @@ export default function LogIn() {
 
             jwtStore.setAccessToken(result.ACCESS_TOKEN);
             jwtStore.setRefreshToken(result.REFRESH_TOKEN);
-
+            userStore.setUser({
+                ...result.user!,
+                createdAt: new Date(result.user!.createdAt),
+                updatedAt: new Date(result.user!.updatedAt)
+            });
             navigate({ to: "/dashboard" });
         } catch (error) {
             if (error instanceof TRPCClientError) setSystemError(error.message);

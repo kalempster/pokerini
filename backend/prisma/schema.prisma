@@ -27,6 +27,5 @@ model Token {
     user   User   @relation(fields: [userId], references: [id])
     userId String
 
-    @@index([userId])
     @@map("tokens")
 }

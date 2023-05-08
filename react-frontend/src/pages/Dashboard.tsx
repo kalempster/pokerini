@@ -6,10 +6,6 @@ import Section from "../components/Section/Section";
 import { useJwtStore } from "../stores/jwtStore";
 import Header from "../components/Header/Header";
 const Dashboard = () => {
-    const jwtStore = useJwtStore();
-
-    const navigate = useNavigate();
-
     const codeInputRef = useMask({
         mask: "____-____",
         replacement: { _: /\w/ },
@@ -22,10 +18,6 @@ const Dashboard = () => {
     const validateCode = (code: string) => {
         return gameCodeSchema.safeParse(code).success;
     };
-
-    useEffect(() => {
-        if (!jwtStore.isLoggedIn()) navigate({ to: "/login" });
-    }, []);
 
     useEffect(() => {
         if (validateCode(code)) setCodeValid(true); // TODO: JOIN GAME

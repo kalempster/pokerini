@@ -15,10 +15,7 @@ import { useJwtStore } from "../stores/jwtStore";
 export default function Main() {
     const [bozoVisible, setBozoVisible] = useState(false);
     const jwtStore = useJwtStore();
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (jwtStore.isLoggedIn()) navigate({ to: "/dashboard" });
-    }, []);
+
     return (
         <>
             <Header />

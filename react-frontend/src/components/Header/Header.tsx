@@ -6,25 +6,20 @@ import { useJwtStore } from "../../stores/jwtStore";
 import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 import { useUserStore } from "../../stores/userStore";
-import numeral from "numeral";
+
+// import numeral from "numeral";
+// Ty sie irek dobrze czujesz?
+// Juz na emeryture przechodzisz?
+// To gowno nie bylo updatowane od 6 lat
+// Jeden google search
+// https://www.npmjs.com/package/react-number-format
 export default function Header() {
     const menuStore = useMenuStore();
     const jwtStore = useJwtStore();
     const userStore = useUserStore();
-    const { refetch } = trpc.auth.me.useQuery();
     const [menu, setMenu] = useState(false);
     const navigate = useNavigate();
-    const onRefresh = async () => {
-        const data = await refetch();
 
-        if (data.isError) return;
-
-        userStore.setUser({
-            ...data.data!,
-            createdAt: new Date(data.data!.createdAt),
-            updatedAt: new Date(data.data!.updatedAt)
-        });
-    };
     const mutation = trpc.auth.logout.useMutation();
 
     const logout = async () => {
@@ -39,14 +34,19 @@ export default function Header() {
             console.log(error);
         }
     };
-    useEffect(() => {
-        if (userStore.user.username == "") {
-            onRefresh();
-        }
-    }, [userStore.user]);
     // nie wiem czy mam dobre myslenie ale tera se mysle czy nie wystarczy
     // ze przy loginie dostaje przecierz kurwa dane i je do storea wjebac  i wszyscy szczesliwi,
     // ale zostawilem kod zeby wrazie co cofnac jak mnie zwyzywasz
+
+    // irek po raz kolejny kopiujesz kod
+    // i masz wypierdolone co robi
+    // i do czego sluzy
+    // ty sie nie ucz z kodu
+    // ktory ja napisalem do aplikacji
+    // ze tak sie robi
+    // D O  K U R W Y  N E D Z Y
+    // P A T R Z  D O  D O K U M E N T A C J I
+
     const data = userStore.user;
 
     return (
@@ -75,8 +75,8 @@ export default function Header() {
                             onClick={() => {
                                 setMenu(!menu);
                             }}
-                            className="whitespace-pre-wrap flex gap-2 rounded-xl  bg-twojstary px-6 py-3 text-xl text-primary">
-                            <div>{numeral(data.chips).format("0.0a")}</div>
+                            className="flex gap-2 whitespace-pre-wrap rounded-xl  bg-twojstary px-6 py-3 text-xl text-primary">
+                            <div>{userStore.user.chips}</div>
                             <div>{data.username}</div>
                             <div>v</div>
                         </div>

@@ -7,26 +7,19 @@ type userStoreType = {
     setUser(user: userSchemaType): any;
     setChips(points: number): any;
 };
-export const useUserStore = create<userStoreType>()(
-    persist(
-        (set) => ({
-            user: {
-                username: "",
-                createdAt: new Date(),
-                email: "",
-                id: "",
-                chips: 100000,
-                updatedAt: new Date()
-            },
-            setUser(user) {
-                set({ user });
-            },
-            setChips(chips) {
-                set({ user: { ...this.user, chips } });
-            }
-        }),
-        {
-            name: "user-store"
-        }
-    )
-);
+export const useUserStore = create<userStoreType>((set) => ({
+    user: {
+        username: "",
+        createdAt: new Date(),
+        email: "",
+        id: "",
+        chips: 0,
+        updatedAt: new Date()
+    },
+    setUser(user) {
+        set({ user });
+    },
+    setChips(chips) {
+        set({ user: { ...this.user, chips } });
+    }
+}));

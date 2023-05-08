@@ -18,6 +18,13 @@ import LogIn from "../pages/LogIn";
 import Main from "../pages/Main";
 import Register from "../pages/Register";
 import { useJwtStore } from "../stores/jwtStore";
+import { useUserStore } from "../stores/userStore";
+import { trpc } from "./trpc";
+import { TRPCClientError } from "@trpc/client";
+import {
+    RefreshError,
+    useRefreshQueryOrMutation
+} from "../hooks/useRefreshQuery";
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -82,8 +89,53 @@ const protectedRootRoute = new Route({
     component: () => {
         const jwtStore = useJwtStore();
         const navigate = useNavigate();
+        const userStore = useUserStore();
+        const query = useRefreshQueryOrMutation();
+
+        const { refetch } = trpc.auth.me.useQuery(undefined, {
+            retry: false,
+            enabled: false
+        });
+
         useEffect(() => {
             if (!jwtStore.isLoggedIn()) navigate({ to: "/login" });
+        }, []);
+
+        useEffect(() => {
+            (async () => {
+                if (!userStore.user.id && jwtStore.isLoggedIn()) {
+                    try {
+                        const data = await query(() =>
+                            refetch({ throwOnError: true })
+                        );
+
+                        if (!data.data) return;
+
+                        userStore.setUser({
+                            ...data.data,
+                            createdAt: new Date(data.data.createdAt),
+                            updatedAt: new Date(data.data.updatedAt)
+                        }); // Since we're not using a data transformer the dates are encoded as ISO strings so we need to convert them back
+                    } catch (error) {
+                        if (error instanceof TRPCClientError)
+                            console.log(error); // Error while fetching user data
+                        if (error instanceof RefreshError) {
+                            // Invalid refresh token, log user out
+                            jwtStore.setAccessToken("");
+                            jwtStore.setRefreshToken("");
+                            userStore.setUser({
+                                id: "",
+                                username: "",
+                                chips: 0,
+                                email: "",
+                                createdAt: new Date(),
+                                updatedAt: new Date()
+                            });
+                            navigate({ to: "/login" });
+                        }
+                    }
+                }
+            })();
         }, []);
 
         return <Outlet />;
@@ -96,8 +148,10 @@ const unprotectedOnlyRoute = new Route({
     component: () => {
         const jwtStore = useJwtStore();
         const navigate = useNavigate();
+
         useEffect(() => {
-            if (jwtStore.isLoggedIn()) navigate({ to: "/dashboard" });
+            if (jwtStore.isLoggedIn())
+                navigate({ to: "/dashboard", replace: true });
         }, []);
 
         return <Outlet />;
@@ -152,12 +206,14 @@ const _404Route = new Route({
 const routeTree = rootRoute.addChildren([
     indexRoute,
     unprotectedOnlyRoute.addChildren([loginRoute, registerRoute]),
+
     protectedRootRoute.addChildren([
         dashboardRoute,
         gameRoute,
         createGameRoute,
         lobbyRoute
     ]),
+
     _404Route
 ]);
 

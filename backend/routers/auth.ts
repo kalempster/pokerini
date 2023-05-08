@@ -42,11 +42,11 @@ export const authRouter = t.router({
                 }
             }
         }),
-        
+
     me: publicProcedure.use(isAuthed).query(async ({ ctx }) => {
-            const { password, ...safeUser } = ctx.user;
-            return safeUser;
-        }),
+        const { password, ...safeUser } = ctx.user;
+        return safeUser;
+    }),
     login: publicProcedure
         .input(loginFormSchema)
         .output(
@@ -105,7 +105,7 @@ export const authRouter = t.router({
         .mutation(async ({ input }) => {
             if (!jwt.verify(input.refreshToken, env.JWT_REFRESH_SECRET))
                 throw new TRPCError({
-                    code: "FORBIDDEN",
+                    code: "UNAUTHORIZED",
                     message: "Invalid refresh token"
                 });
             try {
@@ -126,7 +126,7 @@ export const authRouter = t.router({
                 jwt.verify(input.refreshToken, env.JWT_REFRESH_SECRET);
             } catch (error) {
                 throw new TRPCError({
-                    code: "FORBIDDEN",
+                    code: "UNAUTHORIZED",
                     message: "Refresh token is invalid"
                 });
             }
@@ -135,7 +135,7 @@ export const authRouter = t.router({
             });
             if (!token)
                 throw new TRPCError({
-                    code: "FORBIDDEN",
+                    code: "UNAUTHORIZED",
                     message: "Refresh token not found"
                 });
 

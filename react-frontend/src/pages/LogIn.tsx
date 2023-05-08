@@ -20,10 +20,6 @@ export default function LogIn() {
 
     const mutation = trpc.auth.login.useMutation();
 
-    useEffect(() => {
-        if (jwtStore.isLoggedIn()) navigate({ to: "/dashboard" });
-    }, []);
-
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 

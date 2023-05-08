@@ -2,9 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import { TRPCError, inferAsyncReturnType, initTRPC } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import * as cors from "cors";
-import * as jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import * as express from "express";
+import * as jwt from "jsonwebtoken";
 import { ZodError, z } from "zod";
 import { envSchema } from "./zod/env";
 
@@ -50,7 +50,8 @@ export const t = initTRPC.context<Context>().create({
 });
 
 export const isAuthed = t.middleware(async ({ ctx, next }) => {
-    if (!ctx.req.headers.authorization) throw new TRPCError({ code: "UNAUTHORIZED" });
+    if (!ctx.req.headers.authorization)
+        throw new TRPCError({ code: "UNAUTHORIZED" });
     const token = ctx.req.headers.authorization;
 
     try {
@@ -58,7 +59,7 @@ export const isAuthed = t.middleware(async ({ ctx, next }) => {
     } catch (error) {
         throw new TRPCError({
             code: "UNAUTHORIZED",
-            message: "Invalid jwt token",
+            message: "Invalid jwt token"
         });
     }
 
@@ -67,7 +68,7 @@ export const isAuthed = t.middleware(async ({ ctx, next }) => {
     if (!data.success)
         throw new TRPCError({
             code: "UNAUTHORIZED",
-            message: "Invalid jwt object",
+            message: "Invalid jwt object"
         });
 
     const user = await prisma.user.findFirst({ where: { id: data.data.id } });

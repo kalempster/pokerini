@@ -1,10 +1,11 @@
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./utils/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "./utils/trpc";
-import { httpBatchLink } from "@trpc/client";
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import { useJwtStore } from "./stores/jwtStore";
+import { AppRouter } from "../../backend";
 
 const App = () => {
     const jwtStore = useJwtStore();
@@ -15,8 +16,10 @@ const App = () => {
                 httpBatchLink({
                     url: "http://localhost:3001/api",
                     headers() {
+                        const token = jwtStore.getAccessToken();
+
                         return {
-                            Authorization: jwtStore.getAccessToken(),
+                            Authorization: token,
                             "Api-Version": "1.0.0"
                         };
                     }

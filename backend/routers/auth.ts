@@ -3,7 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { compare, hash } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { z } from "zod";
-import { env, prisma, publicProcedure, t } from "..";
+import { env, isAuthed, prisma, publicProcedure, t } from "..";
 import { loginFormSchema } from "../../react-frontend/shared-schemas/loginFormSchema";
 import { registerFormSchema } from "../../react-frontend/shared-schemas/registerFormSchema";
 import { userSchema } from "../zod/user";
@@ -42,6 +42,11 @@ export const authRouter = t.router({
                 }
             }
         }),
+
+    me: publicProcedure.use(isAuthed).query(async ({ ctx }) => {
+        const { password, ...safeUser } = ctx.user;
+        return safeUser;
+    }),
     login: publicProcedure
         .input(loginFormSchema)
         .output(
@@ -100,7 +105,7 @@ export const authRouter = t.router({
         .mutation(async ({ input }) => {
             if (!jwt.verify(input.refreshToken, env.JWT_REFRESH_SECRET))
                 throw new TRPCError({
-                    code: "FORBIDDEN",
+                    code: "UNAUTHORIZED",
                     message: "Invalid refresh token"
                 });
             try {
@@ -121,7 +126,7 @@ export const authRouter = t.router({
                 jwt.verify(input.refreshToken, env.JWT_REFRESH_SECRET);
             } catch (error) {
                 throw new TRPCError({
-                    code: "FORBIDDEN",
+                    code: "UNAUTHORIZED",
                     message: "Refresh token is invalid"
                 });
             }
@@ -130,7 +135,7 @@ export const authRouter = t.router({
             });
             if (!token)
                 throw new TRPCError({
-                    code: "FORBIDDEN",
+                    code: "UNAUTHORIZED",
                     message: "Refresh token not found"
                 });
 

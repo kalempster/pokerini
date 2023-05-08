@@ -1,9 +1,13 @@
-import { Outlet, RootRoute, Route, Router } from "@tanstack/react-router";
+import {
+    Outlet,
+    RootRoute,
+    Route,
+    Router,
+    useNavigate
+} from "@tanstack/react-router";
 import AOS from "aos";
 import { useEffect, useState } from "react";
 import Dialog from "../components/Dialog/Dialog";
-import Feeter from "../components/Feeter/Feeter";
-import Header from "../components/Header/Header";
 import MobileMenu from "../components/Header/MobileMenu";
 import CreateGame from "../pages/CreateGame";
 import Dashboard from "../pages/Dashboard";
@@ -13,11 +17,18 @@ import Lobby from "../pages/Lobby";
 import LogIn from "../pages/LogIn";
 import Main from "../pages/Main";
 import Register from "../pages/Register";
+import { useJwtStore } from "../stores/jwtStore";
+import { useUserStore } from "../stores/userStore";
+import { trpc } from "./trpc";
+import { TRPCClientError } from "@trpc/client";
+import {
+    RefreshError,
+    useRefreshQueryOrMutation
+} from "../hooks/useRefreshQuery";
 
 const rootRoute = new RootRoute({
     component: () => {
         const [isAdultDialogVisible, setIsAdultDialogVisible] = useState(false);
-
         useEffect(() => {
             AOS.init({ once: true, easing: "ease-out-quad", duration: 1000 });
             (() => {
@@ -72,98 +83,138 @@ const rootRoute = new RootRoute({
     }
 });
 
-const headerRootRoute = new Route({
-    id: "header",
+const protectedRootRoute = new Route({
     getParentRoute: () => rootRoute,
+    id: "protected",
     component: () => {
-        return (
-            <>
-                <Header />
-                <Outlet />
-                <Feeter />
-            </>
-        );
+        const jwtStore = useJwtStore();
+        const navigate = useNavigate();
+        const userStore = useUserStore();
+        const query = useRefreshQueryOrMutation();
+
+        const { refetch } = trpc.auth.me.useQuery(undefined, {
+            retry: false,
+            enabled: false
+        });
+
+        useEffect(() => {
+            if (!jwtStore.isLoggedIn()) navigate({ to: "/login" });
+        }, []);
+
+        useEffect(() => {
+            (async () => {
+                if (!userStore.user.id && jwtStore.isLoggedIn()) {
+                    try {
+                        const data = await query(() =>
+                            refetch({ throwOnError: true })
+                        );
+
+                        if (!data.data) return;
+
+                        userStore.setUser({
+                            ...data.data,
+                            createdAt: new Date(data.data.createdAt),
+                            updatedAt: new Date(data.data.updatedAt)
+                        }); // Since we're not using a data transformer the dates are encoded as ISO strings so we need to convert them back
+                    } catch (error) {
+                        if (error instanceof TRPCClientError)
+                            console.log(error); // Error while fetching user data
+                        if (error instanceof RefreshError) {
+                            // Invalid refresh token, log user out
+                            jwtStore.setAccessToken("");
+                            jwtStore.setRefreshToken("");
+                            userStore.setUser({
+                                id: "",
+                                username: "",
+                                chips: 0,
+                                email: "",
+                                createdAt: new Date(),
+                                updatedAt: new Date()
+                            });
+                            navigate({ to: "/login" });
+                        }
+                    }
+                }
+            })();
+        }, []);
+
+        return <Outlet />;
     }
 });
 
-const headlessRootRoute = new Route({
-    id: "headless",
+const unprotectedOnlyRoute = new Route({
     getParentRoute: () => rootRoute,
+    id: "unprotected",
     component: () => {
+        const jwtStore = useJwtStore();
+        const navigate = useNavigate();
+
+        useEffect(() => {
+            if (jwtStore.isLoggedIn())
+                navigate({ to: "/dashboard", replace: true });
+        }, []);
+
         return <Outlet />;
     }
 });
 
 const indexRoute = new Route({
-    getParentRoute: () => headerRootRoute,
+    getParentRoute: () => rootRoute,
     path: "/",
     component: Main
 });
 const loginRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
-    path: "/login",
+    getParentRoute: () => unprotectedOnlyRoute,
+    path: "login",
     component: LogIn
 });
 const registerRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
-    path: "/register",
+    getParentRoute: () => unprotectedOnlyRoute,
+    path: "/sign-up",
     component: Register
 });
 
 const dashboardRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/dashboard",
     component: Dashboard
 });
 
 const createGameRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/create",
     component: CreateGame
 });
 
 const gameRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/game",
     component: Game
 });
 
 const lobbyRoute = new Route({
-    getParentRoute: () => headlessRootRoute,
+    getParentRoute: () => protectedRootRoute,
     path: "/lobby",
     component: Lobby
 });
 
-const errorRootRoute = new Route({
-    id: "error",
+const _404Route = new Route({
     getParentRoute: () => rootRoute,
-    component: () => {
-        return (
-            <>
-                <Header />
-                <Outlet />
-                <Feeter />
-            </>
-        );
-    }
-});
-
-const errorRoute = new Route({
-    getParentRoute: () => errorRootRoute,
-    path: "/*",
+    path: "*",
     component: ErrorPage
 });
 const routeTree = rootRoute.addChildren([
-    headerRootRoute.addChildren([indexRoute]),
-    headlessRootRoute.addChildren([
+    indexRoute,
+    unprotectedOnlyRoute.addChildren([loginRoute, registerRoute]),
+
+    protectedRootRoute.addChildren([
         dashboardRoute,
-        loginRoute,
-        registerRoute,
         gameRoute,
         createGameRoute,
         lobbyRoute
     ]),
-    errorRootRoute.addChildren([errorRoute])
+
+    _404Route
 ]);
 
 export const router = new Router({ routeTree });

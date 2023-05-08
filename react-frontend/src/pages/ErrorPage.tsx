@@ -1,9 +1,12 @@
 import { ReactSVG } from "react-svg";
 import Section from "../components/Section/Section";
 import error from "../images/error.svg";
+import Header from "../components/Header/Header";
+import Feeter from "../components/Feeter/Feeter";
 const ErrorPage = () => {
     return (
         <>
+            <Header />
             <Section
                 isFirst
                 isSingle
@@ -20,6 +23,7 @@ const ErrorPage = () => {
                     </div>
                 </div>
             </Section>
+            <Feeter />
         </>
     );
 };

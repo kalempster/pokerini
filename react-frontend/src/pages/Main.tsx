@@ -18,7 +18,7 @@ export default function Main() {
 
     return (
         <>
-            <Header />
+            <Header animated />
             <Section className="flex w-full items-center bg-background" isFirst>
                 <div className="flex w-full justify-center px-4 md:px-28 lg:justify-between 2xl:px-72">
                     <div

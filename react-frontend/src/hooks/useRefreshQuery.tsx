@@ -36,6 +36,7 @@ export const useRefreshQueryOrMutation = () => {
 
             const success = await refreshAccessToken();
             if (!success) throw new RefreshError();
+
             data = await getQuery();
         }
         return data;

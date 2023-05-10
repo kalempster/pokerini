@@ -63,7 +63,7 @@ const Game = () => {
         //     </div>
         // </div>
         <>
-            <Header />
+            <Header showProfile />
             <iframe
                 className="h-full w-full"
                 src="https://www.247freepoker.com/"></iframe>

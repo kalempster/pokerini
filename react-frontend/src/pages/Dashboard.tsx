@@ -26,7 +26,7 @@ const Dashboard = () => {
 
     return (
         <div className="h-[100lvh]">
-            <Header />
+            <Header showProfile />
             <Section className="flex flex-col items-center justify-center gap-5 pt-[calc(var(--header-height)*1.5)] tall:pt-0">
                 <div className="flex flex-col items-center justify-center gap-5 text-3xl font-semibold text-primary md:text-6xl">
                     <div>Join a game</div>

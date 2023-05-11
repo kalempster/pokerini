@@ -9,6 +9,8 @@ export class ScrollLocker {
         (e) => {
             if (this.locked) {
                 e.preventDefault();
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore https://github.com/microsoft/TypeScript/issues/47441
                 window.scrollTo({ behavior: "instant", top: this.scrollY });
             }
         },

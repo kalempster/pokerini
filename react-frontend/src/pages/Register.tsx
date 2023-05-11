@@ -85,7 +85,8 @@ export default function Register() {
                 email,
                 password,
                 confirmPassword
-            });
+            }); // ik ik we don't need to send the confirm password whatever
+            // I was too lazy to create another zod schema so I just grabbed the one that is used for frontend verification
             const result = await loginMutation.mutateAsync({
                 username,
                 password
@@ -193,9 +194,7 @@ export default function Register() {
                     </form>
                 </div>
             </div>
-            <div className="hidden min-h-full w-3/5 bg-background md:flex">
-                <img src={poker} className="min-w-[995px]" alt="" />
-            </div>
+            <div className="hidden min-h-full w-3/5 bg-background bg-poker md:flex"></div>
         </div>
     );
 }

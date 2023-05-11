@@ -1,4 +1,3 @@
-import { RouterProvider } from "@tanstack/react-router";
 import "aos/dist/aos.css";
 import React from "react";
 import ReactDOM from "react-dom/client";

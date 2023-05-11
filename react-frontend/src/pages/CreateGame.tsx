@@ -16,7 +16,7 @@ const CreateGame = () => {
 
     return (
         <div className="h-[100lvh]">
-            <Header />
+            <Header showProfile />
             <Section className="flex flex-col items-center justify-center gap-5 pt-[calc(var(--header-height)*1.5)] tall:pt-0">
                 <div className=" flex flex-col items-center justify-center gap-10 font-semibold text-primary">
                     <div className="text-3xl md:text-6xl">Create a game</div>

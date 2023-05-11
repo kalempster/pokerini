@@ -12,15 +12,9 @@ module.exports = {
                 tall: { raw: "(min-height: 600px)" }
             },
             backgroundImage: {
-                poker: "url('./src/images/poker.webp')"
+                poker: "url('./src/images/poker.png')"
             },
-            fontFamily: {
-                "noto-serif": "'Noto Serif Malayalam', serif;",
-                siemano: "'Cinzel Decorative', cursive",
-                dancing: "'Dancing Script', cursive;",
-                gotyk: "'Didact Gothic', sans-serif;",
-                epilog: "'Epilogue', sans-serif;"
-            },
+            fontFamily: {},
             boxShadow: {
                 innerSh: "inset 0 0 20rem black;"
             },

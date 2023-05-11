@@ -13,7 +13,13 @@ import { useUserStore } from "../../stores/userStore";
 // To gowno nie bylo updatowane od 6 lat
 // Jeden google search
 // https://www.npmjs.com/package/react-number-format
-export default function Header() {
+export default function Header({
+    showProfile,
+    animated
+}: {
+    showProfile?: boolean;
+    animated?: boolean;
+}) {
     const menuStore = useMenuStore();
     const jwtStore = useJwtStore();
     const userStore = useUserStore();
@@ -66,36 +72,36 @@ export default function Header() {
                             data-aos="fade-down"
                             data-aos-delay="600"
                             to="/login">
-                            login
+                            Login
                         </Link>
                     </div>
-                ) : (
-                    <div>
+                ) : showProfile ? (
+                    <div className="cursor-pointer select-none">
                         <div
-                            onClick={() => {
-                                setMenu(!menu);
-                            }}
-                            className="flex gap-2 whitespace-pre-wrap rounded-xl  bg-twojstary px-6 py-3 text-xl text-primary">
+                            onClick={() => setMenu(!menu)}
+                            className="flex gap-2 whitespace-pre-wrap rounded-xl bg-twojstary px-6 py-3 text-xl text-primary">
                             <div>{userStore.user.chips}</div>
                             <div>{data.username}</div>
                             <div>v</div>
                         </div>
                         <div
-                            onClick={() => {
-                                setMenu(!menu);
-                            }}
+                            onClick={() => setMenu(!menu)}
                             className={
                                 menu
                                     ? "top absolute z-10 flex min-w-[150px] rounded-xl bg-twojstary px-6 py-3 text-center text-xl text-primary"
                                     : "top absolute z-10 hidden min-w-[150px] rounded-xl bg-twojstary px-6 py-3 text-center text-xl text-primary"
                             }>
-                            <button
-                                onClick={() => {
-                                    logout();
-                                }}>
-                                Log out
-                            </button>
+                            <button onClick={() => logout()}>Log out</button>
                         </div>
+                    </div>
+                ) : (
+                    <div className="hidden flex-row gap-16 text-primary md:text-2xl  lg:flex">
+                        <Link
+                            data-aos="fade-down"
+                            data-aos-delay="600"
+                            to="/dashboard">
+                            Dashboard
+                        </Link>
                     </div>
                 )}
 

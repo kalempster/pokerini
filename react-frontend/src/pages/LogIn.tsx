@@ -47,9 +47,9 @@ export default function LogIn() {
             jwtStore.setAccessToken(result.ACCESS_TOKEN);
             jwtStore.setRefreshToken(result.REFRESH_TOKEN);
             userStore.setUser({
-                ...result.user!,
-                createdAt: new Date(result.user!.createdAt),
-                updatedAt: new Date(result.user!.updatedAt)
+                ...result.user,
+                createdAt: new Date(result.user.createdAt),
+                updatedAt: new Date(result.user.updatedAt)
             });
             navigate({ to: "/dashboard" });
         } catch (error) {

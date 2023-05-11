@@ -3,20 +3,14 @@ import {
     RootRoute,
     Route,
     Router,
+    lazy,
     useNavigate
 } from "@tanstack/react-router";
 import AOS from "aos";
 import { useEffect, useState } from "react";
 import Dialog from "../components/Dialog/Dialog";
 import MobileMenu from "../components/Header/MobileMenu";
-import CreateGame from "../pages/CreateGame";
-import Dashboard from "../pages/Dashboard";
-import ErrorPage from "../pages/ErrorPage";
-import Game from "../pages/Game";
-import Lobby from "../pages/Lobby";
-import LogIn from "../pages/LogIn";
 import Main from "../pages/Main";
-import Register from "../pages/Register";
 import { useJwtStore } from "../stores/jwtStore";
 import { useUserStore } from "../stores/userStore";
 import { trpc } from "./trpc";
@@ -166,42 +160,42 @@ const indexRoute = new Route({
 const loginRoute = new Route({
     getParentRoute: () => unprotectedOnlyRoute,
     path: "login",
-    component: LogIn
+    component: lazy(() => import("../pages/LogIn"))
 });
 const registerRoute = new Route({
     getParentRoute: () => unprotectedOnlyRoute,
     path: "/sign-up",
-    component: Register
+    component: lazy(() => import("../pages/Register"))
 });
 
 const dashboardRoute = new Route({
     getParentRoute: () => protectedRootRoute,
     path: "/dashboard",
-    component: Dashboard
+    component: lazy(() => import("../pages/Dashboard"))
 });
 
 const createGameRoute = new Route({
     getParentRoute: () => protectedRootRoute,
     path: "/create",
-    component: CreateGame
+    component: lazy(() => import("../pages/CreateGame"))
 });
 
 const gameRoute = new Route({
     getParentRoute: () => protectedRootRoute,
     path: "/game",
-    component: Game
+    component: lazy(() => import("../pages/Game"))
 });
 
 const lobbyRoute = new Route({
     getParentRoute: () => protectedRootRoute,
     path: "/lobby",
-    component: Lobby
+    component: lazy(() => import("../pages/Lobby"))
 });
 
 const _404Route = new Route({
     getParentRoute: () => rootRoute,
     path: "*",
-    component: ErrorPage
+    component: lazy(() => import("../pages/ErrorPage"))
 });
 const routeTree = rootRoute.addChildren([
     indexRoute,
@@ -217,7 +211,15 @@ const routeTree = rootRoute.addChildren([
     _404Route
 ]);
 
-export const router = new Router({ routeTree });
+export const router = new Router({
+    routeTree,
+    loadComponent: async (component) => {
+        if (component.preload) {
+            await component.preload();
+        }
+        return component;
+    }
+});
 
 declare module "@tanstack/router" {
     interface Register {

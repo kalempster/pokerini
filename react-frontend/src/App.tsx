@@ -1,11 +1,11 @@
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./utils/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { trpc } from "./utils/trpc";
-import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { httpBatchLink } from "@trpc/client";
 import { useJwtStore } from "./stores/jwtStore";
-import { AppRouter } from "../../backend";
+import { LazyMotion, domAnimation } from "framer-motion";
 
 const App = () => {
     const jwtStore = useJwtStore();
@@ -29,11 +29,13 @@ const App = () => {
     );
 
     return (
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-            <QueryClientProvider client={queryClient}>
-                <RouterProvider router={router} />
-            </QueryClientProvider>
-        </trpc.Provider>
+        <LazyMotion features={domAnimation} strict>
+            <trpc.Provider client={trpcClient} queryClient={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <RouterProvider router={router} />
+                </QueryClientProvider>
+            </trpc.Provider>
+        </LazyMotion>
     );
 };
 

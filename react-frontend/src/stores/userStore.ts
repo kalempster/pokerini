@@ -1,5 +1,4 @@
 import type { userSchemaType } from "../../../backend/zod/user";
-import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 
 type userStoreType = {

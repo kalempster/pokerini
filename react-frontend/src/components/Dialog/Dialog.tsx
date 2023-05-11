@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // Bugging out in Dialog component, known issue
 import React, { FC, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import ReactDOM from "react-dom";
 import { ScrollLocker } from "../../utils/ScrollLocker";
 import Title from "./Title/Title";
@@ -71,14 +71,14 @@ const Dialog: DialogType = ({ children, onDismiss, visible = false }) => {
     return ReactDOM.createPortal(
         <AnimatePresence>
             {visible && (
-                <motion.div
+                <m.div
                     ref={modalRef}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onDismiss}
                     className="fixed z-50 h-full w-full bg-black bg-opacity-50">
-                    <motion.div
+                    <m.div
                         initial={{ translateY: "2rem" }}
                         animate={{ translateY: "0" }}
                         exit={{ translateY: "2rem" }}
@@ -93,8 +93,8 @@ const Dialog: DialogType = ({ children, onDismiss, visible = false }) => {
                             className="mx-6 flex w-full flex-col gap-5 rounded-md bg-background p-4 md:mx-0 md:w-1/2 xl:w-1/4">
                             {children}
                         </div>
-                    </motion.div>
-                </motion.div>
+                    </m.div>
+                </m.div>
             )}
         </AnimatePresence>,
         dialogRoot

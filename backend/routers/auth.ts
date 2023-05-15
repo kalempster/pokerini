@@ -3,9 +3,12 @@ import { TRPCError } from "@trpc/server";
 import { compare, hash } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { z } from "zod";
-import { env, isAuthed, prisma, publicProcedure, t } from "..";
 import { loginFormSchema } from "../../react-frontend/shared-schemas/loginFormSchema";
 import { registerFormSchema } from "../../react-frontend/shared-schemas/registerFormSchema";
+import { isAuthed } from "../utils/authUtils";
+import { env } from "../utils/env";
+import { prisma } from "../utils/prisma";
+import { publicProcedure, t } from "../utils/trpc";
 import { userSchema } from "../zod/user";
 
 export const authRouter = t.router({

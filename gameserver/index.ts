@@ -1,29 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as http from "http";
 import { Server } from "socket.io";
-import { ZodType } from "zod";
-import { Lobby } from "./objects/Lobby";
-import { EventObject } from "./types/EventObject";
+
+import create from "./events/create";
+import { events, players } from "./utils/caches";
+import { client } from "./utils/client";
 
 const httpServer = http.createServer();
 const server = new Server(httpServer);
 
-export const lobbies = new Map<string, Lobby>();
-
-export const players = new Map<
-    string,
-    Awaited<ReturnType<typeof client.gameserver.isUserAuthed.query>>
->();
-
-import create from "./events/create";
-import { client } from "./utils/client";
-
 //https://stackoverflow.com/questions/76236346/infer-type-from-object-value
 
-const events = new Map<
-    string,
-    EventObject<ZodType<any, any, any>> | EventObject
->();
 events.set(create.name, create);
 
 server.use(async (connection, next) => {

@@ -1,5 +1,5 @@
-import { lobbies, players } from "..";
 import { EventObject } from "../types/EventObject";
+import { lobbies, players } from "../utils/caches";
 import { generateGameCode } from "../utils/generateGameCode";
 
 export default {

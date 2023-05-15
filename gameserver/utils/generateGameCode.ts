@@ -1,5 +1,7 @@
-import { random } from "lodash";
-import { lobbies } from "..";
+import _ from "lodash";
+import { lobbies } from "./caches";
+
+const { random } = _;
 
 const AVAILABLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { lobbies, players } from "..";
 import { EventObject } from "../types/EventObject";
+import { lobbies, players } from "../utils/caches";
 
 const schema = z.object({ code: z.string() });
 

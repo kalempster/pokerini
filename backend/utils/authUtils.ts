@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { env } from "./env";
 import { prisma } from "./prisma";

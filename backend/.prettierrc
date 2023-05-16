@@ -4,8 +4,6 @@
     "bracketSameLine": true,
     "trailingComma": "none",
     "semi": true,
-    "plugins": [
-        "./node_modules/prettier-plugin-organize-imports"
-    ],
+    "plugins": ["./node_modules/prettier-plugin-organize-imports"],
     "quoteProps": "as-needed"
 }

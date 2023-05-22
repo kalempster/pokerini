@@ -1,31 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as http from "http";
 import { Server } from "socket.io";
 
 import create from "./events/create";
+import join from "./events/join";
 import { events, players } from "./utils/caches";
 import { client } from "./utils/client";
 
 const httpServer = http.createServer();
-const server = new Server(httpServer);
+const server = new Server(httpServer, {
+    cors: {
+        origin: "http://localhost:5173"
+    }
+});
 
 //https://stackoverflow.com/questions/76236346/infer-type-from-object-value
 
 events.set(create.name, create);
+events.set(join.name, join);
 
 server.use(async (connection, next) => {
-    if (!connection.handshake.query.token) return connection.disconnect();
-    if (!(typeof connection.handshake.query.token == "string"))
-        return connection.disconnect();
+    if (!connection.handshake.auth.token) return connection.disconnect();
+    if (!(typeof connection.handshake.auth.token == "string"))
+        return connection.disconnect(true);
     try {
         const user = await client.gameserver.isUserAuthed.query(
-            connection.handshake.query.token
+            connection.handshake.auth.token
         );
         players.set(connection.id, user);
 
         next();
     } catch (error) {
-        connection.disconnect();
+        connection.disconnect(true);
     }
 });
 
@@ -49,14 +54,17 @@ server.on("connection", (connection) => {
 
                 if (!awaitedReturnValue) return;
 
-                return JSON.stringify(awaitedReturnValue);
+                return connection.emit(event[1].name, awaitedReturnValue);
             }
 
-            return JSON.stringify(returnValue);
+            connection.emit(event[1].name, returnValue);
         });
     }
+    connection.on("disconnect", () => {
+        players.delete(connection.id);
+    });
 });
 
 httpServer.listen(3000, undefined, undefined, () => {
-    console.log("listenin");
+    console.log("listenin on 3000");
 });

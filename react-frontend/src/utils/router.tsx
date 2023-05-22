@@ -19,6 +19,7 @@ import {
     RefreshError,
     useRefreshQueryOrMutation
 } from "../hooks/useRefreshQuery";
+import { useGameServer } from "../hooks/useGameServer";
 
 const rootRoute = new RootRoute({
     component: () => {
@@ -85,7 +86,7 @@ const protectedRootRoute = new Route({
         const navigate = useNavigate();
         const userStore = useUserStore();
         const query = useRefreshQueryOrMutation();
-
+        useGameServer();
         const { refetch } = trpc.auth.me.useQuery(undefined, {
             retry: false,
             enabled: false

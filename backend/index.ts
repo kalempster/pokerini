@@ -25,4 +25,4 @@ app.use(
     })
 );
 
-app.listen(3001, () => console.log("listening"));
+app.listen(3001, () => console.log("listening on 3001"));

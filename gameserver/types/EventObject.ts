@@ -1,15 +1,13 @@
 import { Socket } from "socket.io";
-import { ZodType, z } from "zod";
-
-type ZodInferred<T extends ZodType<any, any, any>> = z.infer<T>;
+import { ZodTypeAny, z } from "zod";
 
 export type EventObject<T = void> = {
     name: string;
-} & (T extends ZodType<any, any, any>
+} & (T extends ZodTypeAny
     ? {
           inputSchema: T;
           callback(input: {
-              data: ZodInferred<T>;
+              data: z.infer<T>;
               connection: Socket;
           }): object | Promise<object> | void | Promise<void>;
       }

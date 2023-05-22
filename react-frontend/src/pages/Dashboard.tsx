@@ -5,6 +5,7 @@ import { gameCodeSchema } from "../../shared-schemas/gameCodeSchema";
 import Section from "../components/Section/Section";
 import { useJwtStore } from "../stores/jwtStore";
 import Header from "../components/Header/Header";
+import { socket, useGameServer } from "../hooks/useGameServer";
 const Dashboard = () => {
     const codeInputRef = useMask({
         mask: "____-____",

@@ -9,11 +9,11 @@ export type EventObject<T = void> = {
           callback(input: {
               data: z.infer<T>;
               connection: Socket;
-          }): object | Promise<object> | void | Promise<void>;
+          }): object | void | Promise<object> | Promise<void>;
       }
     : {
           inputSchema?: T;
           callback(input: {
               connection: Socket;
-          }): object | Promise<object> | void | Promise<void>;
+          }): object | void | Promise<object> | Promise<void>;
       });

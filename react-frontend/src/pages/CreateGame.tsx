@@ -5,14 +5,27 @@ import "rc-slider/assets/index.css";
 import { useEffect, useState } from "react";
 import Section from "../components/Section/Section";
 import Header from "../components/Header/Header";
+import { socket } from "../hooks/useGameServer";
 const bets = [100, 500, 1000, 5000, 10000];
 const CreateGame = () => {
     const [selectedBet, setSelectedBet] = useState(bets[0]);
     const [players, setPlayers] = useState(2);
 
     useEffect(() => {
-        console.log(selectedBet, players);
-    }, [selectedBet, players]);
+        const onCreateListener = (...args: any) => {
+            console.log(args);
+        };
+
+        socket.on("create", onCreateListener);
+
+        return () => {
+            socket.off("create", onCreateListener);
+        };
+    }, []);
+
+    const onGameCreate = () => {
+        socket.emit("create");
+    };
 
     return (
         <div className="h-[100lvh]">
@@ -94,7 +107,9 @@ const CreateGame = () => {
                             </div>
                         </Listbox>
                     </div>
-                    <button className="rounded-md bg-secondary px-20 py-2 text-2xl font-bold text-primary md:text-2xl xl:px-10">
+                    <button
+                        onClick={onGameCreate}
+                        className="rounded-md bg-secondary px-20 py-2 text-2xl font-bold text-primary md:text-2xl xl:px-10">
                         Create a game
                     </button>
                 </div>

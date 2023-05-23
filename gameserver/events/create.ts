@@ -11,7 +11,7 @@ const schema = z.object({
 export default {
     name: "create",
     inputSchema: schema,
-    async callback({ connection, data }) {
+    callback({ connection, data }) {
         const user = players.get(connection.id);
 
         if (!user) return;

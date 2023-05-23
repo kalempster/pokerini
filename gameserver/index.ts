@@ -37,13 +37,20 @@ server.use(async (connection, next) => {
 server.on("connection", (connection) => {
     for (const event of events) {
         connection.on(event[0], async (args) => {
-            const parsed = event[1].inputSchema
-                ? event[1].inputSchema.safeParse(args)
-                : { success: true, data: {} };
-            if (!parsed.success) return;
+            let parsed;
+            
+            if (event[1].inputSchema) {
+                parsed = event[1].inputSchema.safeParse(args);
+
+                if (!parsed.success)
+                    return connection.emit("create", {
+                        error: 400,
+                        zodError: parsed.error
+                    });
+            }
 
             const returnValue = event[1].callback({
-                data: event[1].inputSchema ? parsed.data : undefined,
+                data: parsed ? parsed.data : undefined,
                 connection: connection
             });
 

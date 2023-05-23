@@ -1,4 +1,4 @@
-import { ZodType } from "zod";
+import { ZodType, ZodTypeAny } from "zod";
 import { Lobby } from "../objects/Lobby";
 import { EventObject } from "../types/EventObject";
 import { client } from "./client";
@@ -11,5 +11,5 @@ export const players = new Map<
 >();
 export const events = new Map<
     string,
-    EventObject<ZodType<any, any, any>> | EventObject
+    EventObject<ZodTypeAny> | EventObject
 >();

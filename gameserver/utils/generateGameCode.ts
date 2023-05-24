@@ -12,7 +12,7 @@ export const generateGameCode = (): string => {
             code += "-";
             continue;
         }
-        code += AVAILABLE_CHARS[random(0, AVAILABLE_CHARS.length)];
+        code += AVAILABLE_CHARS[random(0, AVAILABLE_CHARS.length - 1)];
     }
     if (lobbies.has(code)) return generateGameCode();
 

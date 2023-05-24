@@ -1,9 +1,9 @@
 import { ZodType, ZodTypeAny } from "zod";
-import { Lobby } from "../objects/Lobby";
+import { Lobby, LobbyType } from "../objects/Lobby";
 import { EventObject } from "../types/EventObject";
 import { client } from "./client";
 
-export const lobbies = new Map<string, Lobby>();
+export const lobbies = new Map<string, LobbyType>();
 
 export const players = new Map<
     string,

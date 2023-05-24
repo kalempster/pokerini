@@ -16,7 +16,17 @@ export default {
 
         if (!user) return;
 
-        for (const lobby of lobbies) if (lobby[1].hostId == user.id) return; //Can't host 2 lobbies at the same time
+        for (const lobby of lobbies)
+            if (lobby[1].hostId == user.id) {
+                const safeLobby = lobby[1];
+                return {
+                    ...safeLobby,
+                    players: safeLobby.players.map((p) => ({
+                        ...p,
+                        connection: undefined
+                    }))
+                };
+            }
 
         const gameCode = generateGameCode().toLowerCase();
 

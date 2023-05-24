@@ -38,13 +38,12 @@ server.on("connection", (connection) => {
     for (const event of events) {
         connection.on(event[0], async (args) => {
             let parsed;
-            
+
             if (event[1].inputSchema) {
                 parsed = event[1].inputSchema.safeParse(args);
 
                 if (!parsed.success)
-                    return connection.emit("create", {
-                        error: 400,
+                    return connection.emit(event[0], {
                         zodError: parsed.error
                     });
             }

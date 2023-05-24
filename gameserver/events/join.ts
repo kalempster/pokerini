@@ -25,8 +25,8 @@ export default {
 
         lobbies.set(code, updatedLobby);
 
-        for (const player of lobby.players) {
-            player.connection.emit("update", {
+        for (const loopedPlayer of lobby.players) {
+            loopedPlayer.connection.emit("update", {
                 lobby: {
                     ...updatedLobby,
                     players: updatedLobby.players.map((p) => ({

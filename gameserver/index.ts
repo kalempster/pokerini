@@ -1,10 +1,13 @@
 import * as http from "http";
 import { Server } from "socket.io";
 
+import close from "./events/close";
 import create from "./events/create";
 import join from "./events/join";
+import rejoin from "./events/rejoin";
 import { events, players } from "./utils/caches";
 import { client } from "./utils/client";
+import kick from "./events/kick";
 
 const httpServer = http.createServer();
 const server = new Server(httpServer, {
@@ -17,6 +20,11 @@ const server = new Server(httpServer, {
 
 events.set(create.name, create);
 events.set(join.name, join);
+events.set(rejoin.name, rejoin);
+events.set(close.name, close);
+events.set(kick.name, kick);
+
+
 
 server.use(async (connection, next) => {
     if (!connection.handshake.auth.token) return connection.disconnect();

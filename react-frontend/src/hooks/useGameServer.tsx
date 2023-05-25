@@ -8,12 +8,17 @@ export const useGameServer = () => {
     const jwtStore = useJwtStore();
 
     useEffect(() => {
-        if (!jwtStore.isLoggedIn()) return;
-        if (!socket)
+        if (!socket) {
             socket = io("http://localhost:3000", {
                 auth: {
                     token: jwtStore.accessToken
                 }
             });
-    }, []);
+        }
+
+        if (socket.disconnected) {
+            socket.auth = { token: jwtStore.accessToken };
+            socket.connect();
+        }
+    }, [jwtStore.accessToken]);
 };

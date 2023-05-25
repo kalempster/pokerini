@@ -5,12 +5,23 @@ import { gameCodeSchema } from "../../shared-schemas/gameCodeSchema";
 import Section from "../components/Section/Section";
 import { useJwtStore } from "../stores/jwtStore";
 import Header from "../components/Header/Header";
+import { socket, useGameServer } from "../hooks/useGameServer";
+import { Lobby } from "../../../gameserver/objects/Lobby";
+import { useGameStore } from "../stores/gameStore";
 const Dashboard = () => {
+    const gameStore = useGameStore();
+
+    const navigate = useNavigate();
+
     const codeInputRef = useMask({
         mask: "____-____",
         replacement: { _: /\w/ },
         showMask: true
     });
+
+    const rejoin = () => {
+        socket.emit("rejoin");
+    };
 
     const [code, setCode] = useState("");
     const [codeValid, setCodeValid] = useState(false);
@@ -20,9 +31,31 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        if (validateCode(code)) setCodeValid(true); // TODO: JOIN GAME
-        else if (codeValid) setCodeValid(false);
+        if (validateCode(code)) {
+            setCodeValid(true);
+
+            socket.emit("join", { code: code.toLowerCase() });
+        } else if (codeValid) setCodeValid(false);
     }, [code]);
+
+    useEffect(() => {
+        const joinCallback = (args: unknown) => {
+            const lobby = Lobby.safeParse(args);
+            if (!lobby.success) return console.error(lobby);
+
+            gameStore.setGame(lobby.data);
+            navigate({ to: "/lobby" });
+        };
+
+        socket.on("join", joinCallback);
+
+        socket.on("rejoin", joinCallback);
+
+        return () => {
+            socket.off("join", joinCallback);
+            socket.off("rejoin", joinCallback);
+        };
+    }, []);
 
     return (
         <div className="h-[100lvh]">
@@ -54,6 +87,12 @@ const Dashboard = () => {
                     className=" rounded-md bg-secondary px-20 py-5 text-2xl font-bold text-primary md:text-5xl xl:px-20">
                     Create a game
                 </Link>
+                <div className="text-xl text-secondary">or</div>
+                <button
+                    onClick={rejoin}
+                    className=" rounded-md bg-secondary px-10 py-2 text-xl font-bold text-primary md:text-3xl xl:px-20">
+                    Rejoin
+                </button>
             </Section>
         </div>
     );

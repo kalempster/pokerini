@@ -19,8 +19,7 @@ const App = () => {
                         const token = jwtStore.getAccessToken();
 
                         return {
-                            Authorization: token,
-                            "Api-Version": "1.0.0"
+                            Authorization: token
                         };
                     }
                 })

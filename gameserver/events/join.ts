@@ -1,26 +1,25 @@
 import { z } from "zod";
 import { EventObject } from "../types/EventObject";
 import { lobbies, players } from "../utils/caches";
-import { generateGameCode } from "../utils/generateGameCode";
 import { convertToSafeLobby } from "../utils/safeLobby";
 
-const schema = z.object({
-    players: z.number().min(2).max(5),
-    bigBlind: z.number().min(100).max(10000)
-});
+const schema = z.object({ code: z.string() });
 
 export default {
-    name: "create",
+    name: "join",
     inputSchema: schema,
-    callback({ connection, data }) {
+    callback({ connection, data: { code } }) {
         const player = players.get(connection.id);
-
         if (!player) return;
+        let lobby = lobbies.get(code);
+        if (!lobby) return;
+
+        if (lobby.players.find((p) => p.id == player.id))
+            return convertToSafeLobby(lobby);
+
+        if (lobby.players.length + 1 > lobby.maxPlayers) return;
 
         for (const lobby of lobbies) {
-            if (lobby[1].hostId == player.id)
-                return convertToSafeLobby(lobby[1]);
-
             const index = lobby[1].players.findIndex((p) => p.id == player.id);
 
             if (index == -1) continue;
@@ -41,34 +40,26 @@ export default {
                 );
         }
 
-        const gameCode = generateGameCode().toLowerCase();
-
-        lobbies.set(gameCode, {
-            id: gameCode,
-            hostId: player.id,
+        const updatedLobby = {
+            ...lobby,
             players: [
+                ...lobby.players,
                 {
                     id: player.id,
                     username: player.username,
                     chips: player.chips,
-                    connection: connection
+                    connection
                 }
-            ],
-            maxPlayers: data.players,
-            bigBlind: data.bigBlind
-        });
-        return {
-            id: gameCode,
-            hostId: player.id,
-            players: [
-                {
-                    id: player.id,
-                    username: player.username,
-                    chips: player.chips
-                }
-            ],
-            maxPlayers: data.players,
-            bigBlind: data.bigBlind
+            ]
         };
+
+        lobbies.set(code, updatedLobby);
+
+        const safeUpdatedLobby = convertToSafeLobby(updatedLobby);
+
+        for (const loopedPlayer of lobby.players)
+            loopedPlayer.connection.emit("update", safeUpdatedLobby);
+
+        return safeUpdatedLobby;
     }
 } satisfies EventObject<typeof schema>;

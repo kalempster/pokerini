@@ -1,18 +1,41 @@
 import { Listbox } from "@headlessui/react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useEffect, useState } from "react";
 import Section from "../components/Section/Section";
 import Header from "../components/Header/Header";
+import { socket } from "../hooks/useGameServer";
+import { Lobby } from "../../../gameserver/objects/Lobby";
+import { z } from "zod";
+import { useGameStore } from "../stores/gameStore";
 const bets = [100, 500, 1000, 5000, 10000];
 const CreateGame = () => {
-    const [selectedBet, setSelectedBet] = useState(bets[0]);
+    const [bigBlind, setBigBlind] = useState(bets[0]);
     const [players, setPlayers] = useState(2);
 
+    const gameStore = useGameStore();
+
+    const navigation = useNavigate();
+
     useEffect(() => {
-        console.log(selectedBet, players);
-    }, [selectedBet, players]);
+        const onCreateListener = (args: unknown) => {
+            const result = Lobby.safeParse(args);
+            if (!result.success) return console.log(args);
+            gameStore.setGame(result.data);
+            navigation({ to: "/lobby" });
+        };
+
+        socket.on("create", onCreateListener);
+
+        return () => {
+            socket.off("create", onCreateListener);
+        };
+    }, []);
+
+    const onGameCreate = () => {
+        socket.emit("create", { players, bigBlind });
+    };
 
     return (
         <div className="h-[100lvh]">
@@ -53,11 +76,11 @@ const CreateGame = () => {
                     </div>
                     <div className="flex w-full flex-col justify-center gap-2">
                         <div className="text-3xl">Big blind</div>
-                        <Listbox value={selectedBet} onChange={setSelectedBet}>
+                        <Listbox value={bigBlind} onChange={setBigBlind}>
                             <div className="relative">
                                 <Listbox.Button className="relative w-full cursor-default rounded-lg bg-secondary py-2 pl-3 pr-10 text-left shadow-md sm:text-sm">
                                     <span className="block truncate text-primary">
-                                        {selectedBet}
+                                        {bigBlind}
                                     </span>
                                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                         v
@@ -94,7 +117,9 @@ const CreateGame = () => {
                             </div>
                         </Listbox>
                     </div>
-                    <button className="rounded-md bg-secondary px-20 py-2 text-2xl font-bold text-primary md:text-2xl xl:px-10">
+                    <button
+                        onClick={onGameCreate}
+                        className="rounded-md bg-secondary px-20 py-2 text-2xl font-bold text-primary md:text-2xl xl:px-10">
                         Create a game
                     </button>
                 </div>

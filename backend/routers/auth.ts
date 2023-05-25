@@ -1,11 +1,14 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { compare, hash } from "bcrypt";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { env, isAuthed, prisma, publicProcedure, t } from "..";
 import { loginFormSchema } from "../../react-frontend/shared-schemas/loginFormSchema";
 import { registerFormSchema } from "../../react-frontend/shared-schemas/registerFormSchema";
+import { isAuthed } from "../utils/authUtils";
+import { env } from "../utils/env";
+import { prisma } from "../utils/prisma";
+import { publicProcedure, t } from "../utils/trpc";
 import { userSchema } from "../zod/user";
 
 export const authRouter = t.router({
@@ -44,6 +47,7 @@ export const authRouter = t.router({
         }),
 
     me: publicProcedure.use(isAuthed).query(async ({ ctx }) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...safeUser } = ctx.user;
         return safeUser;
     }),

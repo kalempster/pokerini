@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Epilogue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --header-height: 6.5rem;
+    --big-footer-height: 6rem;
+    --small-footer-height: 4rem;
+}
+
+@layer components {
+    .card {
+        position: relative;
+    }
+    .card::after {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: url("./images/karta.svg");
+    }
+}
+
+* {
+    font-family: "Epilogue", sans-serif;
+}
+
+::selection {
+    @apply bg-secondary text-primary;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(239, 42, 79);
+    border-radius: 100vh;
+}

@@ -1,72 +1,172 @@
+import Cards from "src/components/Player/Cards";
 import Header from "../components/Header/Header";
-import GamePlayer from "../components/Player/GamePlayer";
-import Diler from "../images/diler.png";
+import { useEffect, useState } from "react";
+import { PlayerAction, SyncLobby } from "@gameserver/shared/messages";
+import { useGameStore } from "src/stores/gameStore";
+import Card, { convertIndexToCard } from "src/components/Player/Card";
+import GamePlayer from "src/components/Player/GamePlayer";
+import { useUserStore } from "src/stores/userStore";
+import { useSocket } from "src/utils/wsclient";
+import { useNavigate } from "@tanstack/react-router";
+import z from "zod";
 const Game = () => {
-    return (
-        // <div className="flex h-[100lvh] items-center justify-center">
-        //     <div className="relative flex w-full items-center justify-center lg:w-7/12">
-        //         <img
-        //             src={Diler}
-        //             className="absolute top-0 h-52 -translate-y-full"
-        //         />
-        //         <div className="absolute text-primary">1000</div>
-        //         <GamePlayer
-        //             username="jdkurwe"
-        //             currentChips={300}
-        //             playerIndex={0}
-        //         />
-        //         <GamePlayer
-        //             username="cwel"
-        //             currentChips={120}
-        //             playerIndex={1}
-        //         />
-        //         <GamePlayer
-        //             username="kalempster"
-        //             currentChips={3000}
-        //             playerIndex={2}
-        //         />
-        //         <GamePlayer
-        //             username="irek_hazardownik26"
-        //             currentChips={30123}
-        //             playerIndex={3}
-        //         />
-        //         <GamePlayer
-        //             username="mikolaj_siec"
-        //             currentChips={2314}
-        //             playerIndex={4}
-        //         />
+    const gameStore = useGameStore();
+    const userStore = useUserStore();
+    const client = useSocket();
+    const nav = useNavigate();
 
-        //         <svg
-        //             className="aspect-[1194/544] w-full max-w-[1120px]"
-        //             viewBox="0 0 1194 544"
-        //             fill="none"
-        //             xmlns="http://www.w3.org/2000/svg">
-        //             <path
-        //                 d="M13 189.654C13 92.0905 92.0574 13 189.58 13H1004.42C1101.94 13 1181 92.0905 1181 189.654V354.346C1181 451.909 1101.94 531 1004.42 531H189.58C92.0574 531 13 451.909 13 354.346V189.654Z"
-        //                 fill="#222643"
-        //             />
-        //             <path
-        //                 d="M975.773 60.0642H215.468C130.634 60.0642 61.8628 123.322 61.8628 201.355V342.645C61.8628 420.678 130.634 483.936 215.468 483.936H975.773C1060.61 483.936 1129.38 420.678 1129.38 342.645V201.355C1129.38 123.322 1060.61 60.0642 975.773 60.0642Z"
-        //                 fill="#222643"
-        //             />
-        //             <path
-        //                 d="M13 189.654C13 92.0905 92.0574 13 189.58 13H1004.42C1101.94 13 1181 92.0905 1181 189.654V354.346C1181 451.909 1101.94 531 1004.42 531H189.58C92.0574 531 13 451.909 13 354.346V189.654Z"
-        //                 stroke="#1E2139"
-        //                 strokeWidth="26"
-        //             />
-        //             <path
-        //                 d="M975.773 60.0642H215.468C130.634 60.0642 61.8628 123.322 61.8628 201.355V342.645C61.8628 420.678 130.634 483.936 215.468 483.936H975.773C1060.61 483.936 1129.38 420.678 1129.38 342.645V201.355C1129.38 123.322 1060.61 60.0642 975.773 60.0642Z"
-        //                 stroke="#1E2139"
-        //                 strokeWidth="26"
-        //             />
-        //         </svg>
-        //     </div>
-        // </div>
+    const [raiseAmount, setRaiseAmount] = useState(0);
+
+    const localPlayerIndex = gameStore.players.findIndex(
+        (player) => player.id == userStore.user.id
+    );
+
+    const isMyTurn = gameStore.turnIndex === localPlayerIndex;
+    const localPlayer = gameStore.players[localPlayerIndex];
+
+    useEffect(() => {
+        const syncLobbyUnregister = client.on(SyncLobby, (lobby) => {
+            if (lobby.payload.stage == "LOBBY") return nav({ to: "/lobby" });
+            gameStore.setGame(lobby.payload);
+
+            // Reset raise slider to minimum valid raise when turn changes
+            setRaiseAmount(lobby.payload.highestBet + gameStore.bigBlind);
+        });
+        return () => syncLobbyUnregister();
+    }, [client, gameStore, nav]);
+
+    const sendAction = ({
+        type,
+        amount
+    }: Omit<z.infer<typeof PlayerAction>["payload"], "turnId">) => {
+        client.send(PlayerAction, {
+            turnId: gameStore.turnId,
+            type,
+            amount
+        });
+    };
+
+    return (
         <>
             <Header />
-            <iframe
-                className="h-full w-full"
-                src="https://www.247freepoker.com/"></iframe>
+            <div className="flex h-[100lvh] flex-col items-center justify-center bg-gray-900">
+                <div className="3xl:w-7/12 relative flex w-full items-center justify-center xl:w-10/12 2xl:w-9/12">
+                    <div className="absolute flex flex-col items-center gap-2">
+                        <Cards>
+                            {gameStore.communityCards.map((card, i) => (
+                                <Card
+                                    key={i}
+                                    {...convertIndexToCard(card)}
+                                    hidden={false}
+                                />
+                            ))}
+                        </Cards>
+                        <div className="font-mono text-xl text-primary">
+                            {gameStore.pot}
+                        </div>
+                    </div>
+
+                    {gameStore.players.map((player, index) => (
+                        <GamePlayer
+                            key={player.id}
+                            username={player.username}
+                            currentChips={player.chips}
+                            index={index}
+                            localPlayerIndex={localPlayerIndex}
+                            isTurn={gameStore.turnIndex === index}
+                            turnDeadline={gameStore.turnDeadline}
+                            cards={
+                                player.id == userStore.user.id
+                                    ? [
+                                          convertIndexToCard(
+                                              player.cards?.[0]!
+                                          ),
+                                          convertIndexToCard(player.cards?.[1]!)
+                                      ]
+                                    : undefined
+                            }
+                        />
+                    ))}
+
+                    {/* Table SVG code here */}
+                    <svg
+                        className="aspect-[1194/544] w-full "
+                        viewBox="0 0 1194 544"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M13 189.654C13 92.0905 92.0574 13 189.58 13H1004.42C1101.94 13 1181 92.0905 1181 189.654V354.346C1181 451.909 1101.94 531 1004.42 531H189.58C92.0574 531 13 451.909 13 354.346V189.654Z"
+                            fill="#222643"
+                        />
+                        <path
+                            d="M975.773 60.0642H215.468C130.634 60.0642 61.8628 123.322 61.8628 201.355V342.645C61.8628 420.678 130.634 483.936 215.468 483.936H975.773C1060.61 483.936 1129.38 420.678 1129.38 342.645V201.355C1129.38 123.322 1060.61 60.0642 975.773 60.0642Z"
+                            fill="#222643"
+                        />
+                        <path
+                            d="M13 189.654C13 92.0905 92.0574 13 189.58 13H1004.42C1101.94 13 1181 92.0905 1181 189.654V354.346C1181 451.909 1101.94 531 1004.42 531H189.58C92.0574 531 13 451.909 13 354.346V189.654Z"
+                            stroke="#1E2139"
+                            strokeWidth="26"
+                        />
+                        <path
+                            d="M975.773 60.0642H215.468C130.634 60.0642 61.8628 123.322 61.8628 201.355V342.645C61.8628 420.678 130.634 483.936 215.468 483.936H975.773C1060.61 483.936 1129.38 420.678 1129.38 342.645V201.355C1129.38 123.322 1060.61 60.0642 975.773 60.0642Z"
+                            stroke="#1E2139"
+                            strokeWidth="26"
+                        />
+                    </svg>
+                </div>
+
+                {/* ACTION CONTROLS */}
+                {isMyTurn && (
+                    <div className="fixed bottom-10 z-50 flex flex-col items-center gap-4 rounded-xl bg-black/60 p-6 backdrop-blur-md">
+                        <div className="flex items-center gap-4">
+                            <input
+                                type="range"
+                                min={gameStore.highestBet + 10} // Example min raise
+                                max={localPlayer?.chips || 1000}
+                                value={raiseAmount}
+                                onChange={(e) =>
+                                    setRaiseAmount(Number(e.target.value))
+                                }
+                                className="w-64 accent-primary"
+                            />
+                            <span className="w-20 font-mono text-lg text-white">
+                                ${raiseAmount}
+                            </span>
+                        </div>
+
+                        <div className="flex gap-4">
+                            <button
+                                onClick={() => sendAction({ type: "fold" })}
+                                className="w-32 rounded-lg bg-red-600 py-3 font-bold text-white hover:bg-red-700">
+                                FOLD
+                            </button>
+                            <button
+                                onClick={() =>
+                                    sendAction(
+                                        gameStore.highestBet > 0
+                                            ? { type: "call" }
+                                            : { type: "check" }
+                                    )
+                                }
+                                className="w-32 rounded-lg bg-gray-600 py-3 font-bold text-white hover:bg-gray-700">
+                                {gameStore.highestBet > 0
+                                    ? `CALL ${gameStore.highestBet}`
+                                    : "CHECK"}
+                            </button>
+                            <button
+                                onClick={() =>
+                                    sendAction({
+                                        type: "raise",
+                                        amount: raiseAmount
+                                    })
+                                }
+                                className="w-32 rounded-lg bg-primary py-3 font-bold text-black hover:bg-primary/80">
+                                RAISE
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
         </>
     );
 };

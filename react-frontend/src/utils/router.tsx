@@ -19,13 +19,12 @@ import {
     RefreshError,
     useRefreshQueryOrMutation
 } from "../hooks/useRefreshQuery";
-import { useGameServer } from "../hooks/useGameServer";
 
 const rootRoute = new RootRoute({
     component: () => {
         const [isAdultDialogVisible, setIsAdultDialogVisible] = useState(false);
         useEffect(() => {
-            AOS.init({ once: true, easing: "ease-out-quad", duration: 1000 });
+            AOS.init({ once: true, easing: "ease-out-quad", duration: 1000 }); // Shouldn't really use an ancient animation library but w/e
             (() => {
                 const adult = localStorage.getItem("isAdult");
 
@@ -86,7 +85,6 @@ const protectedRootRoute = new Route({
         const navigate = useNavigate();
         const userStore = useUserStore();
         const query = useRefreshQueryOrMutation();
-        useGameServer();
         const { refetch } = trpc.auth.me.useQuery(undefined, {
             retry: false,
             enabled: false
@@ -107,9 +105,9 @@ const protectedRootRoute = new Route({
                         if (!data.data) return;
 
                         userStore.setUser({
-                            ...data.data,
-                            createdAt: new Date(data.data.createdAt),
-                            updatedAt: new Date(data.data.updatedAt)
+                            ...data.data.user,
+                            createdAt: new Date(data.data.user.createdAt),
+                            updatedAt: new Date(data.data.user.updatedAt)
                         }); // Since we're not using a data transformer the dates are encoded as ISO strings so we need to convert them back
                     } catch (error) {
                         if (error instanceof TRPCClientError)
@@ -118,6 +116,7 @@ const protectedRootRoute = new Route({
                             // Invalid refresh token, log user out
                             jwtStore.setAccessToken("");
                             jwtStore.setRefreshToken("");
+                            jwtStore.setExpMs(0);
                             userStore.setUser({
                                 id: "",
                                 username: "",

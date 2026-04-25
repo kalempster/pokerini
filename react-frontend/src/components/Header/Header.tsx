@@ -35,6 +35,7 @@ export default function Header({
             });
             jwtStore.setAccessToken("");
             jwtStore.setRefreshToken("");
+            jwtStore.setExpMs(0);
             navigate({ to: "/login" });
         } catch (error) {
             console.log(error);

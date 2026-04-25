@@ -18,7 +18,7 @@ export default {
 
         for (const lobbyPlayer of lobby.players) {
             lobbyPlayer.connection.emit("close");
-        }
+        } 
 
         lobbies.delete(code.toLowerCase());
 

@@ -49,17 +49,11 @@ export const authRouter = t.router({
     me: publicProcedure.use(isAuthed).query(async ({ ctx }) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...safeUser } = ctx.user;
-        return safeUser;
+        return { user: safeUser, expMs: ctx.expMs };
     }),
     login: publicProcedure
         .input(loginFormSchema)
-        .output(
-            z.object({
-                ACCESS_TOKEN: z.string(),
-                REFRESH_TOKEN: z.string(),
-                user: userSchema
-            })
-        )
+       
         .mutation(async ({ input }) => {
             const user = await prisma.user.findFirst({
                 where: { username: input.username }
@@ -81,6 +75,9 @@ export const authRouter = t.router({
             const ACCESS_TOKEN = jwt.sign({ id: user.id }, env.JWT_SECRET, {
                 expiresIn: "20m"
             });
+
+            const expMs = Date.now() + 1000 * 60 * 20;
+
             const REFRESH_TOKEN = jwt.sign(
                 { id: user.id },
                 env.JWT_REFRESH_SECRET
@@ -98,10 +95,12 @@ export const authRouter = t.router({
                     userId: user.id
                 }
             });
+
             return {
                 ACCESS_TOKEN,
                 REFRESH_TOKEN,
-                user: safeUser
+                user: safeUser,
+                expMs
             };
         }),
     logout: publicProcedure
@@ -146,7 +145,8 @@ export const authRouter = t.router({
             return {
                 ACCESS_TOKEN: jwt.sign({ id: token.userId }, env.JWT_SECRET, {
                     expiresIn: "20m"
-                })
+                }),
+                expMs: Date.now() + 1000 * 60 * 20
             };
         })
 });

@@ -44,10 +44,12 @@ export const useRefreshQueryOrMutation = () => {
 
     const refreshAccessToken = async () => {
         try {
-            jwtStore.setAccessToken(
-                (await mutateAsync({ refreshToken: jwtStore.refreshToken }))
-                    .ACCESS_TOKEN
-            ); // Regenerate token and set it in our global store
+            const refresh = await mutateAsync({
+                refreshToken: jwtStore.refreshToken
+            });
+
+            jwtStore.setAccessToken(refresh.ACCESS_TOKEN); // Regenerate token and set it in our global store
+            jwtStore.setExpMs(refresh.expMs);
             return true; // Success
         } catch (error) {
             if (error instanceof TRPCClientError)

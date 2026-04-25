@@ -5,22 +5,20 @@ import { gameCodeSchema } from "../../shared-schemas/gameCodeSchema";
 import Section from "../components/Section/Section";
 import { useJwtStore } from "../stores/jwtStore";
 import Header from "../components/Header/Header";
-import { socket, useGameServer } from "../hooks/useGameServer";
-import { Lobby } from "../../../gameserver/objects/Lobby";
+// import { socket, useGameServer } from "../hooks/useGameServer";
 import { useGameStore } from "../stores/gameStore";
+import { JoinLobbyRpc } from "@gameserver/shared/messages";
+import { useSocket } from "src/utils/wsclient";
+
 const Dashboard = () => {
     const gameStore = useGameStore();
 
+    const client = useSocket();
+
     const navigate = useNavigate();
 
-    const codeInputRef = useMask({
-        mask: "____-____",
-        replacement: { _: /\w/ },
-        showMask: true
-    });
-
     const rejoin = () => {
-        socket.emit("rejoin");
+        // client.send()
     };
 
     const [code, setCode] = useState("");
@@ -31,30 +29,34 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        if (validateCode(code)) {
-            setCodeValid(true);
+        (async () => {
+            if (validateCode(code)) {
+                setCodeValid(true);
+                const data = await client.request(
+                    JoinLobbyRpc,
+                    { lobbyId: code.toUpperCase() },
+                    JoinLobbyRpc.response
+                );
 
-            socket.emit("join", { code: code.toLowerCase() });
-        } else if (codeValid) setCodeValid(false);
+                gameStore.setGame(data.payload);
+                navigate({ to: "/lobby" });
+            } else if (codeValid) setCodeValid(false);
+        })();
     }, [code]);
 
     useEffect(() => {
-        const joinCallback = (args: unknown) => {
-            const lobby = Lobby.safeParse(args);
-            if (!lobby.success) return console.error(lobby);
-
-            gameStore.setGame(lobby.data);
-            navigate({ to: "/lobby" });
-        };
-
-        socket.on("join", joinCallback);
-
-        socket.on("rejoin", joinCallback);
-
-        return () => {
-            socket.off("join", joinCallback);
-            socket.off("rejoin", joinCallback);
-        };
+        // const joinCallback = (args: unknown) => {
+        //     const lobby = Lobby.safeParse(args);
+        //     if (!lobby.success) return console.error(lobby);
+        //     gameStore.setGame(lobby.data);
+        //     navigate({ to: "/lobby" });
+        // };
+        // socket.on("join", joinCallback);
+        // socket.on("rejoin", joinCallback);
+        // return () => {
+        //     socket.off("join", joinCallback);
+        //     socket.off("rejoin", joinCallback);
+        // };
     }, []);
 
     return (
@@ -68,10 +70,8 @@ const Dashboard = () => {
                             onChange={(e) =>
                                 setCode(e.target.value.toUpperCase())
                             }
-                            ref={codeInputRef}
                             id="code"
                             type="code"
-                            placeholder="ABCD-EFGH"
                             className={`flex items-center justify-center rounded-md px-3 py-2 text-center font-mono  uppercase shadow-2xl  outline-none disabled:opacity-60 ${
                                 codeValid
                                     ? "bg-secondary text-primary"

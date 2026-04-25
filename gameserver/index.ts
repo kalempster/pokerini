@@ -4,10 +4,14 @@ import { Server } from "socket.io";
 import close from "./events/close";
 import create from "./events/create";
 import join from "./events/join";
-import rejoin from "./events/rejoin";
-import { events, players } from "./utils/caches";
-import { client } from "./utils/client";
 import kick from "./events/kick";
+import rejoin from "./events/rejoin";
+import { events, lobbies, players } from "./utils/caches";
+import { client } from "./utils/client";
+import { GameStage, LobbyType } from "./objects/Lobby";
+import { broadcastUpdate } from "./utils/poker";
+import start from "./events/start";
+import action from "./events/action";
 
 const httpServer = http.createServer();
 const server = new Server(httpServer, {
@@ -23,13 +27,17 @@ events.set(join.name, join);
 events.set(rejoin.name, rejoin);
 events.set(close.name, close);
 events.set(kick.name, kick);
-
+events.set(start.name, start);
+events.set(action.name, action);
 
 
 server.use(async (connection, next) => {
     if (!connection.handshake.auth.token) return connection.disconnect();
     if (!(typeof connection.handshake.auth.token == "string"))
         return connection.disconnect(true);
+    // Why wouldn't I use zod here????
+    // Wth was 2023 me thinking
+
     try {
         const user = await client.gameserver.isUserAuthed.query(
             connection.handshake.auth.token
@@ -61,6 +69,9 @@ server.on("connection", (connection) => {
                 connection: connection
             });
 
+            console.log(returnValue);
+            
+
             if (!returnValue) return;
 
             if (returnValue instanceof Promise) {
@@ -75,9 +86,30 @@ server.on("connection", (connection) => {
         });
     }
     connection.on("disconnect", () => {
+        // 1. Find the player
+        const user = players.get(connection.id);
+        if (!user) return;
+
+        // 2. Find their lobby
+        const lobby = Array.from(
+            lobbies.values() as IterableIterator<LobbyType>
+        ).find((l) => l.players.some((p) => p.id === user.id));
+
+        if (lobby) {
+            const pIdx = lobby.players.findIndex((p) => p.id === user.id);
+            if (lobby.stage !== GameStage.LOBBY) {
+                // Fold them so the game isn't stuck
+                lobby.players[pIdx].folded = true;
+                broadcastUpdate(lobby);
+            } else {
+                // If just in lobby, remove them
+                lobby.players.splice(pIdx, 1);
+            }
+        }
         players.delete(connection.id);
     });
 });
+
 
 httpServer.listen(3000, undefined, undefined, () => {
     console.log("listenin on 3000");

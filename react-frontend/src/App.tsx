@@ -6,6 +6,7 @@ import { trpc } from "./utils/trpc";
 import { httpBatchLink } from "@trpc/client";
 import { useJwtStore } from "./stores/jwtStore";
 import { LazyMotion, domAnimation } from "framer-motion";
+import { SocketProvider } from "./utils/wsclient";
 
 const App = () => {
     const jwtStore = useJwtStore();
@@ -31,7 +32,9 @@ const App = () => {
         <LazyMotion features={domAnimation} strict>
             <trpc.Provider client={trpcClient} queryClient={queryClient}>
                 <QueryClientProvider client={queryClient}>
-                    <RouterProvider router={router} />
+                    <SocketProvider>
+                        <RouterProvider router={router} />
+                    </SocketProvider>
                 </QueryClientProvider>
             </trpc.Provider>
         </LazyMotion>

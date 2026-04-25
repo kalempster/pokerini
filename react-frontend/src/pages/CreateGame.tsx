@@ -5,11 +5,13 @@ import "rc-slider/assets/index.css";
 import { useEffect, useState } from "react";
 import Section from "../components/Section/Section";
 import Header from "../components/Header/Header";
-import { socket } from "../hooks/useGameServer";
 import { Lobby } from "../../../gameserver/objects/Lobby";
 import { z } from "zod";
 import { useGameStore } from "../stores/gameStore";
+import { CreateLobbyRpc } from "@gameserver/shared/messages";
+import { useSocket } from "src/utils/wsclient";
 const bets = [100, 500, 1000, 5000, 10000];
+
 const CreateGame = () => {
     const [bigBlind, setBigBlind] = useState(bets[0]);
     const [players, setPlayers] = useState(2);
@@ -18,23 +20,17 @@ const CreateGame = () => {
 
     const navigation = useNavigate();
 
-    useEffect(() => {
-        const onCreateListener = (args: unknown) => {
-            const result = Lobby.safeParse(args);
-            if (!result.success) return console.log(args);
-            gameStore.setGame(result.data);
-            navigation({ to: "/lobby" });
-        };
+    const client = useSocket();
 
-        socket.on("create", onCreateListener);
-
-        return () => {
-            socket.off("create", onCreateListener);
-        };
-    }, []);
-
-    const onGameCreate = () => {
-        socket.emit("create", { players, bigBlind });
+    const onGameCreate = async () => {
+        const response = await client.request(
+            CreateLobbyRpc,
+            { bigBlind, maxPlayers: players },
+            CreateLobbyRpc.response
+        );
+        console.log(response.payload);
+        gameStore.setGame(response.payload);
+        navigation({ to: "/lobby" });
     };
 
     return (

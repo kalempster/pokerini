@@ -1,8 +1,7 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import {
     MdAccountCircle,
     MdMonetizationOn,
-    MdRemoveRedEye,
     MdVisibility,
     MdVisibilityOff
 } from "react-icons/md/index";
@@ -11,10 +10,9 @@ import LobbyPlayer from "../components/Player/LobbyPlayer";
 import { useEffect, useState } from "react";
 import Header from "../components/Header/Header";
 import { useGameStore } from "../stores/gameStore";
-import GamePlayer from "../components/Player/GamePlayer";
-import { socket } from "../hooks/useGameServer";
-import { Lobby as LobbySchema } from "../../../gameserver/objects/Lobby";
 import { useUserStore } from "../stores/userStore";
+import { StartGame, SyncLobby } from "@gameserver/shared/messages";
+import { useSocket } from "src/utils/wsclient";
 
 const Lobby = () => {
     const [codeVisible, setCodeVisible] = useState(false);
@@ -25,44 +23,28 @@ const Lobby = () => {
 
     const userStore = useUserStore();
 
+    const client = useSocket();
+
     useEffect(() => {
         if (gameStore.id.length == 0) navigation({ to: "/dashboard" });
     }, [gameStore.id]);
 
+    useEffect(() => {
+        if (gameStore.stage == "PRE_FLOP") navigation({ to: "/game" });
+    }, [gameStore.stage]);
+
     const closeLobby = () => {
-        socket.emit("close", { code: gameStore.id });
+        // socket.emit("close", { code: gameStore.id });
+    };
+
+    const startGame = () => {
+        client.send(StartGame, { lobbyId: gameStore.id });
     };
 
     useEffect(() => {
-        const onUpdate = (args: unknown) => {
-            const result = LobbySchema.safeParse(args);
-
-            if (!result.success) return console.log(args);
-
-            gameStore.setGame(result.data);
-        };
-
-        const onClose = () => {
-            gameStore.setGame({
-                id: "",
-                bigBlind: 0,
-                hostId: "",
-                maxPlayers: 0,
-                players: []
-            });
-        };
-
-        socket.on("update", onUpdate);
-
-        socket.on("close", onClose);
-
-        socket.on("kick", onClose);
-
-        return () => {
-            socket.off("update", onUpdate);
-            socket.off("close", onClose);
-            socket.off("kick", onClose);
-        };
+        client.on(SyncLobby, (lobby) => {
+            gameStore.setGame(lobby.payload);
+        });
     }, []);
 
     return (
@@ -123,7 +105,9 @@ const Lobby = () => {
                     <></>
                 )}
 
-                <button className="rounded-md bg-secondary px-20 py-2 text-2xl font-bold text-primary md:text-2xl xl:px-10">
+                <button
+                    onClick={startGame}
+                    className="rounded-md bg-secondary px-20 py-2 text-2xl font-bold text-primary md:text-2xl xl:px-10">
                     Start
                 </button>
             </Section>

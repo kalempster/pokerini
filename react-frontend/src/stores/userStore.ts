@@ -1,12 +1,12 @@
 import type { userSchemaType } from "../../../backend/zod/user";
 import { create } from "zustand";
 
-type userStoreType = {
+type UserStoreType = {
     user: userSchemaType;
     setUser(user: userSchemaType): any;
     setChips(points: number): any;
 };
-export const useUserStore = create<userStoreType>((set) => ({
+export const useUserStore = create<UserStoreType>((set) => ({
     user: {
         username: "",
         createdAt: new Date(),

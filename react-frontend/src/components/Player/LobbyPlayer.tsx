@@ -1,7 +1,6 @@
 import { MdMonetizationOn } from "react-icons/md";
 import { useUserStore } from "../../stores/userStore";
 import { useGameStore } from "../../stores/gameStore";
-import { socket } from "../../hooks/useGameServer";
 
 type Props = {
     username: string;
@@ -15,7 +14,7 @@ const LobbyPlayer = ({ username, chips, id }: Props) => {
     const gameStore = useGameStore();
 
     const kickPlayer = () => {
-        socket.emit("kick", { id, code: gameStore.id });
+        // socket.emit("kick", { id, code: gameStore.id });
     };
 
     return (

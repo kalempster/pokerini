@@ -92,8 +92,9 @@ export default function Register() {
                 password
             });
             jwtStore.setAccessToken(result.ACCESS_TOKEN);
+            
             jwtStore.setRefreshToken(result.REFRESH_TOKEN);
-
+            jwtStore.setExpMs(result.expMs);
             navigate({ to: "/dashboard" });
         } catch (error) {
             if (error instanceof TRPCClientError) setSystemError(error.message);

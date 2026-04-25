@@ -46,6 +46,7 @@ export default function LogIn() {
 
             jwtStore.setAccessToken(result.ACCESS_TOKEN);
             jwtStore.setRefreshToken(result.REFRESH_TOKEN);
+            jwtStore.setExpMs(result.expMs);
             userStore.setUser({
                 ...result.user,
                 createdAt: new Date(result.user.createdAt),

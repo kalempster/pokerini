@@ -2,6 +2,8 @@ import { z } from "zod";
 import { EventObject } from "../types/EventObject";
 import { lobbies, players } from "../utils/caches";
 import { convertToSafeLobby } from "../utils/safeLobby";
+import { LobbyType } from "../objects/Lobby";
+import { broadcastUpdate } from "../utils/poker";
 
 const schema = z.object({ code: z.string() });
 
@@ -15,7 +17,7 @@ export default {
         if (!lobby) return;
 
         if (lobby.players.find((p) => p.id == player.id))
-            return convertToSafeLobby(lobby);
+            return broadcastUpdate(lobby);
 
         if (lobby.players.length + 1 > lobby.maxPlayers) return;
 
@@ -40,7 +42,7 @@ export default {
                 );
         }
 
-        const updatedLobby = {
+        const updatedLobby: LobbyType = {
             ...lobby,
             players: [
                 ...lobby.players,
@@ -48,18 +50,20 @@ export default {
                     id: player.id,
                     username: player.username,
                     chips: player.chips,
-                    connection
+                    connection,
+                    cards: [],
+                    currentBet: 0,
+                    folded: false,
+                    isAllIn: false,
+                    totalContribution: 0
                 }
             ]
         };
 
         lobbies.set(code, updatedLobby);
 
-        const safeUpdatedLobby = convertToSafeLobby(updatedLobby);
 
-        for (const loopedPlayer of lobby.players)
-            loopedPlayer.connection.emit("update", safeUpdatedLobby);
+        broadcastUpdate(updatedLobby);
 
-        return safeUpdatedLobby;
     }
 } satisfies EventObject<typeof schema>;

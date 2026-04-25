@@ -1,17 +1,25 @@
-import { z } from "zod";
 import { create } from "zustand";
-import { Lobby } from "../../../gameserver/objects/Lobby";
+import type { Lobby, SafeLobby } from "@gameserver/shared/poker";
 
-type gameStoreType = {
-    setGame(game: z.infer<typeof Lobby>): void;
-} & z.infer<typeof Lobby>;
+type GameStoreType = {
+    setGame(game: Partial<SafeLobby>): void;
+} & SafeLobby;
 
-export const useGameStore = create<gameStoreType>((set) => ({
+export const useGameStore = create<GameStoreType>((set) => ({
     id: "",
-    players: [],
     bigBlind: 0,
+    communityCards: [],
+    dealerIndex: 0,
+    highestBet: 0,
     hostId: "",
     maxPlayers: 0,
+    players: [],
+    pot: 0,
+    stage: "LOBBY",
+    turnDeadline: 0,
+    turnId: 0,
+    turnIndex: 0,
+    deck: undefined,
     setGame(game) {
         set(game);
     }

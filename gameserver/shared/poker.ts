@@ -2,7 +2,21 @@ import { z } from "zod";
 
 export const CardSchema = z.number().min(0).max(51);
 
-export const GameStageSchema = z.enum(["LOBBY", "PRE_FLOP", "FLOP", "TURN", "RIVER", "SHOWDOWN"]);
+export const GameStageSchema = z.enum([
+    "LOBBY",
+    "BETWEEN_HANDS", // <-- new
+    "PRE_FLOP",
+    "FLOP",
+    "TURN",
+    "RIVER",
+    "SHOWDOWN",
+]);
+
+const SpectatorSchema = z.object({
+    id: z.string(),
+    username: z.string()
+});
+
 
 export const PlayerSchema = z.object({
     id: z.string(),
@@ -29,10 +43,14 @@ export const LobbySchema = z.object({
     highestBet: z.number(),
     dealerIndex: z.number(),
     turnIndex: z.number(),
-    turnId: z.number(), // Prevents race conditions
+    turnId: z.number(),
     turnDeadline: z.number(),
     pot: z.number(),
     deck: z.array(CardSchema).optional(),
+    bannedPlayers: z.array(z.string()),
+    pendingClose: z.boolean(),
+    paused: z.boolean(),
+    spectators: z.array(SpectatorSchema)
 });
 
 export const SafeLobbySchema = LobbySchema.extend({
@@ -45,4 +63,4 @@ export type Lobby = Omit<z.infer<typeof LobbySchema>, "players"> & {
     players: Player[];
 };
 export type SafeLobby = z.infer<typeof SafeLobbySchema>;
-export type GameStage = z.infer<typeof GameStageSchema>;
+export type Spectator = z.infer<typeof SpectatorSchema>;

@@ -44,20 +44,6 @@ const Dashboard = () => {
         })();
     }, [code]);
 
-    useEffect(() => {
-        // const joinCallback = (args: unknown) => {
-        //     const lobby = Lobby.safeParse(args);
-        //     if (!lobby.success) return console.error(lobby);
-        //     gameStore.setGame(lobby.data);
-        //     navigate({ to: "/lobby" });
-        // };
-        // socket.on("join", joinCallback);
-        // socket.on("rejoin", joinCallback);
-        // return () => {
-        //     socket.off("join", joinCallback);
-        //     socket.off("rejoin", joinCallback);
-        // };
-    }, []);
 
     return (
         <div className="h-[100lvh]">

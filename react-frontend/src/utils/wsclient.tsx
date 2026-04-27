@@ -8,8 +8,9 @@ import React, {
 import { wsClient } from "@ws-kit/client/zod";
 import { useJwtStore } from "../stores/jwtStore";
 import { trpc } from "./trpc";
+import { ReauthenticateRpc, SyncLobby } from "@gameserver/shared/messages";
+import { useGameStore } from "src/stores/gameStore";
 
-// Replace 'any' with the specific client type exported by your library if available
 type WsClientType = ReturnType<typeof wsClient>;
 
 const SocketContext = createContext<WsClientType | null>(null);
@@ -27,26 +28,43 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
         wsClient({
             url: "ws://localhost:3000/",
             auth: {
-                getToken: () => jwtStore.accessToken,
+                getToken: () => jwtStore.getAccessToken(),
                 attach: "protocol"
+            },
+            reconnect: {
+                enabled: true
             }
         })
     );
 
     useEffect(() => {
+        client.on(SyncLobby, (lobby) => {
+            useGameStore.setState(lobby.payload);
+        });
+    }, []);
+
+    useEffect(() => {
         if (jwtStore.accessToken.length == 0) return;
 
-        const expiry = jwtStore.expMs; // Assuming you store this
+        const expiry = jwtStore.expMs; 
         const reauthWindow = 2 * 60 * 1000;
 
         const timer = setTimeout(async () => {
-            // Call your ReauthenticateRpc logic here
             const response = await mutateAsync({
                 refreshToken: jwtStore.refreshToken
             });
 
             jwtStore.setAccessToken(response.ACCESS_TOKEN);
             jwtStore.setExpMs(response.expMs);
+
+            const reauthResponse = await client.request(
+                ReauthenticateRpc,
+                { token: response.ACCESS_TOKEN },
+                ReauthenticateRpc.response
+            );
+
+            if (!reauthResponse.payload.success)
+                throw new Error("Reauth error");
         }, expiry - Date.now() - reauthWindow);
 
         return () => clearTimeout(timer);
@@ -55,7 +73,8 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     useEffect(() => {
         const connectWs = async () => {
             try {
-                await client.connect();
+                if (!client.isConnected && jwtStore.isLoggedIn())
+                    await client.connect();
             } catch (err) {
                 console.error("WS Connection Error:", err);
             }
@@ -66,7 +85,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
         return () => {
             client.close();
         };
-    }, [client]);
+    }, [client, jwtStore.refreshToken]);
 
     return (
         <SocketContext.Provider value={client}>

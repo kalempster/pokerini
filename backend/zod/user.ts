@@ -1,8 +1,6 @@
 import { User } from "@prisma/client";
 import { z } from "zod";
-//jak juz piotrus przegladasz ten kod to pewnie dawno sie  zorientowales ze podjebalem
-//z twoj przyjaciel robot, staralem sie myslec, wiekszosc rzeczy rozumiem,
-//ale robi sie ciezko jak pojawia sie trpc
+
 
 type AnyObj = Record<PropertyKey, unknown>;
 

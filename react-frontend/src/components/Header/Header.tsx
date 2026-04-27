@@ -7,12 +7,7 @@ import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 import { useUserStore } from "../../stores/userStore";
 
-// import numeral from "numeral";
-// Ty sie irek dobrze czujesz?
-// Juz na emeryture przechodzisz?
-// To gowno nie bylo updatowane od 6 lat
-// Jeden google search
-// https://www.npmjs.com/package/react-number-format
+
 export default function Header({
     showProfile,
     animated
@@ -41,25 +36,14 @@ export default function Header({
             console.log(error);
         }
     };
-    // nie wiem czy mam dobre myslenie ale tera se mysle czy nie wystarczy
-    // ze przy loginie dostaje przecierz kurwa dane i je do storea wjebac  i wszyscy szczesliwi,
-    // ale zostawilem kod zeby wrazie co cofnac jak mnie zwyzywasz
-
-    // irek po raz kolejny kopiujesz kod
-    // i masz wypierdolone co robi
-    // i do czego sluzy
-    // ty sie nie ucz z kodu
-    // ktory ja napisalem do aplikacji
-    // ze tak sie robi
-    // D O  K U R W Y  N E D Z Y
-    // P A T R Z  D O  D O K U M E N T A C J I
+ 
 
     const data = userStore.user;
 
     return (
         <>
             {/* Since our header is transparent anyway we justify the items to end and make the header smaller in index.css to make more space for content */}
-            <div className=" absolute z-0 flex h-[var(--header-height)] w-full flex-row items-end justify-between bg-background px-4  md:px-32">
+            <div className=" absolute z-0 flex h-[var(--header-height)] w-full flex-row items-end justify-between bg-transparent px-4  md:px-32">
                 <Link
                     to="/"
                     className="text-5xl font-semibold"

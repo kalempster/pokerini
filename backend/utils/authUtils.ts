@@ -30,7 +30,6 @@ export async function isAuthorized(token: string) {
 
     const user = await prisma.user.findFirst({ where: { id: data.data.id } });
     if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
-    console.log(data.data.exp * 1000);
 
     return { user, expMs: data.data.exp * 1000 };
 }

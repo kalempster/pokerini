@@ -5,7 +5,6 @@ import "rc-slider/assets/index.css";
 import { useEffect, useState } from "react";
 import Section from "../components/Section/Section";
 import Header from "../components/Header/Header";
-import { Lobby } from "../../../gameserver/objects/Lobby";
 import { z } from "zod";
 import { useGameStore } from "../stores/gameStore";
 import { CreateLobbyRpc } from "@gameserver/shared/messages";

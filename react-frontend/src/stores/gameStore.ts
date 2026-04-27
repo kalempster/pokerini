@@ -20,6 +20,10 @@ export const useGameStore = create<GameStoreType>((set) => ({
     turnId: 0,
     turnIndex: 0,
     deck: undefined,
+    bannedPlayers: [],
+    paused: false,
+    pendingClose: false,
+    spectators: [],
     setGame(game) {
         set(game);
     }

@@ -2,7 +2,7 @@
     "compilerOptions": {
         "baseUrl": "./",
         "paths": {
-            "@gameserver/*": ["../gameserver-rewrite/*"]
+            "@gameserver/*": ["../gameserver/*"]
         },
         "composite": true,
         "module": "ESNext",

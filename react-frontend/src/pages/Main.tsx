@@ -13,7 +13,6 @@ import Feeter from "../components/Feeter/Feeter";
 import { useJwtStore } from "../stores/jwtStore";
 
 export default function Main() {
-    const [bozoVisible, setBozoVisible] = useState(false);
     const jwtStore = useJwtStore();
 
     return (
@@ -91,21 +90,16 @@ export default function Main() {
                         className="w-full text-6xl font-bold text-primary lg:text-8xl">
                         We say it&apos;s{" "}
                         <span className="text-secondary">fair</span>,{" "}
-                        <a
-                            onClick={() => setBozoVisible(true)}
-                            className="cursor-pointer underline">
-                            check
-                        </a>{" "}
-                        for yourself
+                        <a className="cursor-pointer underline">check</a> for
+                        yourself
                     </div>
                     <div
                         data-aos="fade-up"
                         data-aos-delay="200"
                         className="text-xl font-light text-white">
-                        Our website is fully RNG certified{" "}
-                        <span className="text-transparent">:tf:</span> Through
-                        random generation algorithms every hand dealt is
-                        verifiable thanks to a{" "}
+                        Our website is fully RNG certified Through random
+                        generation algorithms every hand dealt is verifiable
+                        thanks to a{" "}
                         <a
                             rel="noreferrer"
                             target="_blank"
@@ -113,26 +107,13 @@ export default function Main() {
                             className="underline">
                             provably fair
                         </a>{" "}
-                        algorithm
-                        {/* Get scammed provably fair was the right word for it since we're linking to a provalby.com website */}
-                        . With this approach we can guarantee that you&apos;ll
-                        have a pleasant experience playing a fair and honest
-                        game for everyone
+                        algorithm. With this approach we can guarantee that
+                        you&apos;ll have a pleasant experience playing a fair
+                        and honest game for everyone
                     </div>
                 </div>
             </Section>
-            <Dialog
-                visible={bozoVisible}
-                onDismiss={() => setBozoVisible(false)}>
-                <Dialog.Title>Lol you can&apos;t</Dialog.Title>
-                <Dialog.Content>
-                    You can&apos;t. bozo + L + don&apos;t care didn&apos;t ask +
-                    don&apos;t care + ratio + cope + counter ratio + skill issue
-                    + cry about it + pinged owner + seethe + mald + stfu + no
-                    life + exposed + canceled + no life + denied + rat + counter
-                    ratio + blocked + backpilled + cancelled + stay mad
-                </Dialog.Content>
-            </Dialog>
+
             <Feeter />
         </>
     );

@@ -1,9 +1,12 @@
-import { evaluate } from "@pokertools/evaluator";
 import type { Lobby, SafeLobby } from "../shared/poker";
-import { scheduleTurnTimer, TURN_MS } from "../engine/gameLoop";
+import { scheduleTurnTimer, TURN_MS, clearActed } from "./gameLoop";
 
 export const createDeck = (): number[] =>
     Array.from({ length: 52 }, (_, i) => i).sort(() => Math.random() - 0.5);
+
+export function toEvaluatorCard(index: number): number {
+    return index;
+}
 
 export function sanitizeLobby(lobby: Lobby, recipientId: string): SafeLobby {
     return {
@@ -14,7 +17,8 @@ export function sanitizeLobby(lobby: Lobby, recipientId: string): SafeLobby {
             cards:
                 p.id === recipientId ||
                 lobby.stage === "SHOWDOWN" ||
-                lobby.stage === "LOBBY"
+                lobby.stage === "LOBBY" ||
+                lobby.stage === "BETWEEN_HANDS"
                     ? p.cards
                     : undefined,
         })),
@@ -59,17 +63,33 @@ export function startHand(lobby: Lobby) {
         p.cards = [deck.pop()!, deck.pop()!];
     });
 
+    // Fresh street — nobody has acted yet
+    clearActed(lobby.id);
+
     const n = lobby.players.length;
-    const sbIdx = (lobby.dealerIndex + 1) % n;
-    const bbIdx = (lobby.dealerIndex + 2) % n;
+    const headsUp = n === 2;
+
+    // Heads-up: dealer = SB, acts first pre-flop
+    // 3+: dealer posts nothing, SB = dealer+1, BB = dealer+2, UTG acts first
+    const sbIdx = headsUp
+        ? lobby.dealerIndex
+        : (lobby.dealerIndex + 1) % n;
+    const bbIdx = headsUp
+        ? (lobby.dealerIndex + 1) % n
+        : (lobby.dealerIndex + 2) % n;
 
     postBlind(lobby, sbIdx, Math.floor(lobby.bigBlind / 2));
     postBlind(lobby, bbIdx, lobby.bigBlind);
 
-    // UTG acts first (player after BB)
-    lobby.turnIndex = nextActivePlayer(lobby, bbIdx);
+    lobby.highestBet = lobby.bigBlind;
+
+    // Pre-flop first to act:
+    //   heads-up → SB (dealer)
+    //   3+       → UTG (first active after BB)
+    lobby.turnIndex = headsUp ? sbIdx : nextActivePlayer(lobby, bbIdx);
     lobby.turnId++;
     lobby.turnDeadline = Date.now() + TURN_MS;
+
     scheduleTurnTimer(lobby);
 }
 
@@ -97,8 +117,9 @@ function calculatePots(lobby: Lobby) {
     return pots;
 }
 
-/** Calculates and distributes winnings. Does NOT reset lobby state — endHand() does that. */
 export function resolveHand(lobby: Lobby) {
+    const { evaluate } = require("@pokertools/evaluator");
+
     const pots = calculatePots(lobby);
     for (const pot of pots) {
         const eligible = lobby.players.filter((p) =>
@@ -108,7 +129,10 @@ export function resolveHand(lobby: Lobby) {
 
         const scores = eligible.map((p) => ({
             id: p.id,
-            val: evaluate([...p.cards, ...lobby.communityCards]),
+            val: evaluate([
+                ...p.cards.map(toEvaluatorCard),
+                ...lobby.communityCards.map(toEvaluatorCard),
+            ]),
         }));
 
         const best = Math.min(...scores.map((s) => s.val));

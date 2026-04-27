@@ -1,6 +1,8 @@
 import { MdMonetizationOn } from "react-icons/md";
 import { useUserStore } from "../../stores/userStore";
 import { useGameStore } from "../../stores/gameStore";
+import { useSocket } from "src/utils/wsclient";
+import { KickPlayer } from "@gameserver/shared/messages";
 
 type Props = {
     username: string;
@@ -13,8 +15,14 @@ const LobbyPlayer = ({ username, chips, id }: Props) => {
 
     const gameStore = useGameStore();
 
+    const client = useSocket();
+
     const kickPlayer = () => {
-        // socket.emit("kick", { id, code: gameStore.id });
+        client.send(
+            KickPlayer,
+            { lobbyId: gameStore.id, targetUserId: id },
+            undefined
+        );
     };
 
     return (

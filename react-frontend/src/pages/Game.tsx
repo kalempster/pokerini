@@ -1,7 +1,13 @@
 import Cards from "src/components/Player/Cards";
 import Header from "../components/Header/Header";
 import { useEffect, useState } from "react";
-import { PlayerAction, SyncLobby } from "@gameserver/shared/messages";
+import {
+    ChipSyncPaused,
+    ChipSyncResumed,
+    LeaveLobby,
+    PlayerAction,
+    SyncLobby
+} from "@gameserver/shared/messages";
 import { useGameStore } from "src/stores/gameStore";
 import Card, { convertIndexToCard } from "src/components/Player/Card";
 import GamePlayer from "src/components/Player/GamePlayer";
@@ -9,6 +15,8 @@ import { useUserStore } from "src/stores/userStore";
 import { useSocket } from "src/utils/wsclient";
 import { useNavigate } from "@tanstack/react-router";
 import z from "zod";
+import Dialog from "src/components/Dialog/Dialog";
+
 const Game = () => {
     const gameStore = useGameStore();
     const userStore = useUserStore();
@@ -24,16 +32,32 @@ const Game = () => {
     const isMyTurn = gameStore.turnIndex === localPlayerIndex;
     const localPlayer = gameStore.players[localPlayerIndex];
 
-    useEffect(() => {
-        const syncLobbyUnregister = client.on(SyncLobby, (lobby) => {
-            if (lobby.payload.stage == "LOBBY") return nav({ to: "/lobby" });
-            gameStore.setGame(lobby.payload);
+    const leaveLobby = () => {
+        client.send(LeaveLobby, { lobbyId: gameStore.id }, undefined);
+    };
 
-            // Reset raise slider to minimum valid raise when turn changes
-            setRaiseAmount(lobby.payload.highestBet + gameStore.bigBlind);
+    useEffect(() => {
+        const syncPaused = client.on(ChipSyncPaused, () => {
+            gameStore.setGame({ paused: true });
         });
-        return () => syncLobbyUnregister();
-    }, [client, gameStore, nav]);
+        const syncResumed = client.on(ChipSyncResumed, () => {
+            gameStore.setGame({ paused: false });
+        });
+
+        return () => {
+            syncPaused();
+            syncResumed();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (gameStore.stage == "LOBBY") {
+            nav({ to: "/lobby" });
+            return;
+        }
+
+        setRaiseAmount(gameStore.highestBet + gameStore.bigBlind);
+    }, [gameStore, nav]);
 
     const sendAction = ({
         type,
@@ -48,9 +72,16 @@ const Game = () => {
 
     return (
         <>
+            <Dialog visible={gameStore.paused}>
+                <Dialog.Title>Game paused!</Dialog.Title>
+                <Dialog.Content>
+                    Chips persistence failed. Pausing the game to keep your
+                    balance safe. Retrying...
+                </Dialog.Content>
+            </Dialog>
             <Header />
             <div className="flex h-[100lvh] flex-col items-center justify-center bg-gray-900">
-                <div className="3xl:w-7/12 relative flex w-full items-center justify-center xl:w-10/12 2xl:w-9/12">
+                <div className="3xl:w-7/12 relative flex w-full items-center justify-center xl:w-10/12 ">
                     <div className="absolute flex flex-col items-center gap-2">
                         <Cards>
                             {gameStore.communityCards.map((card, i) => (
@@ -68,6 +99,16 @@ const Game = () => {
 
                     {gameStore.players.map((player, index) => (
                         <GamePlayer
+                            lobbyId={gameStore.id}
+                            id={player.id}
+                            kickable={
+                                gameStore.hostId == userStore.user.id &&
+                                player.id != userStore.user.id
+                            }
+                            turnEnabled={gameStore.stage != "BETWEEN_HANDS"}
+                            hasFolded={player.folded}
+                            currentBet={player.currentBet}
+                            isDealer={gameStore.dealerIndex == index}
                             key={player.id}
                             username={player.username}
                             currentChips={player.chips}
@@ -75,16 +116,8 @@ const Game = () => {
                             localPlayerIndex={localPlayerIndex}
                             isTurn={gameStore.turnIndex === index}
                             turnDeadline={gameStore.turnDeadline}
-                            cards={
-                                player.id == userStore.user.id
-                                    ? [
-                                          convertIndexToCard(
-                                              player.cards?.[0]!
-                                          ),
-                                          convertIndexToCard(player.cards?.[1]!)
-                                      ]
-                                    : undefined
-                            }
+                            communityCards={gameStore.communityCards}
+                            cards={player.cards}
                         />
                     ))}
 
@@ -116,7 +149,7 @@ const Game = () => {
                 </div>
 
                 {/* ACTION CONTROLS */}
-                {isMyTurn && (
+                {isMyTurn && gameStore.stage != "BETWEEN_HANDS" && (
                     <div className="fixed bottom-10 z-50 flex flex-col items-center gap-4 rounded-xl bg-black/60 p-6 backdrop-blur-md">
                         <div className="flex items-center gap-4">
                             <input
@@ -149,8 +182,16 @@ const Game = () => {
                                     )
                                 }
                                 className="w-32 rounded-lg bg-gray-600 py-3 font-bold text-white hover:bg-gray-700">
-                                {gameStore.highestBet > 0
-                                    ? `CALL ${gameStore.highestBet}`
+                                {gameStore.highestBet >
+                                gameStore.players.find(
+                                    (p) => p.id == userStore.user.id
+                                )?.currentBet!
+                                    ? `CALL ${
+                                          gameStore.highestBet -
+                                          gameStore.players.find(
+                                              (p) => p.id == userStore.user.id
+                                          )?.currentBet!
+                                      }`
                                     : "CHECK"}
                             </button>
                             <button
@@ -166,6 +207,12 @@ const Game = () => {
                         </div>
                     </div>
                 )}
+
+                <button
+                    onClick={leaveLobby}
+                    className="md:text-md text-md absolute bottom-10 right-10 rounded-md bg-secondary px-10 py-2 font-bold text-primary xl:px-10">
+                    Leave lobby
+                </button>
             </div>
         </>
     );

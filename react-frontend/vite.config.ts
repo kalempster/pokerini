@@ -10,7 +10,7 @@ export default defineConfig({
     resolve: {
         alias: {
             src: path.resolve(__dirname, "src"),
-            "@gameserver": path.resolve(__dirname, "../gameserver-rewrite/")
+            "@gameserver": path.resolve(__dirname, "../gameserver/")
         }
     }
 });
